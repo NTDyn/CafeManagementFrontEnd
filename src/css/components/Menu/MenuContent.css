@@ -1,0 +1,9 @@
+.CategoryName {
+    color: red;
+
+}
+
+.CategoryLink {
+    text-decoration: none;
+    display: flex;
+}

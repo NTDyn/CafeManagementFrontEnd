@@ -1,0 +1,225 @@
+
+.header{
+    top: 0%;
+    position: fixed;
+    z-index: 1;
+    padding-top: 3%;
+    padding-bottom: 2%;
+    background-color: rgb(205, 244, 205);
+}
+
+#offcanvas-btn{
+    padding-left: 2%;
+}
+#offcanvas-logo{
+    width: 50%;
+}
+#offcanvas-img{
+    width: 100%;
+    border-radius: 25px;
+}
+#header-right{
+    display: flex;
+    justify-content: flex-end ;
+
+}
+#hello-user{
+    font-size: 22px;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#dropdown-area{
+    padding-right:20% ;
+    
+}
+
+#cart-header{
+    margin-right: 15%;
+}
+#user-icon, #back-icon , #cart-icon {
+    font-size: 35px;
+    padding-right: 20%;
+    color: rgb(41, 147, 41);
+    border: none;
+    background: none;
+}
+#total-quality{
+    position: absolute;
+    margin-left:2% ;
+    padding-right: 5px;
+    font-size: 20px;
+    top:20px;
+    color: rgb(41, 147, 41);
+}
+
+#menu-plants{
+    margin-top: 10%;
+}
+.menu-plants-area{
+    margin-bottom: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 5%;
+    display: flex;
+    align-items: center;
+    background-color:rgb(205, 244, 205); 
+    border-radius: 50px 20px;
+    margin-left: 1px;
+    margin-right: 1px;
+    border-width: 1px;
+}
+
+#snowflake-icon{
+    animation-name: spin-round;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    font-size: 26px;
+    color: green;
+    text-align: center;
+}
+@keyframes spin-round {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+.img-flower{
+    width: 50%;
+    border-radius: 50% ;
+    border-style: solid;
+    border-width: 1px;
+    margin-left: 5%;
+}
+
+#name-product{
+    font-family:'Times New Roman', Times, serif ;
+    font-size: 24px;
+}
+#price-product{
+    font-family:'Times New Roman', Times, serif ;
+    font-size: 24px;
+}
+#rating>input{
+    display: none;
+}
+
+/* MODAL-DETAIL */
+
+.modal-header-sticky{
+    position: sticky;
+    top: 0%;
+    background-color: inherit;
+    z-index: 1055;
+}
+
+.modal-footer-sticky{
+    position: sticky;
+    bottom: 0%;
+    background-color: inherit;
+    z-index: 1055;
+}
+#img-detail{
+    width: 100%;
+}
+
+#price-detail{
+    font-size: 22px;
+
+}
+
+#name-product-detail{
+    font-size: 24px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-add-cart{
+    padding: 2%;
+    border-radius: 20px;
+    background-color: rgb(205, 244, 205);
+}
+.img-product-fly{
+    position: absolute;
+    z-index: 99999999;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 100%;
+    border: 2px solid red;
+    transition: all 1s ease;
+    animation: MyAnimation 1.5s infinite ;
+}
+
+@keyframes MyAnimation {
+    0%   {transform: scale(0.5)}
+    25%  {transform: scale(2)}
+    75%  {transform: scale(1)}
+    100% {transform: scale(0)}
+  }
+
+
+/* MODAL CART OF PRODUCT */
+
+#cart-content{
+    padding-top: 5%;
+}
+
+.column{
+    border-style: solid ;
+    border-width: 1px;
+    text-align: center;
+}
+
+.name-product-cart  {
+    align-self: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    text-align: center;
+
+}
+.price-product-cart  {
+    display: flex;
+    align-self: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 22px;
+
+
+}
+ .quality-product-cart{
+    align-self: center !important;
+}
+.img-cart{
+    width: 100%;
+    border-radius: 15px;
+}
+
+.btn-plus, .btn-minus{
+    display: flex !important;
+    align-self:center !important;
+    border: 0px;
+    margin-left: 10px ;
+}
+
+ .check-to-buy{
+    display: flex !important;
+    align-self: center;
+    font-size: 24px !important;
+}
+
+ .btn-choose , .btn-choosed{
+    border: none;
+    background: none;
+}
+.remover{
+    display: flex;
+    font-size: 26px;
+}
+.btn-delete{
+    align-self: center;
+    border: 0;
+    color: #e5444e;
+    background: none;
+}
