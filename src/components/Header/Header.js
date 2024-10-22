@@ -5,9 +5,7 @@ import CustomDatePicker from './CustomDatePicker';
 import NavbarBreadcrumbs from './NavbarBreadcrumbs';
 import MenuButton from '../Menu/MenuButton';
 import ColorModeIconDropdown from '../dashboard/theme/customization/ColorModeIconDropdown';
-
 import Search from './Search';
-import SideMenu from "../../components/Menu/SideMenu"
 
 export default function Header() {
     return (

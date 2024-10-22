@@ -1,23 +1,23 @@
 const initialState = {
     data: [],
-    error: "",
+    error: ""
 }
 
-const ProductBackEnd = (state = initialState, action) => {
+const WarehouseBackend = (state = initialState, action) => {
     switch (action.type) {
-        case "APPEND_BACK_END_PRODUCT":
+        case "APPEND_BACK_END_WAREHOUSE":
             let result = [];
             action.data.forEach((el, i) => {
                 result.push(el);
-                result[i]["id"] = el.product_ID;
-            })
+                result[i]["id"] = el.wareHouse_ID;
+            });
             return {
                 ...state,
                 data: result
             }
         default:
-            return state
+            return state;
     }
 }
 
-export default ProductBackEnd
+export default WarehouseBackend

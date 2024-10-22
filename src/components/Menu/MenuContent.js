@@ -16,13 +16,46 @@ import { Link } from 'react-router-dom';
 import '../../css/components/Menu/MenuContent.css'
 
 const mainListItems = [
-    { text: 'Home', icon: <HomeRoundedIcon />, link: '/home' },
-    { text: 'Analytics', icon: <AnalyticsRoundedIcon />, link: '/analytic' },
-    { text: 'Customers', icon: <PeopleRoundedIcon />, link: '/customer' },
-    { text: 'Suppliers', icon: <AssignmentRoundedIcon />, link: '/suppiers' },
-    { text: 'Warehouse', icon: <AssignmentRoundedIcon />, link: '/warehouse' },
-    { text: 'Ingredients', icon: <AssignmentRoundedIcon />, link: '/ingredient' },
-    { text: 'Products', icon: <AssignmentRoundedIcon />, link: '/product' },
+    {
+        text: 'Home',
+        icon: <HomeRoundedIcon />,
+        link: '/home'
+    },
+    {
+        text: 'Analytics',
+        icon: <AnalyticsRoundedIcon />,
+        link: '/analytic'
+    },
+    {
+        text: 'Customers',
+        icon: <PeopleRoundedIcon />,
+        link: '/customer'
+    },
+    {
+        text: 'Suppliers',
+        icon: <AssignmentRoundedIcon />,
+        link: '/suppiers'
+    },
+    {
+        text: 'Warehouse',
+        icon: <AssignmentRoundedIcon />,
+        link: '/warehouse'
+    },
+    {
+        text: 'Ingredients',
+        icon: <AssignmentRoundedIcon />,
+        link: '/ingredient'
+    },
+    {
+        text: 'Products',
+        icon: <AssignmentRoundedIcon />,
+        link: '/product'
+    },
+    {
+        text: 'Product Categories',
+        icon: <AssignmentRoundedIcon />,
+        link: '/productCategory'
+    },
 ];
 
 const secondaryListItems = [

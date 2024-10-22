@@ -25,7 +25,6 @@ export const getInitialData = () => {
         //     );
         fetchAPI("/api/Product").then(
             response => {
-                console.log(response)
                 if (response.status !== 200) {
                     //dispatch({ type: "SHOW_ERROR_API", message: result.message })
                 } else {
