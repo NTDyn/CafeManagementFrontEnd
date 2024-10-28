@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import Copyright from '../../../components/Footer/Copyright';
 import TableCategory from './TableCategory';
+import AddCategoryModal from './AddCategoryModal'
 
 const handleNext = () => {
     console.log("button add")
@@ -20,14 +21,8 @@ export default function MainGrid() {
                 columns={12}
                 sx={{ justifyContent: "flex-end", margin: "40px 40px 40px auto" }}
             >
-                <Button
-                    variant="outlined"
-                    endIcon={<AddOutlinedIcon />}
-                    onClick={handleNext}
-                    sx={{ width: { xs: '100%', sm: 'fit-content' } }}
-                >
-                    ADD CATEGORY
-                </Button>
+                <AddCategoryModal />
+
             </Grid>
             <Grid container spacing={2} columns={12}>
 

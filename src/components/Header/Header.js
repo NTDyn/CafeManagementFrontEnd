@@ -7,7 +7,7 @@ import MenuButton from '../Menu/MenuButton';
 import ColorModeIconDropdown from '../dashboard/theme/customization/ColorModeIconDropdown';
 import Search from './Search';
 
-export default function Header() {
+export default function Header({ pageName }) {
     return (
         <>
             <Stack
@@ -22,7 +22,9 @@ export default function Header() {
                 }}
                 spacing={2}
             >
-                <NavbarBreadcrumbs />
+                <NavbarBreadcrumbs
+                    page={pageName}
+                />
                 <Stack direction="row" sx={{ gap: 1 }}>
                     <Search />
                     <CustomDatePicker />

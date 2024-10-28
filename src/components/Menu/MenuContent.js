@@ -24,7 +24,7 @@ const mainListItems = [
     {
         text: 'Analytics',
         icon: <AnalyticsRoundedIcon />,
-        link: '/analytic'
+        link: 'admin/analytic'
     },
     {
         text: 'Customers',
@@ -34,27 +34,27 @@ const mainListItems = [
     {
         text: 'Suppliers',
         icon: <AssignmentRoundedIcon />,
-        link: '/suppiers'
+        link: 'admin/suppiers'
     },
     {
         text: 'Warehouse',
         icon: <AssignmentRoundedIcon />,
-        link: '/warehouse'
+        link: 'admin/warehouse'
     },
     {
         text: 'Ingredients',
         icon: <AssignmentRoundedIcon />,
-        link: '/ingredient'
+        link: 'admin/ingredient'
     },
     {
         text: 'Products',
         icon: <AssignmentRoundedIcon />,
-        link: '/product'
+        link: 'admin/product'
     },
     {
         text: 'Product Categories',
         icon: <AssignmentRoundedIcon />,
-        link: '/productCategory'
+        link: 'admin/productCategory'
     },
 ];
 
@@ -71,7 +71,7 @@ export default function MenuContent() {
                 {mainListItems.map((item, index) => (
                     <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton selected={index === 0}>
-                            <Link to={item.link} className='CategoryLink' >
+                            <Link to={"http://localhost:3000/" + item.link} className='CategoryLink' >
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.text} className='CategoryName' />
                             </Link>

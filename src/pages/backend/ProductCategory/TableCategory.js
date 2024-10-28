@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getInitialData } from "../../../redux/actions/productCategory";
 import { DataGrid } from '@mui/x-data-grid';
+import UpdateCategory from "./UpdateCategory";
 
-const useTableProductCategory = () => {
+
+const TableProductCategory = () => {
     const data = useSelector(state => state.dataProductCategory.data);
 
     const dispatch = useDispatch();
@@ -14,15 +16,55 @@ const useTableProductCategory = () => {
 
     let columns = [
         {
-            field: "category_Name",
-            headerName: 'Category Name',
-            headerAlign: 'right',
-            align: 'right',
+            field: "id",
+            headerName: "Num",
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             minWidth: 100
+        },
+        {
+            field: "category_Name",
+            headerName: 'Category Name',
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,
+            minWidth: 100
+        },
+        {
+            field: "isActive",
+            headerName: 'Status',
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,
+            minWidth: 100,
+            renderCell: (params) => {
+                return params.value ? "đang dùng" : "đã khóa";
+            }
+        },
+        {
+            field: "features",
+            headerName: "Features",
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,
+            minWidth: 100,
+            renderCell: (params) => {
+                return (
+                    <UpdateCategory
+                        categoryID={params.row.id}
+                        categoryName={params.row.categoryName}
+                        buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                        isActive={params.row.isActive ? false : true}
 
+                    />
+
+                )
+            }
         }
     ]
+
+
 
     return (
         <DataGrid
@@ -69,4 +111,4 @@ const useTableProductCategory = () => {
     )
 }
 
-export default useTableProductCategory;
+export default TableProductCategory;

@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Copyright from '../../../components/Footer/Copyright';
 import CustomizedDataGrid from './CustomizedDataGrid';
 import StatCard from './StatCard';
+import AddProduct from './AddProduct.js'
 
 const data = [
     {
@@ -60,12 +61,16 @@ export default function MainGrid() {
                 ))}
 
             </Grid>
-            <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-                <span>Details</span>
-                <span>
-                    <button className='btnAddProduct'>Add</button>
-                </span>
-            </Typography>
+            <Grid>
+                <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+                    <span>Details</span>
+                    <span>
+                        <AddProduct />
+                    </span>
+                </Typography>
+
+            </Grid>
+
             <Grid container spacing={2} columns={12}>
                 <Grid size={{ md: 12, lg: 12 }}>
                     <CustomizedDataGrid />

@@ -24,7 +24,6 @@ export async function postAPI(uri, data) {
         url: urlSite + uri,
         method: 'POST',
         headers: {
-            //   'Token': await createPostToken(uri, JSON.stringify(data)),
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
         },

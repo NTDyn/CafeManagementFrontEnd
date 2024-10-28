@@ -7,13 +7,15 @@ import Stack from '@mui/material/Stack';
 import Header from '../../../components/Header/Header';
 import SideMenu from '../../../components/Menu/SideMenu';
 import MainGrid from './MainGrid';
-
+import NavbarBreadcrumbs from '../../../components/Header/NavbarBreadcrumbs';
 
 export default function Dashboard(props) {
     return (
         <>
             <CssBaseline enableColorScheme />
+
             <Box sx={{ display: 'flex' }}>
+
                 <SideMenu />
                 {/* Main content */}
                 <Box
@@ -35,7 +37,9 @@ export default function Dashboard(props) {
                             mt: { xs: 8, md: 0 },
                         }}
                     >
-                        <Header />
+                        <Header
+                            pageName="Product Category"
+                        />
                         <MainGrid />
                     </Stack>
                 </Box>

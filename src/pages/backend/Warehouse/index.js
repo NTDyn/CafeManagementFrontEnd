@@ -35,7 +35,9 @@ export default function Dashboard(props) {
                             mt: { xs: 8, md: 0 },
                         }}
                     >
-                        <Header />
+                        <Header
+                            pageName="Warehouse"
+                        />
                         <MainGrid />
                     </Stack>
                 </Box>
