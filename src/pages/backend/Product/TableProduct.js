@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataGrid } from '@mui/x-data-grid';
 import { getInitialData } from '../../../redux/actions/products';
+import UpdateProduct from './UpdateProduct';
 
 const useCustomizedDataGrid = () => {
   const data = useSelector(state => state.dataProduct.data);
@@ -9,6 +10,8 @@ const useCustomizedDataGrid = () => {
   useEffect(() => {
     dispatch(getInitialData())
   }, [dispatch])
+
+  const listProductCategory = useSelector(state => state.dataProductCategory.data);
 
   let columns = [
     {
@@ -34,10 +37,57 @@ const useCustomizedDataGrid = () => {
       align: 'right',
       flex: 1,
       minWidth: 100,
+    },
+    {
+      field: 'point',
+      headerName: 'Point',
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
+      minWidth: 100,
+    },
+    {
+      field: "isActive",
+      headerName: 'Status',
+      headerAlign: 'center',
+      align: 'center',
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => {
+        return params.value ? "Using" : "Unused";
+      }
+    },
+    {
+      field: "features",
+      headerName: "Features",
+      headerAlign: 'center',
+      align: 'center',
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => {
+
+        return (
+
+          <UpdateProduct
+            product_ID={params.row.id}
+            product_Point={params.row.point}
+            product_Price={params.row.price}
+            product_Name={params.row.product_Name}
+            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+            isActive={params.row.isActive ? false : true}
+
+          />
+
+        )
+      }
     }
   ]
+
+
+
   return (
     <DataGrid
+
       autoHeight
       checkboxSelection
       rows={data}

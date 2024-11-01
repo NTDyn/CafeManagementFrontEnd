@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getInitialData } from "../../../redux/actions/productCategory";
+import { getInitialData } from "../../../redux/actions/supplier";
 import { DataGrid } from '@mui/x-data-grid';
-import UpdateCategory from "./UpdateCategory";
+import UpdateSupplier from "./UpdateSupplier";
 import '../../../css/backend/product/index.css';
 
 
-const TableProductCategory = () => {
-    const data = useSelector(state => state.dataProductCategory.data);
+const TableSuppliers = () => {
+    const data = useSelector(state => state.dataSupplier.data);
 
     const dispatch = useDispatch();
 
@@ -25,8 +25,8 @@ const TableProductCategory = () => {
             minWidth: 100
         },
         {
-            field: "category_Name",
-            headerName: 'Category Name',
+            field: "supplier_Name",
+            headerName: 'Supplier Name',
             headerAlign: 'center',
             align: 'center',
             flex: 1,
@@ -52,15 +52,14 @@ const TableProductCategory = () => {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <UpdateCategory
-                        categoryID={params.row.id}
-                        categoryName={params.row.categoryName}
+                    <UpdateSupplier
+                        supplier_ID={params.row.supplier_ID}
+                        supplier_Name={params.row.supplier_Name}
                         buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
                         isActive={params.row.isActive ? false : true}
-
                     />
-
                 )
+
             }
         }
     ]
@@ -113,4 +112,4 @@ const TableProductCategory = () => {
     )
 }
 
-export default TableProductCategory;
+export default TableSuppliers;

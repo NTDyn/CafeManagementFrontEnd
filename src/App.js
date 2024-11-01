@@ -5,7 +5,7 @@ import Product from './pages/backend/Product/index';
 import SignIn from './pages/backend/SignIn/SignIn';
 import Warehouse from './pages/backend/Warehouse/index';
 import ProductCategory from './pages/backend/ProductCategory/index'
-
+import Supplier from './pages/backend/Supplier/index'
 const App = () => {
   return (
     <Router>
@@ -15,6 +15,7 @@ const App = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/admin/warehouse" element={<Warehouse />} />
         <Route path="/admin/productCategory" element={<ProductCategory />} />
+        <Route path="/admin/suppliers" element={<Supplier />} />
       </Routes>
     </Router>
   );

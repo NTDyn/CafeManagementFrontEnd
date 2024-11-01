@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getInitialData } from "../../../redux/actions/products";
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
@@ -6,97 +8,63 @@ import Input from '@mui/joy/Input';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
+import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
-import Add from '@mui/icons-material/Add';
-import { useDispatch, useSelector } from "react-redux";
-import { getInitialData } from "../../../redux/actions/productCategory";
-import { addData, getInitialData as dataProduct } from "../../../redux/actions/products";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box } from "@mui/material";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content';
-import '../../../css/backend/product/index.css'
 import {
     Unstable_NumberInput as BaseNumberInput,
     numberInputClasses,
 } from '@mui/base/Unstable_NumberInput';
 import { styled } from '@mui/system';
+import { getInitialData as getProductCategory } from "../../../redux/actions/productCategory";
+import { updateData } from "../../../redux/actions/products";
+import '../../../css/backend/product/index.css'
 
-
-
-export default function AddProduct() {
-
-    const dispatchCategory = useDispatch()
-    useEffect(() => {
-        dispatchCategory(getInitialData())
-    }, [dispatchCategory])
-
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(dataProduct())
-    }, [dispatch])
-
-    const [open, setOpen] = useState(false);
-    const [productName, setProductName] = useState('');
-    const [productPrice, setProductPrice] = useState(0);
-    const [productPoint, setProductPoint] = useState(0);
-    const [productCategory, setProductCategory] = useState('');
-    const [categoryName, setCategoryName] = useState('');
+function UpdateProduct({ buttonLabel, product_ID, product_Name, product_Price, product_Point, isActive }) {
 
     const listProductCategory = useSelector(state => state.dataProductCategory.data);
     const listProduct = useSelector(state => state.dataProduct.data)
+
+    const cateID = listProduct.find(
+        productEl => productEl.product_ID === product_ID
+    )?.product_Category;
+
+    const product_Category = listProductCategory.find(
+        category => category.category_ID === cateID
+    )?.category_Name
+
+
+    const [open, setOpen] = useState(false);
+    const [productID, setProductID] = useState(product_ID);
+    const [productName, setProductName] = useState(product_Name);
+    const [productPrice, setProductPrice] = useState(product_Price);
+    const [productPoint, setProductPoint] = useState(product_Point);
+    const [productCategory, setProductCategory] = useState(cateID);
+    const [categoryName, setCategoryName] = useState(product_Category);
+
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getInitialData());
+    }, [dispatch])
+
+    const dispatchCategory = useDispatch()
+    useEffect(() => {
+        dispatchCategory(getProductCategory())
+    }, [dispatchCategory])
+
+
+
     const existingProduct = () => {
         return listProduct.find(
             listProduct => listProduct.product_Name === productName
         )
     }
-
-    const confirmAdd = (e) => {
-        e.preventDefault();
-        if (existingProduct()) {
-            withReactContent(Swal).fire({
-                title: "Product name is existing!",
-                backdrop: false,
-            });
-        } else {
-            withReactContent(Swal).fire({
-                title: "Do you want to add the this product?",
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: "Add",
-                denyButtonText: `Cancel`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    AddProductFunction();
-                    Swal.fire("Saved!", "", "success");
-                    setCategoryName("");
-                    setProductName("");
-                } else if (result.isDenied) {
-                    Swal.fire("Changes are not saved", "", "info");
-                }
-
-            })
-
-
-        }
-    }
-
-    const AddProductFunction = () => {
-
-        let data = {
-            "product_Name": productName,
-            "product_Category": productCategory,
-            "price": productPrice,
-            "point": productPoint,
-            "isActive": true,
-        }
-
-        dispatch(addData(data));
-
-    };
-
-
     const blue = {
         100: '#DAECFF',
         200: '#80BFFF',
@@ -244,30 +212,115 @@ export default function AddProduct() {
       `,
     );
 
+    const confirmSwalIsActive = (e) => {
+        e.preventDefault();
+        if (isActive === false) {
+            withReactContent(Swal).fire({
+                title: "Do you want to lock this product?",
+                showDenyButton: true,
+                confirmButtonText: "Lock",
+                denyButtonText: `Don't lock`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    UpdateFunction();
+                    Swal.fire("Successfully", "", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+
+            })
+        }
+        if (isActive === true) {
+            withReactContent(Swal).fire({
+                title: "Do you want to unlock this product?",
+                showDenyButton: true,
+                confirmButtonText: "Unlock",
+                denyButtonText: `Don't unlock`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    UpdateFunction()
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+
+            })
+        }
+
+    }
+
+    const confirmEdit = (e) => {
+        e.preventDefault();
+        if (productName === product_Name) {
+
+        } else {
+            if (existingProduct()) {
+                Swal.fire("Product name is existing")
+            }
+        }
+        handleClose();
+    }
+
+    const UpdateFunction = () => {
+        let data;
+        if (isActive !== null) {
+            data = {
+                "product_ID": product_ID,
+                "isActive": isActive
+            }
+        } else {
+            data = {
+                "product_ID": productID,
+                "price": productPrice,
+                "point": productPoint,
+                "product_Category": productCategory
+            }
+        }
+
+        dispatch(updateData(data))
+    };
+
+    const handleClose = () => {
+        // setNameChange(null);
+        setOpen(false);
+    };
+
     return (
         <>
-            <Stack
-                direction="row"
-                justifyContent="end"
-            >
-                <Button
 
-                    variant="outlined"
-                    color="neutral"
-                    startDecorator={<Add />}
-                    onClick={() => setOpen(true)}
+            <React.Fragment>
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    justifyContent="center"
                 >
-                    Add Product
-                </Button>
-            </Stack>
 
+                    <Button
+                        sx={
+                            { bgcolor: '#23a736' }
+                        }
+                        onClick={confirmSwalIsActive}
+
+                    >
+                        {buttonLabel}
+                    </Button>
+
+                    <Button
+                        sx={
+                            { bgcolor: '#185ea5' }
+                        }
+                        onClick={() => setOpen(true)}
+                    >
+                        Edit
+                    </Button>
+                </Stack>
+            </React.Fragment>
 
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
-                sx={{
-                    zIndex: 1000
-                }}
+            // sx={{
+            //     zIndex: 1000
+            // }}
             >
                 <ModalDialog>
                     <DialogTitle
@@ -275,11 +328,11 @@ export default function AddProduct() {
                             justifyContent: "center"
                         }}
                     >
-                        Add a product
+                        Edit information of product
                     </DialogTitle>
 
                     <form
-                        onSubmit={confirmAdd}
+                        onSubmit={confirmEdit}
                     >
                         <Stack >
                             <FormControl>
@@ -327,6 +380,7 @@ export default function AddProduct() {
                                 <Autocomplete
 
                                     disablePortal
+
                                     options={listProductCategory}
                                     getOptionLabel={(option) => option.category_Name ? option.category_Name : ""}
                                     sx={
@@ -334,15 +388,16 @@ export default function AddProduct() {
                                             width: 300,
                                         }
                                     }
-                                    name="categoryProduct"
-                                    value={categoryName ? { category_Name: categoryName } : null}
+                                    //name="categoryProduct"
+                                    value={categoryName ? { category_Name: categoryName } : { category_Name: null }}
                                     onChange={(event, newValue) => {
+                                        console.log(newValue)
                                         if (newValue) {
                                             setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
                                             setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
                                         } else {
-                                            setProductCategory(null); // Xử lý khi không có mục nào được chọn
-                                            setCategoryName('')
+                                            //setProductCategory(null); // Xử lý khi không có mục nào được chọn
+                                            //setCategoryName('')
                                         }
                                     }}
 
@@ -408,6 +463,7 @@ export default function AddProduct() {
                 </ModalDialog>
             </Modal >
         </>
-    );
-
+    )
 }
+
+export default UpdateProduct;

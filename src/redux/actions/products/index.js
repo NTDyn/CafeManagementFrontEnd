@@ -1,4 +1,4 @@
-import { fetchAPI } from "../../../api";
+import { fetchAPI, postAPI, putAPI } from "../../../api";
 
 export const getInitialData = () => {
     return async dispatch => {
@@ -25,11 +25,45 @@ export const getInitialData = () => {
         //     );
         fetchAPI("/api/Product").then(
             response => {
+
                 if (response.status !== 200) {
                     //dispatch({ type: "SHOW_ERROR_API", message: result.message })
                 } else {
                     dispatch({ type: "APPEND_BACK_END_PRODUCT", data: response.data })
                 }
+            }
+        )
+    }
+}
+
+export const addData = (data) => {
+    return async dispatch => {
+        postAPI("/api/Product", data).then(
+            response => {
+                if (response.status !== 200) {
+
+                } else {
+                    dispatch({ type: "ADD_BACK_END_PRODUCT", data: data })
+
+                }
+
+            }
+        )
+    }
+}
+
+
+export const updateData = (data) => {
+    return async dispatch => {
+        putAPI("/api/Product", data).then(
+            response => {
+                if (response.status !== 200) {
+
+                } else {
+                    dispatch({ type: "UPDATE_BACK_END_PRODUCT", data: data })
+
+                }
+
             }
         )
     }

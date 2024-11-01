@@ -10,16 +10,16 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from "react-redux";
-import { getInitialData, addData } from "../../../redux/actions/productCategory";
+import { getInitialData, addData } from "../../../redux/actions/supplier";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-export default function AddCategoryModal() {
+export default function AddSupplierModal() {
 
-    const [categoryName, setCategoryName] = useState("");
+    const [supplierName, setSupplierName] = useState("");
     const [open, setOpen] = useState(false);
 
-    const dataProductCategory = useSelector(state => state.dataProductCategory.data)
+    const dataSuppliers = useSelector(state => state.dataSupplier.data)
 
 
 
@@ -28,18 +28,18 @@ export default function AddCategoryModal() {
         dispatch(getInitialData())
     }, [dispatch])
 
-    const existingCategory = () => {
+    const existingSupplier = () => {
 
-        dataProductCategory.find(
-            dataProductCategory => dataProductCategory.category_Name === categoryName
+        dataSuppliers.find(
+            dataSuppliers => dataSuppliers.supplier_Name === supplierName
         )
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         handleClose()
-        if (existingCategory()) {
-            notificationSwal("Category name is existing!")
+        if (existingSupplier()) {
+            notificationSwal("Supplier name is existing!")
         } else {
             confirmSwal()
         }
@@ -48,9 +48,9 @@ export default function AddCategoryModal() {
     }
 
 
-    const addCategory = () => {
+    const addSupplier = () => {
         let data = {
-            "category_Name": "" + categoryName + "",
+            "supplier_Name": "" + supplierName + "",
             "isActive": true
         }
         dispatch(addData(data));
@@ -59,14 +59,14 @@ export default function AddCategoryModal() {
 
     const confirmSwal = () => {
         withReactContent(Swal).fire({
-            title: "Do you want to save the changes?",
+            title: "Do you want to add this supplier?",
             showDenyButton: true,
             showCancelButton: true,
-            confirmButtonText: "Save",
-            denyButtonText: `Don't save`
+            confirmButtonText: "Add",
+            denyButtonText: `Don't add`
         }).then((result) => {
             if (result.isConfirmed) {
-                addCategory()
+                addSupplier()
                 Swal.fire("Saved!", "", "success");
             } else if (result.isDenied) {
                 Swal.fire("Changes are not saved", "", "info");
@@ -82,7 +82,7 @@ export default function AddCategoryModal() {
     }
 
     const handleClose = () => {
-        setCategoryName("");
+        setSupplierName("");
         setOpen(false);
     };
 
@@ -94,11 +94,11 @@ export default function AddCategoryModal() {
                 startDecorator={<Add />}
                 onClick={() => setOpen(true)}
             >
-                Add Category
+                Add Supplier
             </Button>
             <Modal open={open} onClose={() => setOpen(false)}>
                 <ModalDialog>
-                    <DialogTitle>Create new category of product</DialogTitle>
+                    <DialogTitle>Create new supplier</DialogTitle>
                     <DialogContent>Fill in the information.</DialogContent>
                     <form
                         onSubmit={handleSubmit}
@@ -109,10 +109,10 @@ export default function AddCategoryModal() {
                                 <Input
                                     autoFocus
                                     required
-                                    name="nameCategory"
-                                    value={categoryName}
-                                    placeholder="Nhập tên Category"
-                                    onChange={(e) => setCategoryName(e.target.value)}
+                                    name="nameSupplier"
+                                    value={supplierName}
+                                    placeholder="Enter supplier name"
+                                    onChange={(e) => setSupplierName(e.target.value)}
                                 />
                             </FormControl>
 

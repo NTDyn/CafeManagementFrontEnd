@@ -1,0 +1,13 @@
+.swal-popup {
+    z-index: 13300 !important;
+    /*Điều chỉnh giá trị để đảm bảo popup luôn ở trên modal */
+}
+
+.featureCell {
+    margin-top: 5px;
+    margin-bottom: 5px !important;
+}
+
+.rowData {
+    height: 150px;
+}

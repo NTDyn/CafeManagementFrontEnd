@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Copyright from '../../../components/Footer/Copyright';
-import CustomizedDataGrid from './CustomizedDataGrid';
+import CustomizedDataGrid from './TableProduct.js';
 import StatCard from './StatCard';
 import AddProduct from './AddProduct.js'
 

@@ -29,12 +29,12 @@ const mainListItems = [
     {
         text: 'Customers',
         icon: <PeopleRoundedIcon />,
-        link: '/customer'
+        link: 'admin/customer'
     },
     {
         text: 'Suppliers',
         icon: <AssignmentRoundedIcon />,
-        link: 'admin/suppiers'
+        link: 'admin/suppliers'
     },
     {
         text: 'Warehouse',

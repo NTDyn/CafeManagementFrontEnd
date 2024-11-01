@@ -1,10 +1,8 @@
-import { getInitialData, updateData } from "../../../redux/actions/productCategory";
+import { getInitialData, updateData } from "../../../redux/actions/supplier";
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { putAPI } from "../../../api";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import PropTypes from "prop-types";
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
@@ -17,37 +15,48 @@ import Stack from '@mui/joy/Stack';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 
-function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
+function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
     const [open, setOpen] = useState(false);
-    const [nameChange, setNameChange] = useState(null);
-    const dataProductCategory = useSelector(state => state.dataProductCategory.data)
+    const [supplierID, setSupplierID] = useState(supplier_ID);
+    const [supplierName, setSupplierName] = useState(supplier_Name);
+    const dataSupplier = useSelector(state => state.dataSupplier.data)
 
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getInitialData())
     }, [dispatch])
 
-    const UpdateFunction = () => {
+    const UpdateInformation = () => {
 
         let data = {
-
-            "category_ID": categoryID,
-            "category_Name": nameChange,
-            "isActive": isActive
+            "supplier_ID": supplierID,
+            "supplier_Name": supplierName,
+            "isActive": null
         }
         dispatch(updateData(data))
     };
 
+    const UpdateStatus = () => {
+
+        let data = {
+            "supplier_ID": supplierID,
+            "supplier_Name": null,
+            "isActive": isActive
+        }
+        dispatch(updateData(data))
+    }
+
     const confirmSwal = () => {
         if (isActive === false) {
             withReactContent(Swal).fire({
-                title: "Do you want to lock this category?",
+                title: "Do you want to lock this supplier?",
                 showDenyButton: true,
                 confirmButtonText: "Lock",
                 denyButtonText: `Don't lock`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    UpdateFunction()
+                    UpdateStatus();
+                    Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
@@ -56,13 +65,14 @@ function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
         }
         if (isActive === true) {
             withReactContent(Swal).fire({
-                title: "Do you want to unlock this category?",
+                title: "Do you want to unlock this supplier?",
                 showDenyButton: true,
                 confirmButtonText: "Unlock",
                 denyButtonText: `Don't unlock`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    UpdateFunction()
+                    UpdateStatus()
+                    Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
@@ -72,33 +82,41 @@ function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
 
     }
 
-    const existingCategory = dataProductCategory.find(
-        dataProductCategory => dataProductCategory.category_Name === nameChange
-    );
+    const existingSupplier = () => {
+        return dataSupplier.find(
+            dataSupplier => dataSupplier.supplier_Name === supplierName)
+
+    };
+
     const confirmChangeNameSwal = (e) => {
         e.preventDefault()
-        if (existingCategory) {
-            Swal.fire("Category name is existing");
+        if (supplierName === supplier_Name) {
+            Swal.fire("Supplier name is not changed!");
+
+        } else if (existingSupplier()) {
+            Swal.fire("Supplier name is existing");
         } else {
             withReactContent(Swal).fire({
-                title: "Do you want to change name of category?",
+                title: "Do you want to change name of supplier?",
                 showDenyButton: true,
-                confirmButtonText: "change",
-                denyButtonText: `Don't unlock`
+                confirmButtonText: "Change",
+                denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    UpdateFunction();
+                    UpdateInformation();
+                    handleClose();
+                    Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
 
             })
         }
-        handleClose()
+
     }
 
     const handleClose = () => {
-        setNameChange(null);
+        setSupplierName(supplier_Name);
         setOpen(false);
     };
 
@@ -146,9 +164,15 @@ function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
 
 
 
-                <Modal open={open} onClose={() => setOpen(false)}>
+                <Modal
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    sx={{
+                        zIndex: 1000
+                    }}
+                >
                     <ModalDialog>
-                        <DialogTitle>Change name category of product</DialogTitle>
+                        <DialogTitle>Change name of supplier</DialogTitle>
                         <DialogContent>Fill in the information.</DialogContent>
                         <form
                             onSubmit={confirmChangeNameSwal}
@@ -159,9 +183,9 @@ function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
                                     <Input
                                         autoFocus
                                         required
-                                        name="nameCategory"
-                                        value={categoryName}
-                                        onChange={(e) => setNameChange(e.target.value)}
+                                        name="nameSupplier"
+                                        value={supplierName}
+                                        onChange={(e) => setSupplierName(e.target.value)}
                                     />
                                 </FormControl>
 
@@ -185,4 +209,4 @@ function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
 // }
 
 
-export default UpdateCategory;
+export default UpdateSupplier;
