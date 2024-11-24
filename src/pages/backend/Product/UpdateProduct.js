@@ -10,6 +10,7 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
+import Grid from '@mui/material/Grid2';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box } from "@mui/material";
@@ -219,10 +220,10 @@ function UpdateProduct({ buttonLabel, product_ID, product_Name, product_Price, p
                 title: "Do you want to lock this product?",
                 showDenyButton: true,
                 confirmButtonText: "Lock",
-                denyButtonText: `Don't lock`
+                denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    UpdateFunction();
+                    UpdateIsActive();
                     Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -235,10 +236,11 @@ function UpdateProduct({ buttonLabel, product_ID, product_Name, product_Price, p
                 title: "Do you want to unlock this product?",
                 showDenyButton: true,
                 confirmButtonText: "Unlock",
-                denyButtonText: `Don't unlock`
+                denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    UpdateFunction()
+                    UpdateIsActive();
+                    Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
@@ -252,30 +254,45 @@ function UpdateProduct({ buttonLabel, product_ID, product_Name, product_Price, p
         e.preventDefault();
         if (productName === product_Name) {
 
-        } else {
-            if (existingProduct()) {
-                Swal.fire("Product name is existing")
-            }
+        } else if (existingProduct()) {
+            handleClose();
+            Swal.fire("Product name is existing");
+            return;
         }
+
+        withReactContent(Swal).fire({
+            title: "Do you want to change information of product?",
+            showDenyButton: true,
+            confirmButtonText: "Change",
+            denyButtonText: `Cancel`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                UpdateInformation();
+                Swal.fire("Successfully", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+
+        })
+
         handleClose();
     }
-
-    const UpdateFunction = () => {
-        let data;
-        if (isActive !== null) {
-            data = {
-                "product_ID": product_ID,
-                "isActive": isActive
-            }
-        } else {
-            data = {
-                "product_ID": productID,
-                "price": productPrice,
-                "point": productPoint,
-                "product_Category": productCategory
-            }
+    const UpdateInformation = () => {
+        let data = {
+            "product_ID": productID,
+            "product_Name": productName,
+            "price": productPrice,
+            "point": productPoint,
+            "product_Category": productCategory
         }
-
+        console.log(data)
+        dispatch(updateData(data))
+    }
+    const UpdateIsActive = () => {
+        let data = {
+            "product_ID": product_ID,
+            "isActive": isActive
+        }
         dispatch(updateData(data))
     };
 
@@ -293,25 +310,33 @@ function UpdateProduct({ buttonLabel, product_ID, product_Name, product_Price, p
                     spacing={2}
                     justifyContent="center"
                 >
+                    <Grid container spacing={2} justifyContent="center">
+                        <Grid xs={3}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <Button
+                                    sx={
+                                        { width: '80px', bgcolor: '#23a736' }
+                                    }
+                                    onClick={confirmSwalIsActive}
 
-                    <Button
-                        sx={
-                            { bgcolor: '#23a736' }
-                        }
-                        onClick={confirmSwalIsActive}
-
-                    >
-                        {buttonLabel}
-                    </Button>
-
-                    <Button
-                        sx={
-                            { bgcolor: '#185ea5' }
-                        }
-                        onClick={() => setOpen(true)}
-                    >
-                        Edit
-                    </Button>
+                                >
+                                    {buttonLabel}
+                                </Button>
+                            </Box>
+                        </Grid>
+                        <Grid xs={3}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <Button
+                                    sx={
+                                        { width: '80px', bgcolor: '#185ea5' }
+                                    }
+                                    onClick={() => setOpen(true)}
+                                >
+                                    Edit
+                                </Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
                 </Stack>
             </React.Fragment>
 
@@ -396,8 +421,8 @@ function UpdateProduct({ buttonLabel, product_ID, product_Name, product_Price, p
                                             setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
                                             setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
                                         } else {
-                                            //setProductCategory(null); // Xử lý khi không có mục nào được chọn
-                                            //setCategoryName('')
+                                            setProductCategory(null); // Xử lý khi không có mục nào được chọn
+                                            setCategoryName('')
                                         }
                                     }}
 

@@ -20,7 +20,7 @@ export default function MainGrid() {
 
             </Grid>
             <Grid container spacing={2} columns={12}>
-                <Grid size={{ md: 12, lg: 9 }}>
+                <Grid size={{ md: 12, lg: 12 }}>
                     <TableSuppliers />
                 </Grid>
 

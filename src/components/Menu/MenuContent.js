@@ -42,6 +42,11 @@ const mainListItems = [
         link: 'admin/warehouse'
     },
     {
+        text: 'Ingredient Category',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/ingredientCategory'
+    },
+    {
         text: 'Ingredients',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/ingredient'

@@ -1,5 +1,5 @@
 import { fetchAPI, postAPI, putAPI } from "../../../api";
-
+import { addData as addRecipe } from "../productRecipe";
 export const getInitialData = () => {
     return async dispatch => {
         // await Promise.all([
@@ -36,7 +36,7 @@ export const getInitialData = () => {
     }
 }
 
-export const addData = (data) => {
+export const addData = (data, listRecipe) => {
     return async dispatch => {
         postAPI("/api/Product", data).then(
             response => {
@@ -44,6 +44,11 @@ export const addData = (data) => {
 
                 } else {
                     dispatch({ type: "ADD_BACK_END_PRODUCT", data: data })
+                    let productID = data.id;
+                    listRecipe.forEach(element => {
+                        element.product_ID = productID
+                    });
+                    dispatch(addRecipe(listRecipe))
 
                 }
 

@@ -3,32 +3,33 @@ const initialState = {
     error: "",
 }
 
-const ProductBackEnd = (state = initialState, action) => {
+const ProductRecipeBackEnd = (state = initialState, action) => {
     switch (action.type) {
-        case "APPEND_BACK_END_PRODUCT":
+        case "APPEND_BACK_END_PRODUCT_RECIPE":
             let result = [];
             action.data.forEach((el, i) => {
                 result.push(el);
-                result[i]["id"] = el.product_ID;
+                result[i]["id"] = el.recipe_ID;
             })
             return {
                 ...state,
                 data: result
 
             }
-        case "ADD_BACK_END_PRODUCT":
+        case "ADD_BACK_END_PRODUCT_RECIPE":
+            console.log('reducer')
             let list = state.data;
             let elAdd = action.data;
-            let productID = list.length + 1;
-            elAdd.id = productID;
+            let recipeID = list.length + 1;
+            elAdd.id = recipeID;
             list = [...list, elAdd];
 
             return {
                 ...state,
                 data: list
             }
-        case "UPDATE_BACK_END_PRODUCT":
-            console.log(action.data)
+        case "UPDATE_BACK_END_PRODUCT_RECIPE":
+
             const updatedData = state.data.map(item => {
                 let itemUP = action.data;
                 if (item.product_ID === itemUP.product_ID) {
@@ -60,4 +61,4 @@ const ProductBackEnd = (state = initialState, action) => {
     }
 }
 
-export default ProductBackEnd
+export default ProductRecipeBackEnd

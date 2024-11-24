@@ -59,7 +59,7 @@ function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
                 title: "Do you want to unlock this category?",
                 showDenyButton: true,
                 confirmButtonText: "Unlock",
-                denyButtonText: `Don't unlock`
+                denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateFunction()
@@ -83,8 +83,8 @@ function UpdateCategory({ categoryID, categoryName, buttonLabel, isActive }) {
             withReactContent(Swal).fire({
                 title: "Do you want to change name of category?",
                 showDenyButton: true,
-                confirmButtonText: "change",
-                denyButtonText: `Don't unlock`
+                confirmButtonText: "Change",
+                denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateFunction();
