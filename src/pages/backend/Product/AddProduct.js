@@ -1,29 +1,49 @@
 import React, { useState, useEffect } from "react"
 import Button from '@mui/joy/Button';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
-import Modal from '@mui/joy/Modal';
-import ModalDialog from '@mui/joy/ModalDialog';
-import DialogTitle from '@mui/joy/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from "react-redux";
 import { getInitialData } from "../../../redux/actions/productCategory";
-import { addData, getInitialData as dataProduct } from "../../../redux/actions/products";
+import { addData as addDataProduct, getInitialData as dataProduct } from "../../../redux/actions/products";
+import { getInitialData as dataIngredient } from "../../../redux/actions/ingredient"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Box } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import Swal from 'sweetalert2'
+import Grid from '@mui/material/Grid2';
 import withReactContent from 'sweetalert2-react-content';
 import '../../../css/backend/product/index.css'
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
 import {
     Unstable_NumberInput as BaseNumberInput,
     numberInputClasses,
 } from '@mui/base/Unstable_NumberInput';
-import { styled } from '@mui/system';
-
-
+import { useTheme } from '@mui/material/styles';
+import { color, maxWidth, styled, width } from '@mui/system';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    GridRowModes,
+    DataGrid,
+    GridToolbarContainer,
+    GridActionsCellItem,
+    GridRowEditStopReasons,
+} from '@mui/x-data-grid';
+import '../../../css/backend/product/index.css?v=19'
+import { Fullscreen } from "@mui/icons-material";
 
 export default function AddProduct() {
 
@@ -37,13 +57,19 @@ export default function AddProduct() {
         dispatch(dataProduct())
     }, [dispatch])
 
+    const initialRows = [];
+    const [recipeRows, setRecipeRows] = useState(initialRows);
+    const [currentId, setCurrentId] = useState(1); // Bắt đầu từ ID 1
+    const [rowModesModel, setRowModesModel] = useState({});
     const [open, setOpen] = useState(false);
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState(0);
     const [productPoint, setProductPoint] = useState(0);
     const [productCategory, setProductCategory] = useState('');
     const [categoryName, setCategoryName] = useState('');
-
+    const [recipeIngredientID, setRecipeIngredientID] = useState(0);
+    const [recipeQuantity, setRecipeQuantity] = useState(0);
+    const [recipeUnit, setRecipeUnit] = useState(0);
     const listProductCategory = useSelector(state => state.dataProductCategory.data);
     const listProduct = useSelector(state => state.dataProduct.data)
     const existingProduct = () => {
@@ -51,38 +77,57 @@ export default function AddProduct() {
             listProduct => listProduct.product_Name === productName
         )
     }
+    const listIngredient = useSelector(state => state.dataIngredient.data)
+    useEffect(() => {
+        dispatch(dataIngredient())
+    }, [dispatch])
 
-    const confirmAdd = (e) => {
+    const checkListRecipe = () => {
+        return recipeRows.find(
+            row => row.ingredientName === '' || row.unit === ''
+        )
+    }
+    const confirmAdd = async (e) => {
         e.preventDefault();
-        if (existingProduct()) {
+        console.log(recipeRows)
+        if (checkListRecipe()) {
             withReactContent(Swal).fire({
+                title: "There are uncompleted rows. Please complete them before submitting!",
+                backdrop: false,
+            });
+            return;
+        }
+
+        if (existingProduct()) {
+            await withReactContent(Swal).fire({
                 title: "Product name is existing!",
                 backdrop: false,
             });
         } else {
-            withReactContent(Swal).fire({
-                title: "Do you want to add the this product?",
+            const result = await withReactContent(Swal).fire({
+                title: "Do you want to add this product?",
                 showDenyButton: true,
-                showCancelButton: true,
                 confirmButtonText: "Add",
-                denyButtonText: `Cancel`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    AddProductFunction();
-                    Swal.fire("Saved!", "", "success");
+                denyButtonText: `Cancel`,
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    await AddProductFunction();
+                    await Swal.fire("Saved!", "", "success");
                     setCategoryName("");
                     setProductName("");
-                } else if (result.isDenied) {
-                    Swal.fire("Changes are not saved", "", "info");
+                } catch (error) {
+                    console.error("Error adding product:", error);
+                    Swal.fire("Error!", "Could not save the product.", "error");
                 }
-
-            })
-
-
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
         }
-    }
+    };
 
-    const AddProductFunction = () => {
+    const AddProductFunction = async () => {
 
         let data = {
             "product_Name": productName,
@@ -92,9 +137,9 @@ export default function AddProduct() {
             "isActive": true,
         }
 
-        dispatch(addData(data));
-
+        dispatch(addDataProduct(data, recipeRows));
     };
+
 
 
     const blue = {
@@ -244,6 +289,237 @@ export default function AddProduct() {
       `,
     );
 
+    const StyledBox = styled('div')(({ theme }) => ({
+        height: 300,
+        width: '100%',
+        '& .MuiDataGrid-cell--editing': {
+            backgroundColor: 'rgb(255,215,115, 0.19)',
+            color: '#1a3e72',
+            '& .MuiInputBase-root': {
+                height: '100%',
+            },
+        },
+        '& .Mui-error': {
+            backgroundColor: 'rgb(126,10,15, 0.1)',
+            color: '#1a3e55',
+            ...theme.applyStyles('dark', {
+                backgroundColor: 'rgb(126,10,15, 0)',
+            }),
+        },
+    }));
+
+
+    const processRowUpdate = (newRow) => {
+
+
+        const selectedIngredient = listIngredient.find(
+            ingredient => ingredient.ingredient_Name === newRow.ingredientName
+        );
+
+        if (selectedIngredient) {
+            // Cập nhật ingredient_ID nếu tìm thấy ingredientName trong danh sách
+            newRow.ingredient_ID = selectedIngredient.ingredient_ID;
+        } else {
+            // Nếu không tìm thấy, có thể để ingredient_ID trống hoặc thực hiện xử lý khác
+            newRow.ingredient_ID = null; // hoặc một giá trị mặc định
+        }
+
+        if (newRow.quantity < 1) {
+            newRow.quantity = 1
+        }
+        if (newRow.unit) {
+            console.log('unit herre')
+        }
+        const updatedRow = { ...newRow, isNew: false };
+
+        setRecipeRows(recipeRows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        setRowModesModel({ ...rowModesModel, [updatedRow.id]: { mode: GridRowModes.View } });
+        return updatedRow;
+    };
+
+    const handleRowModesModelChange = (newRowModesModel) => {
+        setRowModesModel(newRowModesModel);
+    };
+
+    const getAvailableIngredients = (currentId) => {
+        // Lấy danh sách các giá trị đã được chọn, ngoại trừ hàng hiện tại
+        const selectedIngredients = recipeRows
+            .filter(row => row.id !== currentId)
+            .map(row => row.ingredientName)
+            .filter(name => name); // Loại bỏ giá trị rỗng
+
+        // Loại trừ các giá trị đã chọn khỏi danh sách gốc
+        return (
+
+            listIngredient
+                .map(item => item.ingredient_Name)
+                .filter(name => !selectedIngredients.includes(name))
+        );
+    };
+
+    const handleRowEditStop = (params, event) => {
+        handleSaveClick(params.id)
+    };
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleEditClick = (id) => () => {
+        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    };
+
+
+    const handleDeleteClick = (id) => () => {
+        setRecipeRows(recipeRows.filter((row) => row.id !== id));
+    };
+
+
+    const handleSaveClick = (id) => () => {
+        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    };
+    const handleCancelClick = (id) => () => {
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.View, ignoreModifications: true },
+        });
+
+        const editedRow = recipeRows.find((row) => row.id === id);
+        if (editedRow.isNew) {
+            setRecipeRows(recipeRows.filter((row) => row.id !== id));
+        }
+    };
+
+
+
+    function EditToolbar(props) {
+        const { setRecipeRows, setRowModesModel } = props;
+
+
+        const handleClickAdd = () => {
+            setRecipeRows((oldRows) => [
+                ...oldRows,
+                { id: currentId, ingredient_ID: '', ingredientName: '', unit: '', quantity: '', isNew: true },
+            ]);
+            setRowModesModel((oldModel) => ({
+                ...oldModel,
+                [currentId]: { mode: GridRowModes.Edit, fieldToFocus: 'ingredientName' },
+            }));
+            setCurrentId(currentId + 1); // Tăng giá trị ID sau khi sử dụng
+        }
+
+        return (
+            <GridToolbarContainer
+                style={
+                    {
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginTop: 5
+                    }}
+            >
+                <Button color="primary" startDecorator={<Add />} onClick={handleClickAdd}>
+                    Add record
+                </Button>
+            </GridToolbarContainer>
+        );
+    }
+
+    const columns = [
+        {
+            field: 'ingredientName',
+            headerName: 'Ingredient',
+            width: 280,
+            align: 'center',
+            headerAlign: 'center',
+            type: 'singleSelect',
+            valueOptions: (params) => getAvailableIngredients(params.row.id),
+            editable: true,
+        },
+        {
+            field: 'unit',
+            headerName: 'Unit',
+            width: 300,
+            editable: true,
+            align: 'center',
+            headerAlign: 'center',
+            type: 'singleSelect',
+            valueOptions: ({ row }) => {
+                if (row != null) {
+                    const selectedIngredient = listIngredient.find(
+                        ingredient => ingredient.ingredient_Name === row.ingredientName
+                    );
+                    if (!selectedIngredient) {
+                        return [];
+                    }
+
+                    // Danh sách các đơn vị có thể chọn
+                    const units = [
+                        selectedIngredient.unit_Min,
+                        selectedIngredient.unit_Max,
+                        selectedIngredient.unit_Transfer,
+
+                    ];
+
+                    // Lọc bỏ các giá trị trùng lặp
+                    const uniqueUnits = [...new Set(units.filter(unit => unit !== null && unit !== undefined))];
+
+                    return uniqueUnits;
+                }
+            },
+
+        },
+        {
+            field: 'quantity',
+            headerName: 'Quantity',
+            type: 'number',
+            width: 150,
+            align: 'center',
+            headerAlign: 'center',
+            editable: true,
+        },
+
+        {
+            field: 'actions',
+            type: 'actions',
+            headerName: 'Actions',
+            width: 200,
+            cellClassName: 'actions',
+            getActions: ({ id }) => {
+                const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+                if (isInEditMode) {
+                    return [
+                        <GridActionsCellItem
+                            icon={<CancelIcon />}
+                            label="Cancel"
+                            className="textPrimary"
+                            onClick={handleCancelClick(id)}
+                            color="inherit"
+                        />,
+                    ];
+                }
+
+                return [
+                    <GridActionsCellItem
+                        icon={<EditIcon />}
+                        label="Edit"
+                        className="textPrimary"
+                        onClick={handleEditClick(id)}
+                        color="inherit"
+                    />,
+                    <GridActionsCellItem
+                        icon={<DeleteIcon />}
+                        label="Delete"
+                        onClick={handleDeleteClick(id)}
+                        color="inherit"
+                    />,
+                ];
+            },
+        },
+    ];
     return (
         <>
             <Stack
@@ -255,34 +531,53 @@ export default function AddProduct() {
                     variant="outlined"
                     color="neutral"
                     startDecorator={<Add />}
-                    onClick={() => setOpen(true)}
+                    onClick={() => handleClickOpen()}
                 >
                     Add Product
                 </Button>
             </Stack>
 
-
-            <Modal
+            <Dialog
+                fullScreen
                 open={open}
-                onClose={() => setOpen(false)}
-                sx={{
-                    zIndex: 1000
-                }}
+                onClose={handleClose}
+                disablePortal
             >
-                <ModalDialog>
-                    <DialogTitle
+                <AppBar sx={{ position: 'relative' }}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            onClick={handleClose}
+                            aria-label="close"
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                            Add Product
+                        </Typography>
+                        <Button autoFocus color="inherit" onClick={handleClose}>
+                            save
+                        </Button>
+                    </Toolbar>
+                </AppBar>
+                <form
+                    onSubmit={confirmAdd}
+                >
+                    <Box
                         sx={{
-                            justifyContent: "center"
+                            marginTop: 5,
+                            marginLeft: 20,
+                            justifyContent: 'center'
                         }}
                     >
-                        Add a product
-                    </DialogTitle>
-
-                    <form
-                        onSubmit={confirmAdd}
-                    >
-                        <Stack >
-                            <FormControl>
+                        <Grid
+                            container
+                            spacing={4}
+                        >
+                            <Grid
+                                size={4}
+                            >
                                 <FormLabel>Name</FormLabel>
                                 <Input
                                     autoFocus
@@ -291,9 +586,44 @@ export default function AddProduct() {
                                     value={productName}
                                     onChange={(e) => setProductName(e.target.value)}
                                 />
-                            </FormControl>
-                            <FormControl
-                                sx={{ marginTop: 2 }}
+                            </Grid>
+                            <Grid
+                                size={4}
+                            >
+                                <FormLabel>Category</FormLabel>
+                                <Autocomplete
+
+                                    disablePortal
+                                    options={listProductCategory}
+                                    getOptionLabel={(option) => option.category_Name ? option.category_Name : ""}
+                                    name="categoryProduct"
+                                    value={categoryName ? { category_Name: categoryName } : null}
+                                    onChange={(event, newValue) => {
+                                        if (newValue) {
+                                            setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
+                                            setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
+                                        } else {
+                                            setProductCategory(null); // Xử lý khi không có mục nào được chọn
+                                            setCategoryName('')
+                                        }
+                                    }}
+
+                                    renderInput={(params) => <TextField
+                                        required
+                                        {...params}
+
+                                    />}
+                                />
+                            </Grid>
+
+                        </Grid>
+                        <Grid
+                            container
+                            spacing={4}
+                            sx={{ marginTop: 2 }}
+                        >
+                            <Grid
+                                size={4}
                             >
                                 <FormLabel>Price (VND) </FormLabel>
                                 <BaseNumberInput
@@ -319,42 +649,10 @@ export default function AddProduct() {
                                     onChange={(event, val) => setProductPrice(val)}
                                 ></BaseNumberInput>
 
-                            </FormControl>
-                            <FormControl
-                                sx={{ marginTop: 2 }}
-                            >
-                                <FormLabel>Category</FormLabel>
-                                <Autocomplete
+                            </Grid>
 
-                                    disablePortal
-                                    options={listProductCategory}
-                                    getOptionLabel={(option) => option.category_Name ? option.category_Name : ""}
-                                    sx={
-                                        {
-                                            width: 300,
-                                        }
-                                    }
-                                    name="categoryProduct"
-                                    value={categoryName ? { category_Name: categoryName } : null}
-                                    onChange={(event, newValue) => {
-                                        if (newValue) {
-                                            setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
-                                            setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
-                                        } else {
-                                            setProductCategory(null); // Xử lý khi không có mục nào được chọn
-                                            setCategoryName('')
-                                        }
-                                    }}
-
-                                    renderInput={(params) => <TextField
-                                        required
-                                        {...params}
-
-                                    />}
-                                />
-                            </FormControl>
-                            <FormControl
-                                sx={{ marginTop: 2 }}
+                            <Grid
+                                size={4}
                             >
                                 <FormLabel>Point</FormLabel>
                                 <BaseNumberInput
@@ -380,33 +678,69 @@ export default function AddProduct() {
                                     value={productPoint}
                                     onChange={(event, val) => setProductPoint(val)}
                                 ></BaseNumberInput>
-                            </FormControl>
-
-
-
-                        </Stack>
-
-                        <Box
-                            textAlign="center"
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            container
+                            sx={{
+                                marginTop: 5
+                            }}
                         >
-                            <Button
-                                sx={
-                                    {
-                                        marginTop: 5,
-                                    }
-                                }
-
-                                type="submit"
-
+                            <Grid
+                                size={10}
                             >
-                                Submit
-                            </Button>
-                        </Box>
+                                <Box
+                                    sx={{
+                                        height: 500,
+                                        width: '100%',
+                                        '& .actions': {
+                                            color: 'text.secondary',
+                                        },
+                                        '& .textPrimary': {
+                                            color: 'text.primary',
+                                        },
+                                    }}
+                                >
+                                    <DataGrid
+                                        rows={recipeRows}
+                                        columns={columns}
+                                        editMode="row"
+                                        rowModesModel={rowModesModel}
+                                        onRowModesModelChange={handleRowModesModelChange}
+                                        onRowEditStop={handleRowEditStop}
+                                        processRowUpdate={processRowUpdate}
+                                        slots={{
+                                            toolbar: EditToolbar,
+                                        }}
+                                        slotProps={{
+                                            toolbar: { setRecipeRows, setRowModesModel },
+                                        }}
+                                    />
+                                </Box>
+                            </Grid>
 
+                        </Grid>
+                    </Box>
 
-                    </form>
-                </ModalDialog>
-            </Modal >
+                    <Box
+                        textAlign="center"
+                        sx={{
+                            marginTop: 4
+                        }}
+                    >
+                        <Button
+                            sx={
+                                {
+                                    marginTop: 5,
+                                }
+                            }
+                            type="submit"
+                        >
+                            Submit
+                        </Button>
+                    </Box>
+                </form>
+            </Dialog >
         </>
     );
 

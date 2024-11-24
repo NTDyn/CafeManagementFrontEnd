@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DataGrid } from '@mui/x-data-grid';
 import { getInitialData } from '../../../redux/actions/products';
 import UpdateProduct from './UpdateProduct';
+import DetailProduct from './DetailProduct'
+import { Box } from "@mui/material";
+import { NumericFormat } from 'react-number-format';
 
 const useCustomizedDataGrid = () => {
   const data = useSelector(state => state.dataProduct.data);
@@ -17,34 +20,44 @@ const useCustomizedDataGrid = () => {
     {
       field: 'product_ID',
       headerName: 'ID',
-      headerAlign: 'right',
-      align: 'right',
+      headerAlign: 'center',
+      align: 'center',
       flex: 1,
-      minWidth: 100,
+      minWidth: 20,
     },
     {
       field: 'product_Name',
       headerName: 'Product Name',
-      headerAlign: 'right',
-      align: 'right',
+      headerAlign: 'center',
+      align: 'center',
       flex: 1,
       minWidth: 100,
     },
     {
       field: 'price',
       headerName: 'Price',
-      headerAlign: 'right',
-      align: 'right',
+      headerAlign: 'center',
+      align: 'center',
       flex: 1,
       minWidth: 100,
+      renderCell: (params) => {
+        return (
+          <NumericFormat
+            value={params.row.price.toFixed(0)}
+            displayType={'text'}
+            thousandSeparator={true}
+          // prefix={'VND'}
+          />
+        )
+      }
     },
     {
       field: 'point',
       headerName: 'Point',
-      headerAlign: 'right',
-      align: 'right',
+      headerAlign: 'center',
+      align: 'center',
       flex: 1,
-      minWidth: 100,
+      minWidth: 50,
     },
     {
       field: "isActive",
@@ -63,21 +76,32 @@ const useCustomizedDataGrid = () => {
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-      minWidth: 100,
+      minWidth: 300,
       renderCell: (params) => {
 
         return (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <UpdateProduct
+              product_ID={params.row.id}
+              product_Point={params.row.point}
+              product_Price={params.row.price}
+              product_Name={params.row.product_Name}
+              buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+              isActive={params.row.isActive ? false : true}
 
-          <UpdateProduct
-            product_ID={params.row.id}
-            product_Point={params.row.point}
-            product_Price={params.row.price}
-            product_Name={params.row.product_Name}
-            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-            isActive={params.row.isActive ? false : true}
-
-          />
-
+            />
+            <DetailProduct
+              product={params.row}
+            />
+          </Box>
         )
       }
     }
@@ -89,7 +113,7 @@ const useCustomizedDataGrid = () => {
     <DataGrid
 
       autoHeight
-      checkboxSelection
+      //checkboxSelection
       rows={data}
       columns={columns}
       getRowClassName={(params) =>

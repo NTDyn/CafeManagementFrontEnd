@@ -1,8 +1,10 @@
-import { getInitialData, updateData } from "../../../redux/actions/supplier";
+import { getInitialData, updateData } from "../../../redux/actions/ingredientCategory";
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2'
+import Grid from '@mui/material/Grid2';
 import withReactContent from 'sweetalert2-react-content'
+import { Box } from "@mui/material";
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
@@ -15,74 +17,61 @@ import Stack from '@mui/joy/Stack';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 
-function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
+function UpdateIngredientCategory({ categoryID, category_Name, buttonLabel, isActive }) {
     const [open, setOpen] = useState(false);
-    const [supplierID, setSupplierID] = useState(supplier_ID);
-    const [supplierName, setSupplierName] = useState(supplier_Name);
-    const dataSupplier = useSelector(state => state.dataSupplier.data)
+    const [categoryName, setCategoryName] = useState(category_Name);
+    const dataProductCategory = useSelector(state => state.dataProductCategory.data)
 
     const dispatch = useDispatch()
-
     useEffect(() => {
         dispatch(getInitialData())
     }, [dispatch])
 
-    useEffect(() => {
-        const updatedSupplier = dataSupplier.find(
-            supplier => supplier.supplier_ID === supplierID
-        );
-        if (updatedSupplier) {
-            setSupplierName(updatedSupplier.supplier_Name);
-        }
-    }, [dataSupplier, supplierID]);
-
     const UpdateInformation = () => {
 
         let data = {
-            "supplier_ID": supplierID,
-            "supplier_Name": supplierName,
+            "ingredient_Category_ID": categoryID,
+            "ingredient_Category_Name": categoryName,
             "isActive": null
         }
         dispatch(updateData(data))
     };
 
-    const UpdateStatus = () => {
+    const UpdateIsActive = () => {
 
         let data = {
-            "supplier_ID": supplierID,
-            "supplier_Name": null,
+            "ingredient_Category_ID": categoryID,
+            "ingredient_Category_Name": null,
             "isActive": isActive
         }
         dispatch(updateData(data))
-    }
+    };
 
-    const confirmSwal = () => {
+    const confirmIsActive = () => {
+        console.log("confirm")
         if (isActive === false) {
             withReactContent(Swal).fire({
-                title: "Do you want to lock this supplier?",
+                title: "Do you want to lock this category?",
                 showDenyButton: true,
                 confirmButtonText: "Lock",
                 denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    UpdateStatus();
-                    Swal.fire("Successfully", "", "success");
+                    UpdateIsActive()
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
-
             })
         }
         if (isActive === true) {
             withReactContent(Swal).fire({
-                title: "Do you want to unlock this supplier?",
+                title: "Do you want to unlock this category?",
                 showDenyButton: true,
                 confirmButtonText: "Unlock",
                 denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    UpdateStatus();
-                    Swal.fire("Successfully", "", "success");
+                    UpdateIsActive()
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
@@ -92,41 +81,33 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
 
     }
 
-    const existingSupplier = () => {
-        return dataSupplier.find(
-            dataSupplier => dataSupplier.supplier_Name === supplierName)
-
-    };
-
-    const confirmChangeNameSwal = (e) => {
+    const existingCategory = dataProductCategory.find(
+        dataProductCategory => dataProductCategory.category_Name === categoryName
+    );
+    const confirmInformation = (e) => {
         e.preventDefault()
-        if (supplierName === supplier_Name) {
-            Swal.fire("Supplier name is not changed!");
-
-        } else if (existingSupplier()) {
-            Swal.fire("Supplier name is existing");
+        if (existingCategory) {
+            Swal.fire("Category name is existing");
         } else {
             withReactContent(Swal).fire({
-                title: "Do you want to change name of supplier?",
+                title: "Do you want to change name of category?",
                 showDenyButton: true,
                 confirmButtonText: "Change",
                 denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateInformation();
-                    handleClose();
-                    Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
 
             })
         }
-
+        handleClose()
     }
 
     const handleClose = () => {
-        setSupplierName(supplier_Name);
+        setCategoryName(null);
         setOpen(false);
     };
 
@@ -146,46 +127,38 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
     return (
         <  >
             <React.Fragment>
-                <Stack
-                    direction="row"
-                    spacing={2}
-                    justifyContent="center"
-                >
+                <Grid container spacing={2} justifyContent="center">
+                    <Grid item xs={6}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Button
+                                sx={{ width: '80px', bgcolor: '#23a736' }}
+                                onClick={confirmIsActive}
+                            >
+                                {buttonLabel}
+                            </Button>
+                        </Box>
+                    </Grid>
 
-                    <Button
-                        sx={
-                            { bgcolor: '#23a736' }
-                        }
-                        onClick={confirmSwal}
-
-                    >
-                        {buttonLabel}
-                    </Button>
-
-                    <Button
-                        sx={
-                            { bgcolor: '#185ea5' }
-                        }
-                        onClick={() => setOpen(true)}
-                    >
-                        Edit
-                    </Button>
-                </Stack>
+                    <Grid item xs={6}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Button
+                                sx={{ width: '80px', bgcolor: '#185ea5' }}
+                                onClick={() => setOpen(true)}
+                            >
+                                Edit
+                            </Button>
+                        </Box>
+                    </Grid>
+                </Grid>
 
 
 
-                <Modal
-                    open={open}
-                    onClose={() => setOpen(false)}
-                    sx={{
-                        zIndex: 1000
-                    }}
-                >
+                <Modal open={open} onClose={() => setOpen(false)}>
                     <ModalDialog>
-                        <DialogTitle>Change name of supplier</DialogTitle>
+                        <DialogTitle>Change name category of product</DialogTitle>
                         <DialogContent>Fill in the information.</DialogContent>
                         <form
-                            onSubmit={confirmChangeNameSwal}
+                            onSubmit={confirmInformation}
                         >
                             <Stack spacing={2}>
                                 <FormControl>
@@ -193,9 +166,9 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
                                     <Input
                                         autoFocus
                                         required
-                                        name="nameSupplier"
-                                        value={supplierName}
-                                        onChange={(e) => setSupplierName(e.target.value)}
+                                        name="nameCategory"
+                                        value={categoryName ? categoryName : ''}
+                                        onChange={(e) => setCategoryName(e.target.value)}
                                     />
                                 </FormControl>
 
@@ -203,7 +176,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
                                     type="submit"
 
                                 >
-                                    Submit
+                                    Update
                                 </Button>
                             </Stack>
                         </form>
@@ -219,4 +192,4 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
 // }
 
 
-export default UpdateSupplier;
+export default UpdateIngredientCategory;
