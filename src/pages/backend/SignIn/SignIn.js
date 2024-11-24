@@ -17,6 +17,9 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../../components/dashboard/theme/customization/CustomIcons';
 import AppTheme from '../../../components/dashboard/shared-theme/AppTheme';
 import ColorModeSelect from '../../../components/dashboard/shared-theme/ColorModeSelect';
+import {login} from '../../../redux/actions/userLogin'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
@@ -60,11 +63,14 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
+
     const [emailError, setEmailError] = React.useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
     const [open, setOpen] = React.useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -84,6 +90,8 @@ export default function SignIn(props) {
             email: data.get('email'),
             password: data.get('password'),
         });
+        dispatch(login(data));
+        navigate("/")
     };
 
     const validateInputs = () => {
