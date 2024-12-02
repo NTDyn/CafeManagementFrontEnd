@@ -19,6 +19,20 @@ export async function fetchAPI(uri) {
     return response.data;
 }
 
+export async function fetchAPIwithParams(uri, data) {
+    try {
+        const response = await axios({
+            method: 'GET',
+            url: urlSite + uri,
+            params: data, // Dùng 'params' thay vì 'data' để gửi qua query string
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching API with params:', error);
+        throw error; // Để xử lý lỗi ở nơi gọi hàm
+    }
+}
+
 export async function postAPI(uri, data) {
     const response = await axios({
         url: urlSite + uri,

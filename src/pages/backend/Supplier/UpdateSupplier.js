@@ -14,6 +14,8 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
+import Grid from '@mui/material/Grid2';
+import { Box } from "@mui/material";
 
 function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
     const [open, setOpen] = useState(false);
@@ -151,65 +153,74 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
                     spacing={2}
                     justifyContent="center"
                 >
-
-                    <Button
-                        sx={
-                            { bgcolor: '#23a736' }
-                        }
-                        onClick={confirmSwal}
-
-                    >
-                        {buttonLabel}
-                    </Button>
-
-                    <Button
-                        sx={
-                            { bgcolor: '#185ea5' }
-                        }
-                        onClick={() => setOpen(true)}
-                    >
-                        Edit
-                    </Button>
-                </Stack>
-
-
-
-                <Modal
-                    open={open}
-                    onClose={() => setOpen(false)}
-                    sx={{
-                        zIndex: 1000
-                    }}
-                >
-                    <ModalDialog>
-                        <DialogTitle>Change name of supplier</DialogTitle>
-                        <DialogContent>Fill in the information.</DialogContent>
-                        <form
-                            onSubmit={confirmChangeNameSwal}
-                        >
-                            <Stack spacing={2}>
-                                <FormControl>
-                                    <FormLabel>Name</FormLabel>
-                                    <Input
-                                        autoFocus
-                                        required
-                                        name="nameSupplier"
-                                        value={supplierName}
-                                        onChange={(e) => setSupplierName(e.target.value)}
-                                    />
-                                </FormControl>
-
+                    <Grid container spacing={2} justifyContent="center">
+                        <Grid xs={3}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
-                                    type="submit"
+                                    sx={
+                                        { width: '80px', bgcolor: '#23a736' }
+                                    }
+                                    onClick={confirmSwal}
 
                                 >
-                                    Submit
+                                    {buttonLabel}
                                 </Button>
-                            </Stack>
-                        </form>
-                    </ModalDialog>
-                </Modal>
-            </React.Fragment >
+                            </Box>
+                        </Grid>
+                        <Grid xs={3}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <Button
+                                    sx={
+                                        { width: '80px', bgcolor: '#185ea5' }
+                                    }
+                                    onClick={() => setOpen(true)}
+                                >
+                                    Edit
+                                </Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Stack>
+            </React.Fragment>
+
+
+
+
+            <Modal
+                open={open}
+                onClose={() => setOpen(false)}
+                sx={{
+                    zIndex: 1000
+                }}
+            >
+                <ModalDialog>
+                    <DialogTitle>Change name of supplier</DialogTitle>
+                    <DialogContent>Fill in the information.</DialogContent>
+                    <form
+                        onSubmit={confirmChangeNameSwal}
+                    >
+                        <Stack spacing={2}>
+                            <FormControl>
+                                <FormLabel>Name</FormLabel>
+                                <Input
+                                    autoFocus
+                                    required
+                                    name="nameSupplier"
+                                    value={supplierName}
+                                    onChange={(e) => setSupplierName(e.target.value)}
+                                />
+                            </FormControl>
+
+                            <Button
+                                type="submit"
+
+                            >
+                                Submit
+                            </Button>
+                        </Stack>
+                    </form>
+                </ModalDialog>
+            </Modal>
         </ >
     );
 };

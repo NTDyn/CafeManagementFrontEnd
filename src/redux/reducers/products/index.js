@@ -11,6 +11,7 @@ const ProductBackEnd = (state = initialState, action) => {
                 result.push(el);
                 result[i]["id"] = el.product_ID;
             })
+            console.log(action.data)
             return {
                 ...state,
                 data: result

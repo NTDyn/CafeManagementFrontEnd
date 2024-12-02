@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getInitialData } from "../../../redux/actions/warehouse";
 import { DataGrid } from '@mui/x-data-grid';
+import UpdateWarehouse from './UpadateWarehouse';
 
 const useTableWarehouse = () => {
     const data = useSelector(state => state.dataWarehouse.data);
@@ -28,6 +29,26 @@ const useTableWarehouse = () => {
             align: 'right',
             flex: 1,
             minWidth: 100
+        },
+        {
+            field: "features",
+            headerName: "Features",
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,
+            minWidth: 100,
+            renderCell: (params) => {
+                return (
+                    <UpdateWarehouse
+                        wareHouseID={params.row.id}
+                        wareHouseName={params.row.wareHouse_Name}
+                        buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                        isActive={params.row.isActive ? false : true}
+
+                    />
+
+                )
+            }
         }
     ]
 

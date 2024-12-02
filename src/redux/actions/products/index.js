@@ -1,6 +1,7 @@
 import { fetchAPI, postAPI, putAPI } from "../../../api";
 import { addData as addRecipe } from "../productRecipe";
 export const getInitialData = () => {
+
     return async dispatch => {
         // await Promise.all([
 
@@ -23,9 +24,8 @@ export const getInitialData = () => {
         //             dispatch({ type: "SHOW_ERROR_API", message: error.message })
         //         }
         //     );
-        fetchAPI("/api/Product").then(
+        await fetchAPI("/api/Product").then(
             response => {
-
                 if (response.status !== 200) {
                     //dispatch({ type: "SHOW_ERROR_API", message: result.message })
                 } else {
