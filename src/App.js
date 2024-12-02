@@ -9,6 +9,8 @@ import Supplier from './pages/backend/Supplier/index'
 import Unauthorized from './pages/backend/SignIn/Unauthorized';
 import { UserProvider } from './global/UserProvider';
 import ProtectedRoute from './global/ProtectedRoute ';
+import IngredeintCategory from './pages/backend/IngredientCategory/index';
+import Ingredient from './pages/backend/Ingredient/index'
 const App = () => {
   return (
     <UserProvider>
@@ -21,12 +23,12 @@ const App = () => {
             <ProtectedRoute role={"admin_home"}>
               <Home />
             </ProtectedRoute>
-            
+
           } />
           <Route path="/admin/product" element={
-             <ProtectedRoute role={"admin_product"}>
+            <ProtectedRoute role={"admin_product"}>
               <Product />
-             </ProtectedRoute>
+            </ProtectedRoute>
           } />
           <Route path="/admin/warehouse" element={
             <ProtectedRoute role={"admin_warehouse"}>
@@ -39,15 +41,21 @@ const App = () => {
             </ProtectedRoute>
           } />
           <Route path="/admin/suppliers" element={
-             <ProtectedRoute role={"admin_suppliers"}>
-                <Supplier />
-              </ProtectedRoute>
-            
+            <ProtectedRoute role={"admin_suppliers"}>
+              <Supplier />
+            </ProtectedRoute>
+
           } />
+          <Route path="/admin/ingredientCategory" element={
+            <ProtectedRoute role={"admin_ingredeint_categorys"}>
+              <IngredeintCategory />
+            </ProtectedRoute>
+
+          } />
+          <Route path="/admin/ingredient" element={<Ingredient />} />
         </Routes>
       </Router>
     </UserProvider>
-    
   );
 };
 

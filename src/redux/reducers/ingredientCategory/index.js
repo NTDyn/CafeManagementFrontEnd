@@ -3,39 +3,41 @@ const initialState = {
     error: "",
 }
 
-const SupplierBackend = (state = initialState, action) => {
+const IngredientCategoryBackend = (state = initialState, action) => {
     switch (action.type) {
-        case "APPEND_BACK_END_SUPPLIER":
+        case "APPEND_BACK_END_INGREDIENT_CATEGORY":
             let result = [];
             action.data.forEach((el, i) => {
                 result.push(el);
-                result[i]["id"] = el.supplier_ID;
+                result[i]["id"] = el.ingredient_Category_ID;
             });
 
             return {
                 ...state,
                 data: result
             }
-        case "ADD_BACK_END_SUPPLIER":
+        case "ADD_BACK_END_INGREDIENT_CATEGORY":
             let itemAdd = action.data;
             let list = state.data;
-            let suppID = list[list.length - 1].supplier_ID + 1;
-            itemAdd.supplier_ID = suppID;
-            itemAdd.id = itemAdd.supplier_ID;
+            let cateID = list[list.length - 1].ingredient_Category_ID + 1;
+            itemAdd.ingredient_Category_ID = cateID;
+            itemAdd.id = itemAdd.ingredient_Category_ID;
             list = [...list, itemAdd];
-            console.log(list)
             return {
                 ...state,
                 data: list
             }
 
-        case "UPDATE_BACK_END_SUPPLIER":
+        case "UPDATE_BACK_END_INGREDIENT_CATEGORY":
+            let itemUP = action.data;
+
             const updatedData = state.data.map(item => {
-                if (item.supplier_ID === action.data.supplier_ID) {
-                    if (action.data.supplier_Name !== null) {
-                        return { ...item, supplier_Name: action.data.supplier_Name };
+
+                if (item.ingredient_Category_ID === action.data.ingredient_Category_ID) {
+                    if (itemUP.ingredient_Category_Name !== null) {
+                        return { ...item, ingredient_Category_Name: action.data.ingredient_Category_Name };
                     }
-                    if (action.data.supplier_Name === null) {
+                    if (itemUP.ingredient_Category_Name === null) {
                         return { ...item, isActive: action.data.isActive };
                     }
                 }
@@ -47,10 +49,11 @@ const SupplierBackend = (state = initialState, action) => {
                 data: updatedData,
             };
 
+
         default:
             return state;
     }
 
 }
 
-export default SupplierBackend;
+export default IngredientCategoryBackend;

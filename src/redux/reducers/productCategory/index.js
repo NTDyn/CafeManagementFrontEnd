@@ -30,16 +30,23 @@ const ProductCategoryBackend = (state = initialState, action) => {
 
         case "UPDATE_BACK_END_PRODUCT_CATEGORY":
             let itemUP = action.data;
-            let indexUp = state.data.findIndex(x => x.category_ID === itemUP.category_ID);
-            if (indexUp !== -1 && itemUP.category_Name !== null) {
-                state.data[indexUp]["category_Name"] = action.data.category_Name
-            }
-            if (indexUp !== -1 && itemUP.category_Name === null) {
-                state.data[indexUp]["isActive"] = action.data.isActive
-            }
+
+            const updatedData = state.data.map(item => {
+
+                if (item.category_ID === action.data.category_ID) {
+                    if (itemUP.category_Name !== null) {
+                        return { ...item, category_Name: action.data.category_Name };
+                    }
+                    if (itemUP.category_Name === null) {
+                        return { ...item, isActive: action.data.isActive };
+                    }
+                }
+                return item;
+            });
+
             return {
                 ...state,
-                data: state.data
+                data: updatedData
             }
         default:
             return state;
