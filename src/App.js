@@ -11,6 +11,7 @@ import { UserProvider } from './global/UserProvider';
 import ProtectedRoute from './global/ProtectedRoute ';
 import IngredeintCategory from './pages/backend/IngredientCategory/index';
 import Ingredient from './pages/backend/Ingredient/index'
+import Menu from './pages/backend/Menu/index'
 const App = () => {
   return (
     <UserProvider>
@@ -50,9 +51,9 @@ const App = () => {
             <ProtectedRoute role={"admin_ingredeint_categorys"}>
               <IngredeintCategory />
             </ProtectedRoute>
-
           } />
           <Route path="/admin/ingredient" element={<Ingredient />} />
+          <Route path="/admin/menu" element={<Menu />} />
         </Routes>
       </Router>
     </UserProvider>
