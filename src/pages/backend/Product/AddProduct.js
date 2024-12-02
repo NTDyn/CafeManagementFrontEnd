@@ -16,7 +16,7 @@ import { addData as addDataProduct, getInitialData as dataProduct } from "../../
 import { getInitialData as dataIngredient } from "../../../redux/actions/ingredient"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Box, Grid2 } from "@mui/material";
+import { Box } from "@mui/material";
 import Swal from 'sweetalert2'
 import Grid from '@mui/material/Grid2';
 import withReactContent from 'sweetalert2-react-content';
@@ -43,7 +43,7 @@ import {
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 import '../../../css/backend/product/index.css?v=19'
-import { Fullscreen } from "@mui/icons-material";
+import ImageUpload from './ImageUpload'
 
 export default function AddProduct() {
 
@@ -67,6 +67,7 @@ export default function AddProduct() {
     const [productPoint, setProductPoint] = useState(0);
     const [productCategory, setProductCategory] = useState('');
     const [categoryName, setCategoryName] = useState('');
+    const [productImage, setProductImage] = useState('');
     const [recipeIngredientID, setRecipeIngredientID] = useState(0);
     const [recipeQuantity, setRecipeQuantity] = useState(0);
     const [recipeUnit, setRecipeUnit] = useState(0);
@@ -89,7 +90,7 @@ export default function AddProduct() {
     }
     const confirmAdd = async (e) => {
         e.preventDefault();
-        console.log(recipeRows)
+
         if (checkListRecipe()) {
             withReactContent(Swal).fire({
                 title: "There are uncompleted rows. Please complete them before submitting!",
@@ -134,9 +135,10 @@ export default function AddProduct() {
             "product_Category": productCategory,
             "price": productPrice,
             "point": productPoint,
+            "product_Image": productImage,
             "isActive": true,
         }
-
+        console.log("pImage: " + data)
         dispatch(addDataProduct(data, recipeRows));
     };
 
@@ -328,7 +330,13 @@ export default function AddProduct() {
             newRow.quantity = 1
         }
         if (newRow.unit) {
-            console.log('unit herre')
+            if (newRow.unit === selectedIngredient.unit_Min) {
+                newRow.unit = 1;
+            } else if (newRow.unit === selectedIngredient.unit_Transfer) {
+                newRow.unit = 2;
+            } else if (newRow.unit === selectedIngredient.unit_Max) {
+                newRow.unit = 3;
+            }
         }
         const updatedRow = { ...newRow, isNew: false };
 
@@ -359,6 +367,7 @@ export default function AddProduct() {
 
     const handleRowEditStop = (params, event) => {
         handleSaveClick(params.id)
+
     };
     const handleClickOpen = () => {
         setOpen(true);
@@ -393,8 +402,6 @@ export default function AddProduct() {
         }
     };
 
-
-
     function EditToolbar(props) {
         const { setRecipeRows, setRowModesModel } = props;
 
@@ -423,6 +430,7 @@ export default function AddProduct() {
                 <Button color="primary" startDecorator={<Add />} onClick={handleClickAdd}>
                     Add record
                 </Button>
+
             </GridToolbarContainer>
         );
     }
@@ -469,6 +477,7 @@ export default function AddProduct() {
                     return uniqueUnits;
                 }
             },
+
 
         },
         {
@@ -556,134 +565,183 @@ export default function AddProduct() {
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                             Add Product
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={handleClose}>
-                            save
-                        </Button>
+
                     </Toolbar>
                 </AppBar>
-                <form
-                    onSubmit={confirmAdd}
-                >
-                    <Box
-                        sx={{
-                            marginTop: 5,
-                            marginLeft: 20,
-                            justifyContent: 'center'
-                        }}
+                <Box>
+                    <form
+                        onSubmit={confirmAdd}
                     >
-                        <Grid
-                            container
-                            spacing={4}
-                        >
+                        <Grid container spacing={2} justifyContent="center" >
+
                             <Grid
-                                size={4}
+                                xs={2}
+                                md={4}
+                                sx={
+                                    {
+                                        marginTop: 5
+                                    }
+                                }
                             >
-                                <FormLabel>Name</FormLabel>
-                                <Input
-                                    autoFocus
-                                    required
-                                    name="nameProduct"
-                                    value={productName}
-                                    onChange={(e) => setProductName(e.target.value)}
+                                <ImageUpload
+                                    onChange={(file) => setProductImage(file)}
                                 />
                             </Grid>
                             <Grid
-                                size={4}
+                                xs={10}
+                                md={8}
                             >
-                                <FormLabel>Category</FormLabel>
-                                <Autocomplete
 
-                                    disablePortal
-                                    options={listProductCategory}
-                                    getOptionLabel={(option) => option.category_Name ? option.category_Name : ""}
-                                    name="categoryProduct"
-                                    value={categoryName ? { category_Name: categoryName } : null}
-                                    onChange={(event, newValue) => {
-                                        if (newValue) {
-                                            setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
-                                            setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
-                                        } else {
-                                            setProductCategory(null); // Xử lý khi không có mục nào được chọn
-                                            setCategoryName('')
+                                <Box
+                                    sx={{
+                                        marginTop: 5,
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <Grid
+                                        container
+                                        spacing={2}
+                                        sx={
+                                            {
+                                                justifyContent: 'center'
+                                            }
                                         }
-                                    }}
+                                    >
+                                        <Grid
+                                            xs={5}
+                                        >
+                                            <FormLabel>Name</FormLabel>
+                                            <Input
+                                                autoFocus
+                                                required
+                                                name="nameProduct"
+                                                value={productName}
+                                                sx={{
+                                                    height: 50,
+                                                    width: 300
+                                                }}
+                                                onChange={(e) => setProductName(e.target.value)}
+                                            />
+                                        </Grid>
+                                        <Grid
+                                            xs={7}
+                                        >
+                                            <FormLabel>Category</FormLabel>
+                                            <Autocomplete
+                                                sx={{
+                                                    height: 50,
+                                                    width: 300,
+                                                }}
+                                                disablePortal
+                                                options={listProductCategory}
+                                                getOptionLabel={(option) => option.category_Name ? option.category_Name : ""}
+                                                name="categoryProduct"
+                                                value={categoryName ? { category_Name: categoryName } : null}
+                                                onChange={(event, newValue) => {
+                                                    if (newValue) {
+                                                        setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
+                                                        setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
+                                                    } else {
+                                                        setProductCategory(null); // Xử lý khi không có mục nào được chọn
+                                                        setCategoryName('')
+                                                    }
+                                                }}
 
-                                    renderInput={(params) => <TextField
-                                        required
-                                        {...params}
+                                                renderInput={(params) => <TextField
+                                                    required
+                                                    {...params}
 
-                                    />}
-                                />
+                                                />}
+                                            />
+                                        </Grid>
+
+                                    </Grid>
+                                    <Grid
+                                        container
+                                        spacing={4}
+                                        sx={{
+                                            marginTop: 2,
+                                            justifyContent: 'center'
+                                        }}
+                                    >
+                                        <Grid
+                                            xs={5}
+                                        >
+                                            <FormLabel>Price (VND) </FormLabel>
+                                            <BaseNumberInput
+                                                min={0}
+                                                step={1000}
+                                                sx={{
+                                                    height: 50,
+                                                    width: 300,
+                                                }}
+                                                slots={{
+                                                    root: StyledInputRoot,
+                                                    input: StyledInputElement,
+                                                    incrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                    decrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                }}
+                                                slotProps={{
+                                                    incrementButton: {
+                                                        children: '▴',
+                                                    },
+                                                    decrementButton: {
+                                                        children: '▾',
+                                                    },
+                                                }}
+                                                required
+                                                name="priceProduct"
+                                                value={productPrice}
+                                                onChange={(event, val) => setProductPrice(val)}
+                                            ></BaseNumberInput>
+
+                                        </Grid>
+
+                                        <Grid
+                                            xs={7}
+                                        >
+                                            <FormLabel>Point</FormLabel>
+                                            <BaseNumberInput
+                                                min={0}
+                                                step={1}
+                                                sx={{
+                                                    height: 50,
+                                                    width: 300,
+                                                }}
+                                                slots={{
+                                                    root: StyledInputRoot,
+                                                    input: StyledInputElement,
+                                                    incrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                    decrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                }}
+                                                slotProps={{
+
+                                                    incrementButton: {
+                                                        children: '▴',
+                                                    },
+                                                    decrementButton: {
+                                                        children: '▾',
+                                                    },
+                                                }}
+                                                required
+                                                name="pointProduct"
+                                                value={productPoint}
+                                                onChange={(event, val) => setProductPoint(val)}
+                                            ></BaseNumberInput>
+                                        </Grid>
+                                    </Grid>
+                                </Box>
                             </Grid>
 
                         </Grid>
-                        <Grid
-                            container
-                            spacing={4}
-                            sx={{ marginTop: 2 }}
-                        >
-                            <Grid
-                                size={4}
-                            >
-                                <FormLabel>Price (VND) </FormLabel>
-                                <BaseNumberInput
-                                    min={0}
-                                    step={1000}
-                                    slots={{
-                                        root: StyledInputRoot,
-                                        input: StyledInputElement,
-                                        incrementButton: (props) => <StyledButton {...props} type="button" />,
-                                        decrementButton: (props) => <StyledButton {...props} type="button" />,
-                                    }}
-                                    slotProps={{
-                                        incrementButton: {
-                                            children: '▴',
-                                        },
-                                        decrementButton: {
-                                            children: '▾',
-                                        },
-                                    }}
-                                    required
-                                    name="priceProduct"
-                                    value={productPrice}
-                                    onChange={(event, val) => setProductPrice(val)}
-                                ></BaseNumberInput>
 
-                            </Grid>
 
-                            <Grid
-                                size={4}
-                            >
-                                <FormLabel>Point</FormLabel>
-                                <BaseNumberInput
-                                    min={0}
-                                    step={1}
-                                    slots={{
-                                        root: StyledInputRoot,
-                                        input: StyledInputElement,
-                                        incrementButton: (props) => <StyledButton {...props} type="button" />,
-                                        decrementButton: (props) => <StyledButton {...props} type="button" />,
-                                    }}
-                                    slotProps={{
 
-                                        incrementButton: {
-                                            children: '▴',
-                                        },
-                                        decrementButton: {
-                                            children: '▾',
-                                        },
-                                    }}
-                                    required
-                                    name="pointProduct"
-                                    value={productPoint}
-                                    onChange={(event, val) => setProductPoint(val)}
-                                ></BaseNumberInput>
-                            </Grid>
-                        </Grid>
                         <Grid
                             container
                             sx={{
-                                marginTop: 5
+                                marginTop: 5,
+                                justifyContent: 'center'
                             }}
                         >
                             <Grid
@@ -720,26 +778,28 @@ export default function AddProduct() {
                             </Grid>
 
                         </Grid>
-                    </Box>
 
-                    <Box
-                        textAlign="center"
-                        sx={{
-                            marginTop: 4
-                        }}
-                    >
-                        <Button
-                            sx={
-                                {
-                                    marginTop: 5,
-                                }
-                            }
-                            type="submit"
+
+                        <Box
+                            textAlign="center"
+                            sx={{
+                                marginTop: 4
+                            }}
                         >
-                            Submit
-                        </Button>
-                    </Box>
-                </form>
+                            <Button
+                                sx={
+                                    {
+                                        marginTop: 5,
+                                    }
+                                }
+                                type="submit"
+
+                            >
+                                Submit
+                            </Button>
+                        </Box>
+                    </form >
+                </Box >
             </Dialog >
         </>
     );

@@ -13,6 +13,7 @@ import Stack from '@mui/joy/Stack';
 import TextField from '@mui/material/TextField';
 
 function DetailIngredient({ ingredient }) {
+
     const [openDetail, setOpenDetail] = useState(false);
     const [ingredientName, setIngredientName] = useState(ingredient.ingredient_Name);
     const [ingredientCategory, setIngredientCategory] = useState(ingredient.ingredient_Category)
@@ -22,11 +23,10 @@ function DetailIngredient({ ingredient }) {
     const [unitTransfer, setUnitTransfer] = useState(ingredient.unit_Transfer);
     const [transferPerMin, setTransferPerMin] = useState(ingredient.transferPerMin);
     const [maxPerTransfer, setMaxPerTransfer] = useState(ingredient.maxPerTransfer);
-
     const dataIngredient = useSelector(state => state.dataIngredient.data)
     const dataIngredientCategory = useSelector(state => state.dataIngredientCategory.data)
     const nameCate = dataIngredientCategory.find(
-        cate => cate.ingredient_Category_ID === ingredient.ingredient_Category
+        cate => cate.ingredient_Category_ID === ingredientCategory
     )
     const [categoryName, setCategoryName] = useState(nameCate ? nameCate.ingredient_Category_Name : '');
     const dataIngredientType = [
@@ -39,7 +39,7 @@ function DetailIngredient({ ingredient }) {
             ingredient_Type_Name: "Nguyên liệu thực phẩm cần qua chế biến"
         },
         {
-            ingredient_Type_ID: 3,
+            ingredient_Type_ID: 0,
             ingredient_Type_Name: "Không phải thực phẩm"
         }
     ]
@@ -52,7 +52,7 @@ function DetailIngredient({ ingredient }) {
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
-                    sx={{ width: '80px', bgcolor: '#a79c9c' }}
+                    sx={{ width: '80px', bgcolor: '#000000' }}
                     onClick={() => setOpenDetail(true)}
                 >
                     Detail

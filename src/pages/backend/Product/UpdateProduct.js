@@ -285,7 +285,6 @@ function UpdateProduct({ buttonLabel, product_ID, product_Name, product_Price, p
             "point": productPoint,
             "product_Category": productCategory
         }
-        console.log(data)
         dispatch(updateData(data))
     }
     const UpdateIsActive = () => {

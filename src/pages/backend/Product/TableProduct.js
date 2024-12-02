@@ -9,9 +9,11 @@ import { NumericFormat } from 'react-number-format';
 
 const useCustomizedDataGrid = () => {
   const data = useSelector(state => state.dataProduct.data);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getInitialData())
+
   }, [dispatch])
 
   const listProductCategory = useSelector(state => state.dataProductCategory.data);
@@ -24,6 +26,22 @@ const useCustomizedDataGrid = () => {
       align: 'center',
       flex: 1,
       minWidth: 20,
+    },
+    {
+      field: 'image_URL',
+      headerName: 'Image',
+      headerAlign: 'center',
+      width: 150,
+      renderCell: (params) => (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <img
+            src={params.row.productImage[0]?.image_URL}
+            alt="Product"
+            style={{ maxWidth: '100%', maxHeight: '100%' }}
+            onError={(e) => e.target.src = '/path/to/placeholder.png'} // Thêm placeholder khi lỗi
+          />
+        </div>
+      ),
     },
     {
       field: 'product_Name',
@@ -87,6 +105,8 @@ const useCustomizedDataGrid = () => {
               justifyContent: "center",
               alignItems: "center",
               width: "100%",
+              height: "100%",
+              overflow: "hidden", // Đảm bảo không bị tràn
             }}
           >
             <UpdateProduct
@@ -99,6 +119,7 @@ const useCustomizedDataGrid = () => {
 
             />
             <DetailProduct
+              key={params.row.id}
               product={params.row}
             />
           </Box>
@@ -122,6 +143,7 @@ const useCustomizedDataGrid = () => {
       initialState={{
         pagination: { paginationModel: { pageSize: 20 } },
       }}
+      getRowHeight={() => 100}
       pageSizeOptions={[10, 20, 50]}
       disableColumnResize
       density="compact"

@@ -1,56 +1,73 @@
+/* Trong file index.css hoặc App.css */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
 /* HOME PAGE*/
-.container{
-    width: 100% ;
-    
+.container {
+    width: 100%;
+
 }
-#header{
-    
+
+#header {
+
     background-color: rgb(205, 244, 205);
 }
-#category{
+
+#category {
     align-items: center;
     padding-left: 5%;
     font-size: 22px;
 }
-.type-category{
+
+.type-category {
     margin-right: 5%;
 }
-.logo-home{
+
+.logo-home {
     margin-top: 1%;
     margin-bottom: 1%;
     padding-left: 3%;
     padding-right: 5%;
 }
-#logo-img{
+
+#logo-img {
     border-radius: 50%;
 }
-#user-icon, #cart-icon {
+
+#user-icon,
+#cart-icon {
     font-size: 30px;
     display: flex;
     align-items: center;
     border: none;
     background: none;
 }
-#user-icon-area{
+
+#user-icon-area {
     display: flex;
     align-items: center;
 }
+
 #cart-icon {
     font-size: 30px;
     display: flex;
     align-items: center;
 }
-.carousel{
+
+.carousel {
     width: 100%;
 }
-.img-carousel{
-    height:450px;
+
+.img-carousel {
+    height: 450px;
     width: 100%;
 }
-#carousel-home{
+
+#carousel-home {
     padding-top: 1%;
 }
-#quote-plant{
+
+#quote-plant {
     text-align: center;
     font-size: 20px;
     padding-top: 3%;
@@ -58,7 +75,8 @@
     font-family: 'Courier New', Courier, monospace;
     color: rgb(50, 82, 51);
 }
-.takecare-area{
+
+.takecare-area {
     width: 22%;
     border-width: 1px;
     border-style: solid;
@@ -66,37 +84,41 @@
     margin-right: 2%;
 }
 
-#takecare{
+#takecare {
 
     padding-left: 9%;
     margin-bottom: 5%;
 }
-.takecare-feature{
+
+.takecare-feature {
     text-align: center;
     margin-top: 7%;
-    font-family:  monospace;
+    font-family: monospace;
 }
-.takecare-content{
+
+.takecare-content {
     text-align: center;
-    font-family:  monospace;
+    font-family: monospace;
     font-size: 16px;
 }
 
-#gardener{
+#gardener {
     box-shadow: 5px 5px rgb(217, 216, 216);
 }
 
-.gardener-img{
+.gardener-img {
     width: 100%;
     padding-top: 1%;
 
 }
-.introduction-area{
+
+.introduction-area {
     margin-top: 3%;
     display: flex;
     flex-wrap: wrap;
 }
-#introduce1{
+
+#introduce1 {
     padding-right: 3%;
     padding-top: 10%;
     font-size: 30px;
@@ -106,7 +128,7 @@
     margin-left: 5%;
 }
 
-#introduce2{
+#introduce2 {
     padding-right: 3%;
     padding-top: 5%;
     font-size: 24px;
@@ -115,13 +137,13 @@
     margin-left: 5%;
 }
 
-.thepoor-img{
+.thepoor-img {
     width: 100%;
     padding-top: 1%;
     padding-right: 1%;
 }
 
-#introduce3{
+#introduce3 {
     padding-right: 2%;
     padding-left: 5%;
     padding-top: 15%;
@@ -130,7 +152,8 @@
     color: rgb(88, 137, 88);
     font-weight: bold;
 }
-#introduce4{
+
+#introduce4 {
     padding-right: 2%;
     padding-left: 5%;
     padding-top: 5%;
@@ -139,24 +162,30 @@
     color: rgb(88, 137, 88);
 }
 
-.footer{
+.footer {
     padding-top: 5%;
     padding-left: 10%;
 }
-.footer-content{
+
+.footer-content {
 
     padding-right: 15%;
 }
-#about-us, #contact , #quicklink{
+
+#about-us,
+#contact,
+#quicklink {
     font-size: 18px;
     font-weight: bold;
     font-family: 'Times New Roman', Times, serif;
 }
-.counter-area{
+
+.counter-area {
     display: flex;
     flex-wrap: wrap;
 }
-#number-counter{
+
+#number-counter {
     padding-left: 20%;
     margin-top: 5%;
     background-color: rgb(205, 244, 205);
@@ -164,19 +193,23 @@
     padding-top: 3%;
     padding-bottom: 3%;
 }
-#count-people, #count-plants , #count-money{
+
+#count-people,
+#count-plants,
+#count-money {
     font-size: 24px;
     font-weight: 700;
     padding-left: 3%;
 }
-.footer{
+
+.footer {
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 2%;
 }
-#copyright-area{
+
+#copyright-area {
     padding-left: 40%;
-    
+
     text-align: center;
 }
-
