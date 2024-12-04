@@ -61,6 +61,11 @@ const mainListItems = [
         icon: <AssignmentRoundedIcon />,
         link: 'admin/productCategory'
     },
+    {
+        text: 'Menu ',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/menu'
+    },
 ];
 
 const secondaryListItems = [

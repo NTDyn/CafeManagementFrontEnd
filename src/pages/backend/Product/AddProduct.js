@@ -734,9 +734,6 @@ export default function AddProduct() {
                             </Grid>
 
                         </Grid>
-
-
-
                         <Grid
                             container
                             sx={{

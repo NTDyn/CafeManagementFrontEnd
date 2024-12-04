@@ -12,7 +12,10 @@ import Add from '@mui/icons-material/Add';
 
 export default function ModalMenu(props) {
     const [menuName, setMenuName] = useState(props.data.menuName);
-
+    const handleClickButtonConfirm = () => {
+        let data = {};
+        props.update(data);
+    }
     return (
         <React.Fragment>
             <Modal open={props.openModal}>
@@ -20,7 +23,7 @@ export default function ModalMenu(props) {
                     <DialogTitle>Create new</DialogTitle>
                     <DialogContent>Fill in the information.</DialogContent>
                     <form
-                       // onSubmit={}
+                    // onSubmit={}
                     >
                         <Stack spacing={2}>
                             <FormControl>

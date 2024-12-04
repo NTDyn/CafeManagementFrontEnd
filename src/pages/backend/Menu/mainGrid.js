@@ -9,7 +9,10 @@ export default function MainGrid() {
     const [dataDetail, setDataDetail] = React.useState({
         "menuName": "123"
     });
-    const [openModal, setOpenModal] = React.useState(true);
+    const [openModal, setOpenModal] = React.useState(false);
+    const update = (_data) => {
+
+    }
     return (
         <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
             <Grid
@@ -18,18 +21,19 @@ export default function MainGrid() {
                 columns={12}
                 sx={{ justifyContent: "flex-end", margin: "40px 40px 40px auto" }}
             >
-                <Modal 
+                <Modal
                     data={dataDetail}
                     openModal={openModal}
+                    update={update}
                 />
 
             </Grid>
             <Grid container spacing={2} columns={12}>
 
                 <Grid size={{ md: 12, lg: 12 }}>
-                    <Table 
-                    setDataDetail={setDataDetail}
-                    setOpenModal={setOpenModal}
+                    <Table
+                        setDataDetail={setDataDetail}
+                        setOpenModal={setOpenModal}
                     />
                 </Grid>
 

@@ -9,26 +9,26 @@ const initialState = {
 const apiRequestReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'API_REQUEST':
-      return { 
-        ...state, 
+      return {
+        ...state,
         loading: true,
         typeRequest: action.typeRequest
-    };
+      };
     case 'API_SUCCESS':
-      return { 
-        ...state, 
-        loading: false, 
-        status: action.status,  
-        message: action.message, 
+      return {
+        ...state,
+        loading: false,
+        status: action.status,
+        message: action.message,
         data: action.data,
         typeRequest: 0
-    };
+      };
     case 'API_FAILURE':
       return {
-        ...state, 
-        loading: false, 
-        status: action.status,  
-        message: action.message, 
+        ...state,
+        loading: false,
+        status: action.status,
+        message: action.message,
         data: action.data,
         typeRequest: 0
       };

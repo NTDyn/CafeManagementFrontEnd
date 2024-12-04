@@ -7,9 +7,12 @@ import dataSupplier from './supplier/index';
 import dataIngredientCategory from './ingredientCategory/index';
 import dataIngredient from './ingredient/index';
 import dataProductRecipe from './productRecipe/index';
-import dataMenu from './menu'
+import dataMenu from './menu';
+import apiRequestReducer from './apiResult';
 
 const rootReducer = combineReducers({
+
+    apiRequestReducer: apiRequestReducer,
     dataProduct: dataProduct,
     dataWarehouse: dataWarehouse,
     dataProductCategory: dataProductCategory,
@@ -18,7 +21,8 @@ const rootReducer = combineReducers({
     dataIngredientCategory: dataIngredientCategory,
     dataIngredient: dataIngredient,
     dataProductRecipe: dataProductRecipe,
-    dataMenu: dataMenu
+    dataMenu: dataMenu,
+
 });
 
 export default rootReducer;

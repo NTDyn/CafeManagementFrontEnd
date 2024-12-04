@@ -6,6 +6,7 @@ import UpdateProduct from './UpdateProduct';
 import DetailProduct from './DetailProduct'
 import { Box } from "@mui/material";
 import { NumericFormat } from 'react-number-format';
+import Loading from '../../../components/Loading/loading';
 
 const useCustomizedDataGrid = () => {
   const data = useSelector(state => state.dataProduct.data);
@@ -98,31 +99,34 @@ const useCustomizedDataGrid = () => {
       renderCell: (params) => {
 
         return (
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "100%",
-              overflow: "hidden", // Đảm bảo không bị tràn
-            }}
-          >
-            <UpdateProduct
-              product_ID={params.row.id}
-              product_Point={params.row.point}
-              product_Price={params.row.price}
-              product_Name={params.row.product_Name}
-              buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-              isActive={params.row.isActive ? false : true}
+          <>
+            <Loading></Loading>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                overflow: "hidden", // Đảm bảo không bị tràn
+              }}
+            >
+              <UpdateProduct
+                product_ID={params.row.id}
+                product_Point={params.row.point}
+                product_Price={params.row.price}
+                product_Name={params.row.product_Name}
+                buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                isActive={params.row.isActive ? false : true}
 
-            />
-            <DetailProduct
-              key={params.row.id}
-              product={params.row}
-            />
-          </Box>
+              />
+              <DetailProduct
+                key={params.row.id}
+                product={params.row}
+              />
+            </Box>
+          </>
         )
       }
     }
