@@ -10,7 +10,6 @@ import Loading from '../../../components/Loading/loading';
 
 const useCustomizedDataGrid = () => {
   const data = useSelector(state => state.dataProduct.data);
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getInitialData())
@@ -28,22 +27,26 @@ const useCustomizedDataGrid = () => {
       flex: 1,
       minWidth: 20,
     },
-    {
-      field: 'image_URL',
-      headerName: 'Image',
-      headerAlign: 'center',
-      width: 150,
-      renderCell: (params) => (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-          <img
-            src={params.row.productImage[0]?.image_URL}
-            alt="Product"
-            style={{ maxWidth: '100%', maxHeight: '100%' }}
-            onError={(e) => e.target.src = '/path/to/placeholder.png'} // Thêm placeholder khi lỗi
-          />
-        </div>
-      ),
-    },
+    // {
+    //   field: 'product_Image',
+    //   headerName: 'Image',
+    //   headerAlign: 'center',
+    //   width: 150,
+    //   renderCell: (params) => (
+    //     < div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }
+    //     }>
+    //       <img
+    //         src={`${process.env.REACT_APP_BASE_URL}/${params.row.product_Image}`}
+    //         alt="Product"
+    //         style={{ maxWidth: '100%', maxHeight: '100%' }}
+    //         onError={(e) => {
+    //           e.target.onerror = null; // Ngăn vòng lặp vô tận
+    //           e.target.src = '/path/to/placeholder.png';
+    //         }}
+    //       />
+    //     </div >
+    //   ),
+    // },
     {
       field: 'product_Name',
       headerName: 'Product Name',
@@ -113,10 +116,7 @@ const useCustomizedDataGrid = () => {
               }}
             >
               <UpdateProduct
-                product_ID={params.row.id}
-                product_Point={params.row.point}
-                product_Price={params.row.price}
-                product_Name={params.row.product_Name}
+                product={params.row}
                 buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
                 isActive={params.row.isActive ? false : true}
 

@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, IconButton } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const UploadProductImage = ({ onUpload, onChange }) => {
+const UploadProductImage = ({ onChange, onSetBaseURL, initialImage = null }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [preview, setPreview] = useState(null);
 
+    useEffect(() => {
+        if (initialImage) {
+            setPreview(initialImage);
+        }
+    }, [initialImage]);
     // Xử lý chọn tệp
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -16,37 +21,60 @@ const UploadProductImage = ({ onUpload, onChange }) => {
                 onChange(file); // Trả về file ảnh
             }
             const reader = new FileReader();
+            let baseURL = "";
             reader.onload = () => {
                 setPreview(reader.result); // Hiển thị hình ảnh xem trước
+                if (onSetBaseURL) {
+                    baseURL = reader.result;
+                    const cleanedBaseURL = baseURL.replace(/^data:image\/\w+;base64,/, '');
+                    onSetBaseURL(cleanedBaseURL);  // Pass the baseURL (preview) to the parent
+                }
             };
             reader.readAsDataURL(file);
+            // handleUpload()
         }
     };
 
     // Xử lý upload hình ảnh
     const handleUpload = async () => {
         if (selectedImage) {
-            const formData = new FormData();
-            formData.append('file', selectedImage);
+            //  const formData = new FormData();
 
-            try {
-                // Mock API request hoặc thay URL và logic này bằng API thực tế
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData,
-                });
-                const result = await response.json();
+            //formData.append('file', selectedImage);
 
-                // Gửi kết quả ra ngoài qua callback nếu cần
-                if (onUpload) {
-                    onUpload(result);
-                }
+            let fileInfo;
+            let baseURL = "";
+            // Make new FileReader
+            let reader = new FileReader();
 
-                alert('Image uploaded successfully!');
-            } catch (error) {
-                console.error('Upload failed:', error);
-                alert('Failed to upload image.');
-            }
+            reader.readAsDataURL(selectedImage);
+
+            // on reader load somthing...
+            reader.onload = () => {
+                // Make a fileInfo Object
+                console.log("Called", reader);
+                baseURL = reader.result;
+                console.log(baseURL);
+                //   resolve(baseURL);
+            };
+            // try {
+            //     // Mock API request hoặc thay URL và logic này bằng API thực tế
+            //     const response = await fetch('/upload', {
+            //         method: 'POST',
+            //         body: formData,
+            //     });
+            //     const result = await response.json();
+
+            //     // Gửi kết quả ra ngoài qua callback nếu cần
+            //     if (onUpload) {
+            //         onUpload(result);
+            //     }
+
+            //     alert('Image uploaded successfully!');
+            // } catch (error) {
+            //     console.error('Upload failed:', error);
+            //     alert('Failed to upload image.');
+            // }
         } else {
             alert('Please select an image first!');
         }
@@ -56,6 +84,9 @@ const UploadProductImage = ({ onUpload, onChange }) => {
     const handleRemove = () => {
         setSelectedImage(null);
         setPreview(null);
+        if (onSetBaseURL) {
+            onSetBaseURL(null);  // Clear the baseURL when removed
+        }
     };
 
     return (
@@ -80,7 +111,7 @@ const UploadProductImage = ({ onUpload, onChange }) => {
                     sx={{
                         position: 'relative',
                         width: '100%',
-                        height: 200,
+                        height: 120,
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',

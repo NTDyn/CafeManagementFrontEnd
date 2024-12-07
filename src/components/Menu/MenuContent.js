@@ -13,6 +13,7 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import '../../css/components/Menu/MenuContent.css'
 
 const mainListItems = [
@@ -75,16 +76,45 @@ const secondaryListItems = [
 ];
 
 export default function MenuContent() {
+    const location = useLocation();
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+    const handleListItemClick = (index) => {
+        setSelectedIndex(index);
+    };
+    React.useEffect(() => {
+        const currentIndex = mainListItems.findIndex(item => location.pathname.includes(item.link));
+        setSelectedIndex(currentIndex);
+    }, [location.pathname]);
+
     return (
         <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
             <List dense>
                 {mainListItems.map((item, index) => (
-                    <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-                        <ListItemButton selected={index === 0}>
-                            <Link to={"http://localhost:3000/" + item.link} className='CategoryLink' >
-                                <ListItemIcon>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text} className='CategoryName' />
-                            </Link>
+                    <ListItem key={index} disablePadding sx={{ display: 'block', paddingTop: '2%', paddingBottom: '2%' }}>
+                        <ListItemButton
+                            component={Link}
+                            to={"/" + item.link}
+                            selected={location.pathname === "/" + item.link}
+                            onClick={() => handleListItemClick(index)}
+                            sx={{
+                                '&.Mui-selected': {
+                                    backgroundColor: 'rgba(25, 118, 210, 0.1)', // Màu khi chọn
+                                    color: '#0080ff',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(25, 118, 210, 0.15)', // Màu khi hover
+                                    },
+                                },
+                                '&:hover': {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.04)', // Màu khi hover nếu không được chọn
+                                },
+
+                            }}
+                        >
+
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} className='CategoryName' />
+
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -100,6 +130,6 @@ export default function MenuContent() {
                     </ListItem>
                 ))}
             </List>
-        </Stack>
+        </Stack >
     );
 }

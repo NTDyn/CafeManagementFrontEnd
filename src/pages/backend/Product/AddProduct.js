@@ -16,13 +16,13 @@ import { addData as addDataProduct, getInitialData as dataProduct } from "../../
 import { getInitialData as dataIngredient } from "../../../redux/actions/ingredient"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Box } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import Swal from 'sweetalert2'
 import Grid from '@mui/material/Grid2';
 import withReactContent from 'sweetalert2-react-content';
 import '../../../css/backend/product/index.css'
 import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
+import { NumericFormat } from 'react-number-format';
 import CancelIcon from '@mui/icons-material/Close';
 import {
     Unstable_NumberInput as BaseNumberInput,
@@ -44,6 +44,7 @@ import {
 } from '@mui/x-data-grid';
 import '../../../css/backend/product/index.css?v=19'
 import ImageUpload from './ImageUpload'
+import { ModalDialog } from "@mui/joy";
 
 export default function AddProduct() {
 
@@ -67,7 +68,8 @@ export default function AddProduct() {
     const [productPoint, setProductPoint] = useState(0);
     const [productCategory, setProductCategory] = useState('');
     const [categoryName, setCategoryName] = useState('');
-    const [productImage, setProductImage] = useState('');
+    const [productImage, setProductImage] = useState(null);
+    const [baseURL, setBaseURL] = useState(null);
     const [recipeIngredientID, setRecipeIngredientID] = useState(0);
     const [recipeQuantity, setRecipeQuantity] = useState(0);
     const [recipeUnit, setRecipeUnit] = useState(0);
@@ -135,181 +137,19 @@ export default function AddProduct() {
             "product_Category": productCategory,
             "price": productPrice,
             "point": productPoint,
-            "product_Image": productImage,
+            "product_Image": baseURL,
+            "productRecipe": recipeRows,
             "isActive": true,
         }
         console.log("pImage: " + data)
-        dispatch(addDataProduct(data, recipeRows));
+        dispatch(addDataProduct(data));
     };
 
 
-
-    const blue = {
-        100: '#DAECFF',
-        200: '#80BFFF',
-        400: '#3399FF',
-        500: '#007FFF',
-        600: '#0072E5',
-        700: '#0059B2',
+    const handleSetBaseURL = (url) => {
+        setBaseURL(url);  // Update the baseURL when the image is selected
+        console.log("url: " + baseURL)
     };
-
-    const grey = {
-        50: '#F3F6F9',
-        100: '#E5EAF2',
-        200: '#DAE2ED',
-        300: '#C7D0DD',
-        400: '#B0B8C4',
-        500: '#9DA8B7',
-        600: '#6B7A90',
-        700: '#434D5B',
-        800: '#303740',
-        900: '#1C2025',
-    };
-
-    const StyledInputRoot = styled('div')(
-        ({ theme }) => `
-        font-family: 'IBM Plex Sans', sans-serif;
-        font-weight: 400;
-        border-radius: 8px;
-        color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-        background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-        border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-        box-shadow: 0px 2px 4px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.5)' : 'rgba(0,0,0, 0.05)'
-            };
-        display: grid;
-        grid-template-columns: 1fr 19px;
-        grid-template-rows: 1fr 1fr;
-        overflow: hidden;
-        column-gap: 8px;
-        padding: 4px;
-      
-        &.${numberInputClasses.focused} {
-          border-color: ${blue[400]};
-          box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[700] : blue[200]};
-        }
-      
-        &:hover {
-          border-color: ${blue[400]};
-        }
-      
-        // firefox
-        &:focus-visible {
-          outline: 0;
-        }
-      `,
-    );
-
-    const StyledInputElement = styled('input')(
-        ({ theme }) => `
-        font-size: 0.875rem;
-        font-family: inherit;
-        font-weight: 400;
-        line-height: 1.5;
-        grid-column: 1/2;
-        grid-row: 1/3;
-        color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-        background: inherit;
-        border: none;
-        border-radius: inherit;
-        padding: 8px 12px;
-        outline: 0;
-      `,
-    );
-
-    const StyledButton = styled('button')(
-        ({ theme }) => `
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: center;
-        align-items: center;
-        appearance: none;
-        padding: 0;
-        width: 19px;
-        height: 19px;
-        font-family: system-ui, sans-serif;
-        font-size: 0.875rem;
-        line-height: 1;
-        box-sizing: border-box;
-        background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-        border: 0;
-        color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-        transition-property: all;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 120ms;
-        type: "button";
-        
-        &:hover {
-          background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
-          border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
-          cursor: pointer;
-        }
-      
-        &.${numberInputClasses.incrementButton} {
-          grid-column: 2/3;
-          grid-row: 1/2;
-          border-top-left-radius: 4px;
-          border-top-right-radius: 4px;
-          border: 1px solid;
-          border-bottom: 0;
-          border-color: ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-          background: ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
-          color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
-      
-          &:hover {
-            cursor: pointer;
-            color: #FFF;
-            background: ${theme.palette.mode === 'dark' ? blue[600] : blue[500]};
-            border-color: ${theme.palette.mode === 'dark' ? blue[400] : blue[600]};
-          }
-        }
-      
-        &.${numberInputClasses.decrementButton} {
-          grid-column: 2/3;
-          grid-row: 2/3;
-          border-bottom-left-radius: 4px;
-          border-bottom-right-radius: 4px;
-          border: 1px solid;
-          border-color: ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-          background: ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
-          color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
-        }
-      
-        &:hover {
-          cursor: pointer;
-          color: #FFF;
-          background: ${theme.palette.mode === 'dark' ? blue[600] : blue[500]};
-          border-color: ${theme.palette.mode === 'dark' ? blue[400] : blue[600]};
-        }
-      
-        & .arrow {
-          transform: translateY(-1px);
-        }
-      
-        & .arrow {
-          transform: translateY(-1px);
-        }
-      `,
-    );
-
-    const StyledBox = styled('div')(({ theme }) => ({
-        height: 300,
-        width: '100%',
-        '& .MuiDataGrid-cell--editing': {
-            backgroundColor: 'rgb(255,215,115, 0.19)',
-            color: '#1a3e72',
-            '& .MuiInputBase-root': {
-                height: '100%',
-            },
-        },
-        '& .Mui-error': {
-            backgroundColor: 'rgb(126,10,15, 0.1)',
-            color: '#1a3e55',
-            ...theme.applyStyles('dark', {
-                backgroundColor: 'rgb(126,10,15, 0)',
-            }),
-        },
-    }));
-
 
     const processRowUpdate = (newRow) => {
 
@@ -338,7 +178,7 @@ export default function AddProduct() {
                 newRow.unit = 3;
             }
         }
-        const updatedRow = { ...newRow, isNew: false };
+        const updatedRow = { ...newRow, isNew: false, product: null };
 
         setRecipeRows(recipeRows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         setRowModesModel({ ...rowModesModel, [updatedRow.id]: { mode: GridRowModes.View } });
@@ -409,7 +249,7 @@ export default function AddProduct() {
         const handleClickAdd = () => {
             setRecipeRows((oldRows) => [
                 ...oldRows,
-                { id: currentId, ingredient_ID: '', ingredientName: '', unit: '', quantity: '', isNew: true },
+                { id: currentId, ingredient_ID: '', ingredientName: '', unit: '', quantity: '', isNew: true, product: null },
             ]);
             setRowModesModel((oldModel) => ({
                 ...oldModel,
@@ -545,260 +385,391 @@ export default function AddProduct() {
                     Add Product
                 </Button>
             </Stack>
-
-            <Dialog
-                fullScreen
+            <Modal
                 open={open}
-                onClose={handleClose}
-                disablePortal
+                onClose={() => setOpen(false)}
+
             >
-                <AppBar sx={{ position: 'relative' }}>
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
+                <ModalDialog sx={{ width: '80%', background: '#f0f8ff', display: 'flex', maxHeight: '95vh', overflow: 'auto' }}>
+                    <AppBar sx={{ position: 'relative', maxHeight: 40, }}>
+                        <Toolbar sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'flex-start' }}>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleClose}
+                                aria-label="close"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Typography sx={{ ml: 2, flex: 1, alignContent: 'center' }} variant="h6" component="div">
+                                Add Product
+                            </Typography>
+
+                        </Toolbar>
+                    </AppBar>
+                    <Box sx={{ width: '100%' }}>
+                        <form
+                            onSubmit={confirmAdd}
                         >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            Add Product
-                        </Typography>
+                            <Grid container spacing={4} justifyContent="center" >
 
-                    </Toolbar>
-                </AppBar>
-                <Box>
-                    <form
-                        onSubmit={confirmAdd}
-                    >
-                        <Grid container spacing={2} justifyContent="center" >
-
-                            <Grid
-                                xs={2}
-                                md={4}
-                                sx={
-                                    {
-                                        marginTop: 5
-                                    }
-                                }
-                            >
-                                <ImageUpload
-                                    onChange={(file) => setProductImage(file)}
-                                />
-                            </Grid>
-                            <Grid
-                                xs={10}
-                                md={8}
-                            >
-
-                                <Box
-                                    sx={{
-                                        marginTop: 5,
-                                        justifyContent: 'center'
-                                    }}
-                                >
-                                    <Grid
-                                        container
-                                        spacing={2}
-                                        sx={
-                                            {
-                                                justifyContent: 'center'
-                                            }
-                                        }
-                                    >
-                                        <Grid
-                                            xs={5}
-                                        >
-                                            <FormLabel>Name</FormLabel>
-                                            <Input
-                                                autoFocus
-                                                required
-                                                name="nameProduct"
-                                                value={productName}
-                                                sx={{
-                                                    height: 50,
-                                                    width: 300
-                                                }}
-                                                onChange={(e) => setProductName(e.target.value)}
-                                            />
-                                        </Grid>
-                                        <Grid
-                                            xs={7}
-                                        >
-                                            <FormLabel>Category</FormLabel>
-                                            <Autocomplete
-                                                sx={{
-                                                    height: 50,
-                                                    width: 300,
-                                                }}
-                                                disablePortal
-                                                options={listProductCategory}
-                                                getOptionLabel={(option) => option.category_Name ? option.category_Name : ""}
-                                                name="categoryProduct"
-                                                value={categoryName ? { category_Name: categoryName } : null}
-                                                onChange={(event, newValue) => {
-                                                    if (newValue) {
-                                                        setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
-                                                        setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
-                                                    } else {
-                                                        setProductCategory(null); // Xử lý khi không có mục nào được chọn
-                                                        setCategoryName('')
-                                                    }
-                                                }}
-
-                                                renderInput={(params) => <TextField
-                                                    required
-                                                    {...params}
-
-                                                />}
-                                            />
-                                        </Grid>
-
-                                    </Grid>
-                                    <Grid
-                                        container
-                                        spacing={4}
+                                <Grid size={4} sx={{ marginTop: 2 }}>
+                                    <ImageUpload
+                                        required
+                                        //onChange={(file) => setProductImage(file)}
+                                        onSetBaseURL={handleSetBaseURL}
+                                    />
+                                </Grid>
+                                <Grid size={8}>
+                                    <Box
                                         sx={{
-                                            marginTop: 2,
+                                            width: '100%',
+                                            marginTop: 3,
                                             justifyContent: 'center'
                                         }}
                                     >
-                                        <Grid
-                                            xs={5}
-                                        >
-                                            <FormLabel>Price (VND) </FormLabel>
-                                            <BaseNumberInput
-                                                min={0}
-                                                step={1000}
-                                                sx={{
-                                                    height: 50,
-                                                    width: 300,
-                                                }}
-                                                slots={{
-                                                    root: StyledInputRoot,
-                                                    input: StyledInputElement,
-                                                    incrementButton: (props) => <StyledButton {...props} type="button" />,
-                                                    decrementButton: (props) => <StyledButton {...props} type="button" />,
-                                                }}
-                                                slotProps={{
-                                                    incrementButton: {
-                                                        children: '▴',
-                                                    },
-                                                    decrementButton: {
-                                                        children: '▾',
-                                                    },
-                                                }}
-                                                required
-                                                name="priceProduct"
-                                                value={productPrice}
-                                                onChange={(event, val) => setProductPrice(val)}
-                                            ></BaseNumberInput>
+                                        <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
+                                            <Grid size={5}>
+                                                <FormLabel>Name</FormLabel>
+                                                <Input
+                                                    autoFocus
+                                                    required
+                                                    name="nameProduct"
+                                                    value={productName}
+                                                    sx={{
+                                                        marginTop: '1%',
+                                                        height: 50,
+                                                        width: 300
+                                                    }}
+                                                    onChange={(e) => setProductName(e.target.value)}
+                                                />
+                                            </Grid>
+                                            <Grid size={7}>
+                                                <FormLabel>Category</FormLabel>
+                                                <Autocomplete
+                                                    sx={{
+                                                        marginTop: '1%',
+                                                        height: 50,
+                                                        width: 300,
+                                                    }}
+                                                    disablePortal
+                                                    options={listProductCategory}
+                                                    getOptionLabel={(option) => option.category_Name ? option.category_Name : ""}
+                                                    name="categoryProduct"
+                                                    value={categoryName ? { category_Name: categoryName } : null}
+                                                    onChange={(event, newValue) => {
+                                                        if (newValue) {
+                                                            setProductCategory(newValue.category_ID); // Lấy category_ID từ mục được chọn
+                                                            setCategoryName(newValue.category_Name); // Cập nhật categoryName để hiển thị
+                                                        } else {
+                                                            setProductCategory(null); // Xử lý khi không có mục nào được chọn
+                                                            setCategoryName('')
+                                                        }
+                                                    }}
+
+                                                    renderInput={(params) => <TextField
+                                                        required
+                                                        {...params}
+
+                                                    />}
+                                                />
+                                            </Grid>
 
                                         </Grid>
-
                                         <Grid
-                                            xs={7}
+                                            container
+                                            spacing={4}
+                                            sx={{
+                                                marginTop: 2,
+                                                justifyContent: 'center'
+                                            }}
                                         >
-                                            <FormLabel>Point</FormLabel>
-                                            <BaseNumberInput
-                                                min={0}
-                                                step={1}
-                                                sx={{
-                                                    height: 50,
-                                                    width: 300,
-                                                }}
-                                                slots={{
-                                                    root: StyledInputRoot,
-                                                    input: StyledInputElement,
-                                                    incrementButton: (props) => <StyledButton {...props} type="button" />,
-                                                    decrementButton: (props) => <StyledButton {...props} type="button" />,
-                                                }}
-                                                slotProps={{
+                                            <Grid size={5}  >
+                                                <FormLabel sx={{ marginBottom: '1%', }}>Price (VND) </FormLabel>
+                                                <BaseNumberInput
+                                                    min={0}
+                                                    step={1000}
+                                                    sx={{
+                                                        height: 50,
+                                                        width: 300,
+                                                    }}
+                                                    slots={{
+                                                        root: StyledInputRoot,
+                                                        input: StyledInputElement,
+                                                        incrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                        decrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                    }}
+                                                    slotProps={{
+                                                        incrementButton: {
+                                                            children: '▴',
+                                                        },
+                                                        decrementButton: {
+                                                            children: '▾',
+                                                        },
+                                                    }}
+                                                    required
+                                                    name="priceProduct"
+                                                    value={(productPrice)}
+                                                    onChange={(event, val) => setProductPrice(val)}
+                                                ></BaseNumberInput>
+                                            </Grid>
 
-                                                    incrementButton: {
-                                                        children: '▴',
-                                                    },
-                                                    decrementButton: {
-                                                        children: '▾',
-                                                    },
-                                                }}
-                                                required
-                                                name="pointProduct"
-                                                value={productPoint}
-                                                onChange={(event, val) => setProductPoint(val)}
-                                            ></BaseNumberInput>
+                                            <Grid size={7}>
+                                                <FormLabel sx={{ marginBottom: '1%', }}>Point</FormLabel>
+                                                <BaseNumberInput
+                                                    min={0}
+                                                    step={1}
+                                                    sx={{
+                                                        height: 50,
+                                                        width: 300,
+                                                    }}
+                                                    slots={{
+                                                        root: StyledInputRoot,
+                                                        input: StyledInputElement,
+                                                        incrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                        decrementButton: (props) => <StyledButton {...props} type="button" />,
+                                                    }}
+                                                    slotProps={{
+
+                                                        incrementButton: {
+                                                            children: '▴',
+                                                        },
+                                                        decrementButton: {
+                                                            children: '▾',
+                                                        },
+                                                    }}
+                                                    required
+                                                    name="pointProduct"
+                                                    value={productPoint}
+                                                    onChange={(event, val) => setProductPoint(val)}
+                                                ></BaseNumberInput>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </Box>
+                                    </Box>
+                                </Grid>
                             </Grid>
-
-                        </Grid>
-                        <Grid
-                            container
-                            sx={{
-                                marginTop: 5,
-                                justifyContent: 'center'
-                            }}
-                        >
                             <Grid
-                                size={10}
+                                container
+                                sx={{
+                                    marginTop: 5,
+                                    justifyContent: 'center'
+                                }}
                             >
-                                <Box
-                                    sx={{
-                                        height: 500,
-                                        width: '100%',
-                                        '& .actions': {
-                                            color: 'text.secondary',
-                                        },
-                                        '& .textPrimary': {
-                                            color: 'text.primary',
-                                        },
-                                    }}
-                                >
-                                    <DataGrid
-                                        rows={recipeRows}
-                                        columns={columns}
-                                        editMode="row"
-                                        rowModesModel={rowModesModel}
-                                        onRowModesModelChange={handleRowModesModelChange}
-                                        onRowEditStop={handleRowEditStop}
-                                        processRowUpdate={processRowUpdate}
-                                        slots={{
-                                            toolbar: EditToolbar,
+                                <Grid size={10} >
+                                    <Box
+                                        sx={{
+
+                                            width: '100%',
+                                            '& .actions': {
+                                                color: 'text.secondary',
+                                            },
+                                            '& .textPrimary': {
+                                                color: 'text.primary',
+                                            },
                                         }}
-                                        slotProps={{
-                                            toolbar: { setRecipeRows, setRowModesModel },
-                                        }}
-                                    />
-                                </Box>
+                                    >
+                                        <DataGrid
+                                            sx={{ height: 400 }}
+                                            rows={recipeRows}
+                                            columns={columns}
+                                            editMode="row"
+                                            rowModesModel={rowModesModel}
+                                            onRowModesModelChange={handleRowModesModelChange}
+                                            onRowEditStop={handleRowEditStop}
+                                            processRowUpdate={processRowUpdate}
+
+                                            slots={{
+                                                toolbar: EditToolbar,
+                                            }}
+                                            slotProps={{
+                                                toolbar: { setRecipeRows, setRowModesModel },
+                                            }}
+                                        />
+                                    </Box>
+                                </Grid>
+
                             </Grid>
 
-                        </Grid>
-
-
-                        <Box
-                            textAlign="center"
-                            sx={{
-                                marginTop: 4
-                            }}
-                        >
-                            <Button
-                                sx={
-                                    {
-                                        marginTop: 5,
-                                    }
-                                }
-                                type="submit"
-
-                            >
-                                Submit
-                            </Button>
-                        </Box>
-                    </form >
-                </Box >
-            </Dialog >
+                            <Grid container sx={{ justifyContent: 'center', marginTop: '1%' }}>
+                                <Box container >
+                                    <Button type="submit" sx={{ fontSize: '20px', fontWeight: 'bold' }} >
+                                        Submit
+                                    </Button>
+                                </Box>
+                            </Grid>
+                        </form >
+                    </Box >
+                </ModalDialog >
+            </Modal >
         </>
     );
 
 }
+
+
+
+const blue = {
+    100: '#DAECFF',
+    200: '#80BFFF',
+    400: '#3399FF',
+    500: '#007FFF',
+    600: '#0072E5',
+    700: '#0059B2',
+};
+
+const grey = {
+    50: '#F3F6F9',
+    100: '#E5EAF2',
+    200: '#DAE2ED',
+    300: '#C7D0DD',
+    400: '#B0B8C4',
+    500: '#9DA8B7',
+    600: '#6B7A90',
+    700: '#434D5B',
+    800: '#303740',
+    900: '#1C2025',
+};
+
+const StyledInputRoot = styled('div')(
+    ({ theme }) => `
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 400;
+    border-radius: 8px;
+    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+    border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+    box-shadow: 0px 2px 4px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.5)' : 'rgba(0,0,0, 0.05)'
+        };
+    display: grid;
+    grid-template-columns: 1fr 19px;
+    grid-template-rows: 1fr 1fr;
+    overflow: hidden;
+    column-gap: 8px;
+    padding: 4px;
+  
+    &.${numberInputClasses.focused} {
+      border-color: ${blue[400]};
+      box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[700] : blue[200]};
+    }
+  
+    &:hover {
+      border-color: ${blue[400]};
+    }
+  
+    // firefox
+    &:focus-visible {
+      outline: 0;
+    }
+  `,
+);
+
+const StyledInputElement = styled('input')(
+    ({ theme }) => `
+    font-size: 0.875rem;
+    font-family: inherit;
+    font-weight: 400;
+    line-height: 1.5;
+    grid-column: 1/2;
+    grid-row: 1/3;
+    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background: inherit;
+    border: none;
+    border-radius: inherit;
+    padding: 8px 12px;
+    outline: 0;
+  `,
+);
+
+const StyledButton = styled('button')(
+    ({ theme }) => `
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    appearance: none;
+    padding: 0;
+    width: 19px;
+    height: 19px;
+    font-family: system-ui, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1;
+    box-sizing: border-box;
+    background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+    border: 0;
+    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 120ms;
+    type: "button";
+    
+    &:hover {
+      background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
+      border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+      cursor: pointer;
+    }
+  
+    &.${numberInputClasses.incrementButton} {
+      grid-column: 2/3;
+      grid-row: 1/2;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border: 1px solid;
+      border-bottom: 0;
+      border-color: ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+      background: ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
+      color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
+  
+      &:hover {
+        cursor: pointer;
+        color: #FFF;
+        background: ${theme.palette.mode === 'dark' ? blue[600] : blue[500]};
+        border-color: ${theme.palette.mode === 'dark' ? blue[400] : blue[600]};
+      }
+    }
+  
+    &.${numberInputClasses.decrementButton} {
+      grid-column: 2/3;
+      grid-row: 2/3;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      border: 1px solid;
+      border-color: ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+      background: ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
+      color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
+    }
+  
+    &:hover {
+      cursor: pointer;
+      color: #FFF;
+      background: ${theme.palette.mode === 'dark' ? blue[600] : blue[500]};
+      border-color: ${theme.palette.mode === 'dark' ? blue[400] : blue[600]};
+    }
+  
+    & .arrow {
+      transform: translateY(-1px);
+    }
+  
+    & .arrow {
+      transform: translateY(-1px);
+    }
+  `,
+);
+
+const StyledBox = styled('div')(({ theme }) => ({
+    height: 300,
+    width: '100%',
+    '& .MuiDataGrid-cell--editing': {
+        backgroundColor: 'rgb(255,215,115, 0.19)',
+        color: '#1a3e72',
+        '& .MuiInputBase-root': {
+            height: '100%',
+        },
+    },
+    '& .Mui-error': {
+        backgroundColor: 'rgb(126,10,15, 0.1)',
+        color: '#1a3e55',
+        ...theme.applyStyles('dark', {
+            backgroundColor: 'rgb(126,10,15, 0)',
+        }),
+    },
+}));

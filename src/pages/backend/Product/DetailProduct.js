@@ -20,6 +20,7 @@ import { getInitialData as dataProduct } from "../../../redux/actions/products";
 import { getInitialData as dataProductRecipe } from '../../../redux/actions/productRecipe';
 import { getInitialData as dataProductCategory } from '../../../redux/actions/productCategory';
 function DetailProduct({ product }) {
+
     const [IDProduct, setIDProduct] = useState(product.product_ID)
     const [openDetail, setOpenDetail] = useState(false);
     const [nameProduct, setNameProduct] = useState(product.product_Name);
@@ -33,10 +34,21 @@ function DetailProduct({ product }) {
     const [categoryProduct, setCategoryProduct] = useState(cateProduct?.category_Name || '');
     const listIngredient = useSelector((state) => state.dataIngredient.data);
     const [recipeRows, setRecipeRows] = useState(product.productRecipe);
-    recipeRows.forEach(element => {
-        element.id = element.recipe_ID
-        element.ingredientName = listIngredient.find(ing => ing.ingredient_ID === element.ingredient_ID).ingredient_Name
-    });
+    useEffect(() => {
+        // Kiểm tra xem product.productRecipe có tồn tại không và nếu có thì thực hiện thay đổi
+        if (product.productRecipe) {
+            const updatedRecipeRows = product.productRecipe.map(element => {
+                const ingredient = listIngredient.find(ing => ing.ingredient_ID === element.ingredient_ID);
+                return {
+                    ...element,
+                    id: element.recipe_ID,
+                    ingredientName: ingredient ? ingredient.ingredient_Name : null // Nếu không tìm thấy ingredient thì trả về null
+                };
+            });
+
+            setRecipeRows(updatedRecipeRows);
+        }
+    }, [product.productRecipe, listIngredient]);
     const [productImages, setProductImages] = useState(product.productImage)
 
     function formatPrice(value) {
@@ -47,6 +59,7 @@ function DetailProduct({ product }) {
             minimumFractionDigits: 0, // Không cần hiển thị phần thập phân
         }).format(value);
     }
+
     const columns = [
         {
             field: 'ingredientName',
@@ -58,7 +71,7 @@ function DetailProduct({ product }) {
         {
             field: 'unit',
             headerName: 'Unit',
-            width: 300,
+            width: 150,
             align: 'center',
             headerAlign: 'center',
 
@@ -88,35 +101,16 @@ function DetailProduct({ product }) {
             <Modal
                 open={openDetail}
                 onClose={() => setOpenDetail(false)}
-
             >
-                <ModalDialog >
-                    <DialogTitle
-                        sx={
-                            {
-                                color: 'blue',
-                                justifyContent: 'center',
-                                size: 24
-                            }
-                        }
-                    >
-                        Information of product
-                    </DialogTitle>
-
-
-                    <Grid container spacing={2}
-
-                    >
-                        <Grid
-                            size={4}
-                        >
-                            <ImageCarousel
-                                images={productImages.map(image => image.image_URL)}
-                            ></ImageCarousel>
+                <ModalDialog sx={{ width: '70%' }}>
+                    <Grid container spacing={2}>
+                        <Grid size={4}>
+                            <img
+                                src={`${process.env.REACT_APP_BASE_URL}/${product.product_Image}`}
+                                style={{ width: '100%' }} >
+                            </img>
                         </Grid>
-                        <Grid
-                            size={8}
-                        >
+                        <Grid size={8} >
                             <Box
                                 sx={{
                                     marginTop: 5,
@@ -128,11 +122,10 @@ function DetailProduct({ product }) {
                                     container
                                     spacing={15}
                                 >
-                                    <Grid
-                                        size={5}
-                                    >
+                                    <Grid size={5}>
                                         <FormLabel>Name</FormLabel>
                                         <TextField
+                                            variant="standard"
                                             slotProps={{
                                                 input: {
                                                     readOnly: true,
@@ -148,11 +141,10 @@ function DetailProduct({ product }) {
                                         >
                                         </TextField>
                                     </Grid>
-                                    <Grid
-                                        size={5}
-                                    >
+                                    <Grid size={5} >
                                         <FormLabel>Category</FormLabel>
                                         <TextField
+                                            variant="standard"
                                             slotProps={{
                                                 input: {
                                                     readOnly: true,
@@ -168,18 +160,16 @@ function DetailProduct({ product }) {
                                         >
                                         </TextField>
                                     </Grid>
-
                                 </Grid>
                                 <Grid
                                     container
                                     spacing={15}
                                     sx={{ marginTop: 2 }}
                                 >
-                                    <Grid
-                                        size={5}
-                                    >
+                                    <Grid size={5} >
                                         <FormLabel>Price (VND) </FormLabel>
                                         <TextField
+                                            variant="standard"
                                             slotProps={{
                                                 input: {
                                                     readOnly: true,
@@ -197,11 +187,10 @@ function DetailProduct({ product }) {
 
                                     </Grid>
 
-                                    <Grid
-                                        size={5}
-                                    >
+                                    <Grid size={5}>
                                         <FormLabel>Point</FormLabel>
                                         <TextField
+                                            variant="standard"
                                             slotProps={{
                                                 input: {
                                                     readOnly: true,
@@ -218,15 +207,8 @@ function DetailProduct({ product }) {
                                         </TextField>
                                     </Grid>
                                 </Grid>
-                                <Grid
-                                    container
-                                    sx={{
-                                        marginTop: 5
-                                    }}
-                                >
-                                    <Grid
-                                        size={12}
-                                    >
+                                <Grid container sx={{ marginTop: 5 }}>
+                                    <Grid size={12}>
                                         <Box
                                             sx={{
                                                 height: 300,

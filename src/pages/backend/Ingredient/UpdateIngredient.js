@@ -112,6 +112,7 @@ function UpdateIngredient({ buttonLabel, ingredient }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateIsActive()
+                    setIsActive(true)
                     Swal.fire("Saved!", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -127,6 +128,7 @@ function UpdateIngredient({ buttonLabel, ingredient }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateIsActive()
+                    setIsActive(false)
                     Swal.fire("Saved!", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");

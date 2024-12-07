@@ -36,7 +36,8 @@ export const getInitialData = () => {
     }
 }
 
-export const addData = (data, listRecipe) => {
+export const addData = (data) => {
+    console.log(data)
     return async dispatch => {
         postAPI("/api/Product", data).then(
             response => {
@@ -44,11 +45,6 @@ export const addData = (data, listRecipe) => {
 
                 } else {
                     dispatch({ type: "ADD_BACK_END_PRODUCT", data: data })
-                    let productID = data.id;
-                    listRecipe.forEach(element => {
-                        element.product_ID = productID
-                    });
-                    dispatch(addRecipe(listRecipe))
 
                 }
 
