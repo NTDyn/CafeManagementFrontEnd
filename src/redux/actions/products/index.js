@@ -61,7 +61,7 @@ export const updateData = (data) => {
                 if (response.status !== 200) {
 
                 } else {
-                    dispatch({ type: "UPDATE_BACK_END_PRODUCT", data: data })
+                    dispatch({ type: "UPDATE_BACK_END_PRODUCT", data: response.data })
 
                 }
 

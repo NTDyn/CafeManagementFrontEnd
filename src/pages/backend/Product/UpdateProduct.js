@@ -94,6 +94,12 @@ export default function UpdateProduct({ product, buttonLabel }) {
             row => row.ingredientName === '' || row.unit === ''
         )
     }
+    const handleSetBaseURL = (base64) => {
+        setProductImage(base64)
+
+    };
+
+
     const UpdateInformation = () => {
 
         let data = {
@@ -105,6 +111,7 @@ export default function UpdateProduct({ product, buttonLabel }) {
             "product_Image": productImage,
             "productRecipe": recipeRows,
         }
+
         dispatch(updateData(data));
 
     };
@@ -182,8 +189,8 @@ export default function UpdateProduct({ product, buttonLabel }) {
                 try {
                     await UpdateInformation();
                     await Swal.fire("Saved!", "", "success");
-                    setCategoryName("");
-                    setProductName("");
+                    setCategoryName(categoryName);
+                    setProductName(productName);
                 } catch (error) {
                     console.error("Error adding product:", error);
                     Swal.fire("Error!", "Could not update the product.", "error");
@@ -195,10 +202,6 @@ export default function UpdateProduct({ product, buttonLabel }) {
     };
 
 
-    const handleSetBaseURL = (base64) => {
-        setProductImage(base64)
-
-    };
 
     const processRowUpdate = (newRow) => {
 
@@ -418,6 +421,10 @@ export default function UpdateProduct({ product, buttonLabel }) {
             },
         },
     ];
+    const randomImage = (_imageLink) => {
+
+        return `${_imageLink}`;
+    }
     return (
         <>
             <Box>
@@ -470,10 +477,11 @@ export default function UpdateProduct({ product, buttonLabel }) {
                                     <ImageUpload
                                         initialImage={
                                             product.product_Image
-                                                ? `${process.env.REACT_APP_BASE_URL}/${product.product_Image}`
+                                                ? randomImage(`${process.env.REACT_APP_BASE_URL}/${product.product_Image}`)
                                                 : null
                                         }
                                         onSetBaseURL={handleSetBaseURL}
+
                                     />
 
                                 </Grid>

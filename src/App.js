@@ -22,44 +22,44 @@ const App = () => {
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             <Route path="/" element={
-              <ProtectedRoute role={"admin_home"}>
+              <ProtectedRoute role={1}>
                 <Home />
               </ProtectedRoute>
 
             } />
             <Route path="/admin/product" element={
-              <ProtectedRoute role={"admin_product"}>
+              <ProtectedRoute role={2}>
                 <Product />
               </ProtectedRoute>
             } />
             <Route path="/admin/warehouse" element={
-              <ProtectedRoute role={"admin_warehouse"}>
+              <ProtectedRoute role={3}>
                 <Warehouse />
               </ProtectedRoute>
             } />
             <Route path="/admin/productCategory" element={
-              <ProtectedRoute role={"admin_product_category"}>
+              <ProtectedRoute role={4}>
                 <ProductCategory />
               </ProtectedRoute>
             } />
             <Route path="/admin/suppliers" element={
-              <ProtectedRoute role={"admin_suppliers"}>
+              <ProtectedRoute role={5}>
                 <Supplier />
               </ProtectedRoute>
 
             } />
             <Route path="/admin/ingredientCategory" element={
-              <ProtectedRoute role={"admin_ingredient_categorys"}>
+              <ProtectedRoute role={6}>
                 <IngredientCategory />
               </ProtectedRoute>
             } />
             <Route path="/admin/ingredient" element={
-              <ProtectedRoute role={"admin_ingredient"}>
+              <ProtectedRoute role={7}>
                 <Ingredient />
               </ProtectedRoute>
             } />
             <Route path="/admin/menu" element={
-              <ProtectedRoute role={"admin_menu"}>
+              <ProtectedRoute role={8}>
                 <Menu />
               </ProtectedRoute>} />
           </Routes>

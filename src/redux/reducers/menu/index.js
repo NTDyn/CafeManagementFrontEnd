@@ -15,7 +15,7 @@ const Menus = (state = initialState, action) => {
                 ...state,
                 data: result
             }
-        case "ADD_MENU":
+        case "ADD_BACK_END_MENU":
             let itemAdd = action.data;
             let listNew = state.data.push(itemAdd);
             return {
@@ -23,10 +23,10 @@ const Menus = (state = initialState, action) => {
                 data: listNew
             }
 
-        case "UPDATE_MENU":
+        case "UPDATE_BACK_END_MENU":
             let itemUP = action.data;
             let listOld = state.data;
-            let index = listOld.findIndex(x=>x.menu_ID === itemUP.menu_ID);
+            let index = listOld.findIndex(x => x.menu_ID === itemUP.menu_ID);
             listOld[index] = itemUP;
             return {
                 ...state,

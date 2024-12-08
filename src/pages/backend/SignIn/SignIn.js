@@ -7,6 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
+import Swal from 'sweetalert2'
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -17,8 +18,8 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../../components/dashboard/theme/customization/CustomIcons';
 import AppTheme from '../../../components/dashboard/shared-theme/AppTheme';
 import ColorModeSelect from '../../../components/dashboard/shared-theme/ColorModeSelect';
-import {login} from '../../../redux/actions/userLogin'
-import { useDispatch } from 'react-redux';
+import { login } from '../../../redux/actions/userLogin'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -71,6 +72,8 @@ export default function SignIn(props) {
     const [open, setOpen] = React.useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const apiResult = useSelector(state => state.apiRequestReducer);
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -80,18 +83,30 @@ export default function SignIn(props) {
         setOpen(false);
     };
 
-    const handleSubmit = (event) => {
+    const HandleSubmit = async (event) => {
         if (emailError || passwordError) {
             event.preventDefault();
             return;
         }
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-        dispatch(login(data));
-        navigate("/")
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const data = {
+            email: email.value,
+            password: password.value
+        }
+
+        dispatch(await login(data))
+        if (apiResult.status === 200) {
+            navigate("/");
+            // event.preventDefault();
+            return;
+
+        } else {
+            event.preventDefault();
+            Swal.fire("Username or password is wrong. Please check again!", "", "error");
+        }
+
+        event.preventDefault();
     };
 
     const validateInputs = () => {
@@ -100,23 +115,23 @@ export default function SignIn(props) {
 
         let isValid = true;
 
-        if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-            setEmailError(true);
-            setEmailErrorMessage('Please enter a valid email address.');
-            isValid = false;
-        } else {
-            setEmailError(false);
-            setEmailErrorMessage('');
-        }
+        // if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+        //     setEmailError(true);
+        //     setEmailErrorMessage('Please enter a valid email address.');
+        //     isValid = false;
+        // } else {
+        //     setEmailError(false);
+        //     setEmailErrorMessage('');
+        // }
 
-        if (!password.value || password.value.length < 6) {
-            setPasswordError(true);
-            setPasswordErrorMessage('Password must be at least 6 characters long.');
-            isValid = false;
-        } else {
-            setPasswordError(false);
-            setPasswordErrorMessage('');
-        }
+        // if (!password.value || password.value.length < 6) {
+        //     setPasswordError(true);
+        //     setPasswordErrorMessage('Password must be at least 6 characters long.');
+        //     isValid = false;
+        // } else {
+        //     setPasswordError(false);
+        //     setPasswordErrorMessage('');
+        // }
 
         return isValid;
     };
@@ -137,7 +152,7 @@ export default function SignIn(props) {
                     </Typography>
                     <Box
                         component="form"
-                        onSubmit={handleSubmit}
+                        onSubmit={HandleSubmit}
                         noValidate
                         sx={{
                             display: 'flex',

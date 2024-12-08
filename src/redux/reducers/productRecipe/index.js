@@ -5,17 +5,7 @@ const initialState = {
 
 const ProductRecipeBackEnd = (state = initialState, action) => {
     switch (action.type) {
-        // case "APPEND_BACK_END_PRODUCT_RECIPE":
-        //     let result = [];
 
-        //     action.data.forEach((el, i) => {
-        //         result.push(el);
-        //         result[i]["id"] = el.recipe_ID;
-        //     })
-        //     return {
-        //         ...state,
-        //         data: result
-        //     }
         case "SET_PRODUCT_RECIPE":
             return { ...state, data: action.data };
         case "SHOW_ERROR_API":
