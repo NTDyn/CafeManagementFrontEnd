@@ -1,3 +1,4 @@
+import { Warehouse } from "@mui/icons-material";
 import { fetchAPI, postAPI, putAPI } from "../../../api";
 
 export const getInitialData = () => {
@@ -20,11 +21,11 @@ export const addData = (data) => {
         postAPI("/api/Warehouse", data)
             .then(
                 response => {
+
                     if (response.status !== 200) {
                         //   dispatch({ type: "SHOW_ERROR_API", message: result.message })
                     } else {
                         dispatch({ type: "ADD_BACK_END_WAREHOUSE", data: data });
-                        console.log(data)
                     }
                 }
             )

@@ -59,6 +59,8 @@ const TableIngredient = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             width: "100%",
+                            height: "100%",
+                            overflow: "hidden", // Đảm bảo không bị tràn
                         }}
                     >
                         <UpdateIngredient
@@ -90,6 +92,7 @@ const TableIngredient = () => {
             initialState={{
                 pagination: { paginationModel: { pageSize: 20 } },
             }}
+            getRowHeight={() => 100}
             pageSizeOptions={[10, 20, 50]}
             disableColumnResize
             density="compact"

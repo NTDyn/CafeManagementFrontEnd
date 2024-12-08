@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getInitialData } from "../../../redux/actions/warehouse";
 import { DataGrid } from '@mui/x-data-grid';
 import UpdateWarehouse from './UpadateWarehouse';
+import { Box } from "@mui/material";
 
 const useTableWarehouse = () => {
     const data = useSelector(state => state.dataWarehouse.data);
@@ -17,16 +18,16 @@ const useTableWarehouse = () => {
         {
             field: "wareHouse_ID",
             headerName: 'ID',
-            headerAlign: 'right',
-            align: 'right',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             minWidth: 100
         },
         {
             field: 'wareHouse_Name',
             headerName: 'Warehouse Name',
-            headerAlign: 'right',
-            align: 'right',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             minWidth: 100
         },
@@ -39,13 +40,25 @@ const useTableWarehouse = () => {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <UpdateWarehouse
-                        wareHouseID={params.row.id}
-                        wareHouseName={params.row.wareHouse_Name}
-                        buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                        isActive={params.row.isActive ? false : true}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "100%",
+                            height: "100%",
+                            overflow: "hidden", // Đảm bảo không bị tràn
+                        }}
+                    >
+                        <UpdateWarehouse
+                            wareHouseID={params.row.id}
+                            wareHouseName={params.row.wareHouse_Name}
+                            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                            isActive={params.row.isActive ? false : true}
 
-                    />
+                        />
+                    </Box>
 
                 )
             }
@@ -64,6 +77,7 @@ const useTableWarehouse = () => {
             initialState={{
                 pagination: { paginationModel: { pageSize: 20 } },
             }}
+            getRowHeight={() => 100}
             pageSizeOptions={[10, 20, 50]}
             disableColumnResize
             density="compact"

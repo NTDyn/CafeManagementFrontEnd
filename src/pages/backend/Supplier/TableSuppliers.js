@@ -4,6 +4,7 @@ import { getInitialData } from "../../../redux/actions/supplier";
 import { DataGrid } from '@mui/x-data-grid';
 import UpdateSupplier from "./UpdateSupplier";
 import '../../../css/backend/product/index.css';
+import { Box } from "@mui/material";
 
 
 const TableSuppliers = () => {
@@ -52,12 +53,24 @@ const TableSuppliers = () => {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <UpdateSupplier
-                        supplier_ID={params.row.supplier_ID}
-                        supplier_Name={params.row.supplier_Name}
-                        buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                        isActive={params.row.isActive ? false : true}
-                    />
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "100%",
+                            height: "100%",
+                            overflow: "hidden", // Đảm bảo không bị tràn
+                        }}
+                    >
+                        <UpdateSupplier
+                            supplier_ID={params.row.supplier_ID}
+                            supplier_Name={params.row.supplier_Name}
+                            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                            isActive={params.row.isActive ? false : true}
+                        />
+                    </Box>
                 )
 
             }
@@ -79,6 +92,7 @@ const TableSuppliers = () => {
             initialState={{
                 pagination: { paginationModel: { pageSize: 20 } },
             }}
+            getRowHeight={() => 100}
             pageSizeOptions={[10, 20, 50]}
             disableColumnResize
             density="compact"
