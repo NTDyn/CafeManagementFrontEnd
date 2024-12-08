@@ -178,7 +178,7 @@ export default function AddProduct() {
                 newRow.unit = 3;
             }
         }
-        const updatedRow = { ...newRow, isNew: false, product: null };
+        const updatedRow = { ...newRow, isNew: false };
 
         setRecipeRows(recipeRows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         setRowModesModel({ ...rowModesModel, [updatedRow.id]: { mode: GridRowModes.View } });
@@ -249,7 +249,7 @@ export default function AddProduct() {
         const handleClickAdd = () => {
             setRecipeRows((oldRows) => [
                 ...oldRows,
-                { id: currentId, ingredient_ID: '', ingredientName: '', unit: '', quantity: '', isNew: true, product: null },
+                { id: currentId, ingredient_ID: '', ingredientName: '', unit: '', quantity: '', isNew: true },
             ]);
             setRowModesModel((oldModel) => ({
                 ...oldModel,

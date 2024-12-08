@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { getMenu } from "../../../redux/actions/menu";
 import { DataGrid } from '@mui/x-data-grid';
 import '../../../css/backend/product/index.css';
+import { Box } from "@mui/material";
+import UpdateMenu from "./updateMenu";
+import MenuDetail from "./MenuDetail/menuDetail";
 
 
 const TableMenu = () => {
@@ -49,7 +52,31 @@ const TableMenu = () => {
             flex: 1,
             minWidth: 100,
             renderCell: (params) => {
-                return params.value
+                return (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "100%",
+                            height: "100%",
+                            overflow: "hidden", // Đảm bảo không bị tràn
+                        }}
+                    >
+                        <UpdateMenu
+                            menuID={params.row.id}
+                            menuName={params.row.categoryName}
+                            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                            isActive={params.row.isActive ? false : true}
+
+                        />
+                        <MenuDetail
+                            menu={params.row}
+                        />
+                    </Box>
+
+                )
             }
         }
     ];
@@ -66,6 +93,7 @@ const TableMenu = () => {
             initialState={{
                 pagination: { paginationModel: { pageSize: 20 } },
             }}
+            getRowHeight={() => 100}
             pageSizeOptions={[10, 20, 50]}
             disableColumnResize
             density="compact"

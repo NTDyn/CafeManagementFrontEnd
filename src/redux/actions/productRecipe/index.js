@@ -1,7 +1,6 @@
 import { fetchAPIwithParams, postAPI, putAPI } from "../../../api";
 
 export const getInitialData = (productID) => {
-    console.log(productID)
     return async dispatch => {
         try {
             const response = await fetchAPIwithParams("/api/ProductRecipe", { id: productID });

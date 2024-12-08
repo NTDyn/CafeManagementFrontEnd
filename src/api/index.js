@@ -47,6 +47,21 @@ export async function postAPI(uri, data) {
 
 }
 
+
+export async function postLoginAPI(uri) {
+    const response = await axios({
+        url: urlSite + uri,
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+
+    });
+    return await response.data;
+
+}
+
 export async function putAPI(uri, data) {
     const response = await axios({
         url: urlSite + uri,

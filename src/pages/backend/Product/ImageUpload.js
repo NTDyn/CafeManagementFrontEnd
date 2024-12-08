@@ -14,6 +14,7 @@ const UploadProductImage = ({ onChange, onSetBaseURL, initialImage = null }) => 
     }, [initialImage]);
     // Xử lý chọn tệp
     const handleFileChange = (event) => {
+        console.log('hh')
         const file = event.target.files[0];
         if (file) {
             setSelectedImage(file);
@@ -35,50 +36,8 @@ const UploadProductImage = ({ onChange, onSetBaseURL, initialImage = null }) => 
         }
     };
 
-    // Xử lý upload hình ảnh
-    const handleUpload = async () => {
-        if (selectedImage) {
-            //  const formData = new FormData();
 
-            //formData.append('file', selectedImage);
 
-            let fileInfo;
-            let baseURL = "";
-            // Make new FileReader
-            let reader = new FileReader();
-
-            reader.readAsDataURL(selectedImage);
-
-            // on reader load somthing...
-            reader.onload = () => {
-                // Make a fileInfo Object
-                console.log("Called", reader);
-                baseURL = reader.result;
-                console.log(baseURL);
-                //   resolve(baseURL);
-            };
-            // try {
-            //     // Mock API request hoặc thay URL và logic này bằng API thực tế
-            //     const response = await fetch('/upload', {
-            //         method: 'POST',
-            //         body: formData,
-            //     });
-            //     const result = await response.json();
-
-            //     // Gửi kết quả ra ngoài qua callback nếu cần
-            //     if (onUpload) {
-            //         onUpload(result);
-            //     }
-
-            //     alert('Image uploaded successfully!');
-            // } catch (error) {
-            //     console.error('Upload failed:', error);
-            //     alert('Failed to upload image.');
-            // }
-        } else {
-            alert('Please select an image first!');
-        }
-    };
 
     // Xử lý xóa hình ảnh
     const handleRemove = () => {
