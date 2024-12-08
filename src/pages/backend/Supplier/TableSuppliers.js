@@ -4,6 +4,8 @@ import UpdateSupplier from "./UpdateSupplier";
 import '../../../css/backend/product/index.css';
 import { useState } from "react";
 import { getAllSuppliers } from "../../../redux/actions/supplier";
+import { Box } from "@mui/material";
+
 
 const TableSuppliers = (async) => {
     const [suppliers,setSuppliers]=useState([]);
@@ -54,12 +56,33 @@ const TableSuppliers = (async) => {
             renderCell: (params) => {
                 const supplier = params.row;
                 return (
+
                     <UpdateSupplier
                         supplier_ID={supplier.supplier_ID}
                         supplier_Name={supplier.supplier_Name}
                         buttonLabel={supplier.isActive ? " Lock " : "Unlock"}
                         isActive={supplier.isActive ? false: true}
                     />
+
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "100%",
+                            height: "100%",
+                            overflow: "hidden", // Đảm bảo không bị tràn
+                        }}
+                    >
+                        <UpdateSupplier
+                            supplier_ID={params.row.supplier_ID}
+                            supplier_Name={params.row.supplier_Name}
+                            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                            isActive={params.row.isActive ? false : true}
+                        />
+                    </Box>
+
                 )
 
             }
@@ -83,6 +106,7 @@ const TableSuppliers = (async) => {
             initialState={{
                 pagination: { paginationModel: { pageSize: 20 } },
             }}
+            getRowHeight={() => 100}
             pageSizeOptions={[10, 20, 50]}
             disableColumnResize
             density="compact"

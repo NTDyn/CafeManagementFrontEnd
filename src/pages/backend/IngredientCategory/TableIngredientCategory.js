@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getInitialData } from "../../../redux/actions/ingredientCategory";
 import { DataGrid } from '@mui/x-data-grid';
 import UpdateIngredientCategory from "./UpdateIngredientCategory";
+import { Box } from "@mui/material";
 
 
 
@@ -52,14 +53,25 @@ const TableIngredientCategory = () => {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <UpdateIngredientCategory
-                        categoryID={params.row.id}
-                        categoryName={params.row.categoryName}
-                        buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                        isActive={params.row.isActive ? false : true}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "100%",
+                            height: "100%",
+                            overflow: "hidden", // Đảm bảo không bị tràn
+                        }}
+                    >
+                        <UpdateIngredientCategory
+                            categoryID={params.row.id}
+                            categoryName={params.row.categoryName}
+                            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
+                            isActive={params.row.isActive ? false : true}
 
-                    />
-
+                        />
+                    </Box>
                 )
             }
         }
@@ -80,6 +92,7 @@ const TableIngredientCategory = () => {
             initialState={{
                 pagination: { paginationModel: { pageSize: 20 } },
             }}
+            getRowHeight={() => 100}
             pageSizeOptions={[10, 20, 50]}
             disableColumnResize
             density="compact"
