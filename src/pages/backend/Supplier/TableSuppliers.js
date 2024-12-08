@@ -1,28 +1,28 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"
-import { getInitialData } from "../../../redux/actions/supplier";
 import { DataGrid } from '@mui/x-data-grid';
 import UpdateSupplier from "./UpdateSupplier";
 import '../../../css/backend/product/index.css';
+import { useState } from "react";
+import { getAllSuppliers } from "../../../redux/actions/supplier";
 
-
-const TableSuppliers = () => {
-    const data = useSelector(state => state.dataSupplier.data);
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getInitialData())
-    }, [dispatch]);
-
+const TableSuppliers = (async) => {
+    const [suppliers,setSuppliers]=useState([]);
+    useEffect(()=>{
+        getAllSuppliers().then((res)=>{
+            setSuppliers(res.data.data);
+            console.log(res.data.data);
+          })
+    },[]);
+    
     let columns = [
         {
-            field: "id",
+            field: "supplier_ID",
             headerName: "Num",
             headerAlign: 'center',
             align: 'center',
             flex: 1,
-            minWidth: 100
+            minWidth: 100,
+          
         },
         {
             field: "supplier_Name",
@@ -40,7 +40,8 @@ const TableSuppliers = () => {
             flex: 1,
             minWidth: 100,
             renderCell: (params) => {
-                return params.value ? "Using" : "Unused";
+                const supplier = params.row;
+                return supplier.isActive ? "Using" : "Unused";
             }
         },
         {
@@ -51,12 +52,13 @@ const TableSuppliers = () => {
             flex: 1,
             minWidth: 100,
             renderCell: (params) => {
+                const supplier = params.row;
                 return (
                     <UpdateSupplier
-                        supplier_ID={params.row.supplier_ID}
-                        supplier_Name={params.row.supplier_Name}
-                        buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                        isActive={params.row.isActive ? false : true}
+                        supplier_ID={supplier.supplier_ID}
+                        supplier_Name={supplier.supplier_Name}
+                        buttonLabel={supplier.isActive ? " Lock " : "Unlock"}
+                        isActive={supplier.isActive ? false: true}
                     />
                 )
 
@@ -71,9 +73,11 @@ const TableSuppliers = () => {
 
             autoHeight
             checkboxSelection
-            rows={data}
+            rows={suppliers}
             columns={columns}
+            getRowId={(row) => row.supplier_ID}
             getRowClassName={(params) =>
+               
                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
             }
             initialState={{

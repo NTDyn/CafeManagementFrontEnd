@@ -16,18 +16,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import Grid from '@mui/material/Grid2';
 import { Box } from "@mui/material";
+import { updateSupplier } from "../../../redux/actions/supplier";
+import dayjs from "dayjs";
 
 function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
     const [open, setOpen] = useState(false);
     const [supplierID, setSupplierID] = useState(supplier_ID);
     const [supplierName, setSupplierName] = useState(supplier_Name);
     const dataSupplier = useSelector(state => state.dataSupplier.data)
-
+    const modiDate = dayjs().format('YYYY/MM/DD')
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getInitialData())
-    }, [dispatch])
+  
 
     useEffect(() => {
         const updatedSupplier = dataSupplier.find(
@@ -43,19 +43,26 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
         let data = {
             "supplier_ID": supplierID,
             "supplier_Name": supplierName,
-            "isActive": null
+           "isActive":isActive?false:true,
         }
-        dispatch(updateData(data))
+        updateSupplier(data).then((res)=>{
+            console.log(res.data.data);
+        })
+
+        
     };
 
     const UpdateStatus = () => {
 
         let data = {
-            "supplier_ID": supplierID,
-            "supplier_Name": null,
+            "supplier_ID": supplier_ID,
+            "supplier_Name":supplierName,
             "isActive": isActive
         }
-        dispatch(updateData(data))
+        updateSupplier(data).then((res)=>{
+            console.log(res.data.data);
+        })
+       
     }
 
     const confirmSwal = () => {
@@ -68,6 +75,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateStatus();
+                    window.location.reload()
                     Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -84,6 +92,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateStatus();
+                    window.location.reload()
                     Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -105,8 +114,9 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
         if (supplierName === supplier_Name) {
             Swal.fire("Supplier name is not changed!");
 
-        } else if (existingSupplier()) {
-            Swal.fire("Supplier name is existing");
+        // }
+        //  else if (existingSupplier()) {
+        //     Swal.fire("Supplier name is existing");
         } else {
             withReactContent(Swal).fire({
                 title: "Do you want to change name of supplier?",
@@ -115,8 +125,10 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
                 denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // UpdateInformation();
                     UpdateInformation();
                     handleClose();
+                    window.location.reload()
                     Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -131,7 +143,11 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
         setSupplierName(supplier_Name);
         setOpen(false);
     };
-
+    
+    const handleOpen=()=>{
+        setOpen(true);
+        alert(isActive)
+    }
 
     const theme = createTheme({
         palette: {
@@ -173,7 +189,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
                                     sx={
                                         { width: '80px', bgcolor: '#185ea5' }
                                     }
-                                    onClick={() => setOpen(true)}
+                                    onClick={() => handleOpen()}
                                 >
                                     Edit
                                 </Button>
@@ -188,7 +204,8 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
 
             <Modal
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={() => setOpen(false)
+                }
                 sx={{
                     zIndex: 1000
                 }}
@@ -225,9 +242,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
     );
 };
 
-// DeleteCategory.propTypes = {
-//     categoryID: PropTypes.number.isRequired,
-// }
+
 
 
 export default UpdateSupplier;

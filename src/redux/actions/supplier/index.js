@@ -1,58 +1,13 @@
+import axios from "axios";
 import { fetchAPI, putAPI, postAPI } from "../../../api";
-
-export const getInitialData = () => {
-    return async dispatch => {
-        fetchAPI("/api/Supplier").then(
-            response => {
-                if (response.status !== 200) {
-                    // dispatch({ type: "SHOW_ERROR_API", message: result.message })
-                } else {
-                    dispatch({ type: "APPEND_BACK_END_SUPPLIER", data: response.data });
-                }
-
-            }
-
-        )
-    }
-
+const   API_URL_BASE_SUPPLIER="https://localhost:7250/api";
+export const getAllSuppliers=()=>{
+   return  axios.get(API_URL_BASE_SUPPLIER+"/Supplier");
 }
 
-export const addData = (data) => {
-    return async dispatch => {
-        postAPI("/api/Supplier", data)
-            .then(
-                response => {
-                    if (response.status !== 200) {
-                        //   dispatch({ type: "SHOW_ERROR_API", message: result.message })
-                    } else {
-                        dispatch({ type: "ADD_BACK_END_SUPPLIER", data: data });
-                    }
-                }
-            )
-            .catch(
-
-                error => console.error("API call failed", error),
-
-            )
-    }
+export const updateSupplier=(data)=>{
+    return axios.put(API_URL_BASE_SUPPLIER+"/Supplier",data);
 }
-
-export const updateData = (data) => {
-    return async dispatch => {
-        putAPI("/api/Supplier", data)
-            .then(
-                response => {
-                    if (response.status !== 200) {
-
-                    } else {
-                        dispatch({ type: "UPDATE_BACK_END_SUPPLIER", data: data });
-                    }
-                }
-            )
-            .catch(
-
-                error => console.error("API call failed", error),
-
-            )
-    }
+export const addSupplier=(data)=>{
+    return axios.post(API_URL_BASE_SUPPLIER+"/Supplier",data);
 }
