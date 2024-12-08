@@ -57,12 +57,6 @@ const TableSuppliers = (async) => {
                 const supplier = params.row;
                 return (
 
-                    <UpdateSupplier
-                        supplier_ID={supplier.supplier_ID}
-                        supplier_Name={supplier.supplier_Name}
-                        buttonLabel={supplier.isActive ? " Lock " : "Unlock"}
-                        isActive={supplier.isActive ? false: true}
-                    />
 
                     <Box
                         sx={{
@@ -75,12 +69,13 @@ const TableSuppliers = (async) => {
                             overflow: "hidden", // Đảm bảo không bị tràn
                         }}
                     >
-                        <UpdateSupplier
-                            supplier_ID={params.row.supplier_ID}
-                            supplier_Name={params.row.supplier_Name}
-                            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                            isActive={params.row.isActive ? false : true}
-                        />
+                        
+                    <UpdateSupplier
+                        supplier_ID={supplier.supplier_ID}
+                        supplier_Name={supplier.supplier_Name}
+                        buttonLabel={supplier.isActive ? " Lock " : "Unlock"}
+                        isActive={supplier.isActive ? false: true}
+                    />
                     </Box>
 
                 )
