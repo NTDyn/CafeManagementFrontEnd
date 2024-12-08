@@ -10,9 +10,9 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from "react-redux";
-import { getInitialData, addData } from "../../../redux/actions/supplier";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { addSupplier } from "../../../redux/actions/supplier";
 
 export default function AddSupplierModal() {
 
@@ -22,12 +22,17 @@ export default function AddSupplierModal() {
     const dataSuppliers = useSelector(state => state.dataSupplier.data)
 
 
+    const hanleAddSupplier=()=>{
+        let data = {
 
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(getInitialData())
-    }, [dispatch])
-
+       "supplier_Name": supplierName,
+           "isActive":true,
+        }
+            addSupplier(data).then((res)=>{
+                console.log(res.data.data);
+            })
+    }
+    
     const existingSupplier = () => {
 
         dataSuppliers.find(
@@ -48,13 +53,7 @@ export default function AddSupplierModal() {
     }
 
 
-    const addSupplier = () => {
-        let data = {
-            "supplier_Name": "" + supplierName + "",
-            "isActive": true
-        }
-        dispatch(addData(data));
-    }
+    
 
 
     const confirmSwal = () => {
@@ -66,7 +65,7 @@ export default function AddSupplierModal() {
             denyButtonText: `Don't add`
         }).then((result) => {
             if (result.isConfirmed) {
-                addSupplier()
+                hanleAddSupplier();
                 Swal.fire("Saved!", "", "success");
             } else if (result.isDenied) {
                 Swal.fire("Changes are not saved", "", "info");
