@@ -12,6 +12,7 @@ import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import '../../css/components/Menu/MenuContent.css'
@@ -49,7 +50,7 @@ const mainListItems = [
     },
     {
         text: 'Warehouse',
-        icon: <AssignmentRoundedIcon />,
+        icon: <InventoryIcon />,
         link: 'admin/warehouse'
     },
     {

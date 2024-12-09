@@ -12,6 +12,7 @@ const useCustomizedDataGrid = () => {
   const data = useSelector(state => state.dataProduct.data);
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log('cn')
     dispatch(getInitialData())
 
   }, [dispatch])
@@ -21,39 +22,50 @@ const useCustomizedDataGrid = () => {
   let columns = [
     {
       field: 'product_ID',
-      headerName: 'ID',
+      headerName: '',
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-      minWidth: 20,
+      minWidth: 5,
+      maxWidth: 100,
     },
-    // {
-    //   field: 'product_Image',
-    //   headerName: 'Image',
-    //   headerAlign: 'center',
-    //   width: 150,
-    //   renderCell: (params) => (
-    //     < div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }
-    //     }>
-    //       <img
-    //         src={`${process.env.REACT_APP_BASE_URL}/${params.row.product_Image}`}
-    //         alt="Product"
-    //         style={{ maxWidth: '100%', maxHeight: '100%' }}
-    //         onError={(e) => {
-    //           e.target.onerror = null; // Ngăn vòng lặp vô tận
-    //           e.target.src = '/path/to/placeholder.png';
-    //         }}
-    //       />
-    //     </div >
-    //   ),
-    // },
+    {
+      field: 'product_Image',
+      headerName: 'Image',
+      headerAlign: 'center',
+      width: 200,
+      renderCell: (params) => (
+        < div style={{
+          padding: '2%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 100,  // Đặt chiều cao cố định cho khung chứa
+          width: 200,   // Đặt chiều rộng cố định cho khung chứa
+          borderRadius: '8px', // Thêm bo góc cho đẹp mắt (tùy chọn)
+          overflow: 'hidden', // Giúp hình ảnh không tràn ra ngoài khung
+          backgroundColor: '#f0f0f0', // Màu nền để hình ảnh không bị lộ khoảng trống khi chưa tải
+        }
+        }>
+          <img
+            src={`${process.env.REACT_APP_BASE_URL}/${params.row.product_Image}?t=${Date.now()}`}
+            alt="Product"
+            style={{ maxWidth: '100%', maxHeight: '100%' }}
+            onError={(e) => {
+              e.target.onerror = null; // Ngăn vòng lặp vô tận
+              e.target.src = '/path/to/placeholder.png';
+            }}
+          />
+        </div >
+      ),
+    },
     {
       field: 'product_Name',
       headerName: 'Product Name',
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-      minWidth: 100,
+      minWidth: 200,
     },
     {
       field: 'price',
@@ -87,7 +99,7 @@ const useCustomizedDataGrid = () => {
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-      minWidth: 100,
+      minWidth: 30,
       renderCell: (params) => {
         return params.value ? "Using" : "Unused";
       }

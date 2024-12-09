@@ -8,6 +8,7 @@ import dataIngredientCategory from './ingredientCategory/index';
 import dataIngredient from './ingredient/index';
 import dataProductRecipe from './productRecipe/index';
 import dataMenu from './menu';
+import dataMenuDetail from './menuDetail/index'
 import apiRequestReducer from './apiResult';
 import BasicTabs from '../../pages/backend/RequestImport/RequestPage';
 
@@ -22,8 +23,9 @@ const rootReducer = combineReducers({
     dataIngredientCategory: dataIngredientCategory,
     dataIngredient: dataIngredient,
     dataProductRecipe: dataProductRecipe,
-    dataMenu: dataMenu
-   
+    dataMenu: dataMenu,
+    dataMenuDetail: dataMenuDetail,
+
 
 });
 

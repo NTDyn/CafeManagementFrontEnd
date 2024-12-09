@@ -35,7 +35,6 @@ function DetailProduct({ product }) {
     const listIngredient = useSelector((state) => state.dataIngredient.data);
     const [recipeRows, setRecipeRows] = useState(product.productRecipe);
     useEffect(() => {
-        // Kiểm tra xem product.productRecipe có tồn tại không và nếu có thì thực hiện thay đổi
         if (product.productRecipe) {
             const updatedRecipeRows = product.productRecipe.map(element => {
                 const ingredient = listIngredient.find(ing => ing.ingredient_ID === element.ingredient_ID);
@@ -106,7 +105,7 @@ function DetailProduct({ product }) {
                     <Grid container spacing={2}>
                         <Grid size={4}>
                             <img
-                                src={`${process.env.REACT_APP_BASE_URL}/${product.product_Image}`}
+                                src={`${process.env.REACT_APP_BASE_URL}/${product.product_Image}?t=${Date.now()}`}
                                 style={{ width: '100%' }} >
                             </img>
                         </Grid>

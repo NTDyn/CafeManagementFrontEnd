@@ -32,13 +32,14 @@ const ProductBackEnd = (state = initialState, action) => {
             const updatedData = state.data.map(item => {
                 let itemUP = action.data;
                 if (item.product_ID === itemUP.product_ID) {
-                    if (itemUP.product_Name !== undefined && itemUP.product_Category !== undefined && itemUP.price !== undefined && itemUP.point !== undefined) {
+                    if (action.data.product_Name && action.data.product_Category && action.data.price && action.data.point && action.data.product_Image) {
                         return {
                             ...item,
                             product_Name: action.data.product_Name,
                             product_Category: action.data.product_Category,
                             price: action.data.price,
-                            point: action.data.point
+                            point: action.data.point,
+                            product_Image: action.data.product_Image
                         };
                     }
                     if (itemUP.product_Name === undefined && itemUP.product_Category === undefined && itemUP.price === undefined && itemUP.point === undefined) {

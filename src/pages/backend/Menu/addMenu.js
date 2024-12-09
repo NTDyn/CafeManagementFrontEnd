@@ -10,36 +10,36 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from "react-redux";
-import { getInitialData, addData } from "../../../redux/actions/productCategory";
+import { getMenu, addData } from "../../../redux/actions/menu";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-export default function AddCategoryModal() {
+export default function AddMenu() {
 
-    const [categoryName, setCategoryName] = useState("");
+    const [menuName, setMenuName] = useState("");
     const [open, setOpen] = useState(false);
 
-    const dataProductCategory = useSelector(state => state.dataProductCategory.data)
+    const dataMenu = useSelector(state => state.dataMenu.data)
 
 
 
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getInitialData())
+        dispatch(getMenu())
     }, [dispatch])
 
-    const existingCategory = () => {
+    const existingMenu = () => {
 
-        dataProductCategory.find(
-            dataProductCategory => dataProductCategory.category_Name === categoryName
+        dataMenu.find(
+            dataMenu => dataMenu.menu_Name === menuName
         )
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         handleClose()
-        if (existingCategory()) {
-            notificationSwal("Category name is existing!")
+        if (existingMenu()) {
+            notificationSwal("Menu name is existing!")
         } else {
             confirmSwal()
         }
@@ -48,7 +48,7 @@ export default function AddCategoryModal() {
 
     const addCategory = () => {
         let data = {
-            "category_Name": "" + categoryName + "",
+            "menu_Name": "" + menuName + "",
             "isActive": true
         }
         dispatch(addData(data));
@@ -80,7 +80,7 @@ export default function AddCategoryModal() {
     }
 
     const handleClose = () => {
-        setCategoryName("");
+        setMenuName("");
         setOpen(false);
     };
 
@@ -92,11 +92,11 @@ export default function AddCategoryModal() {
                 startDecorator={<Add />}
                 onClick={() => setOpen(true)}
             >
-                Add Category
+                Add Menu
             </Button>
             <Modal open={open} onClose={() => setOpen(false)}>
                 <ModalDialog>
-                    <DialogTitle>Create new category of product</DialogTitle>
+                    <DialogTitle>Create new menu</DialogTitle>
                     <DialogContent>Fill in the information.</DialogContent>
                     <form
                         onSubmit={handleSubmit}
@@ -107,10 +107,10 @@ export default function AddCategoryModal() {
                                 <Input
                                     autoFocus
                                     required
-                                    name="nameCategory"
-                                    value={categoryName}
-                                    placeholder="Nhập tên Category"
-                                    onChange={(e) => setCategoryName(e.target.value)}
+                                    name="nameMenu"
+                                    value={menuName}
+                                    placeholder="Nhập tên Menu"
+                                    onChange={(e) => setMenuName(e.target.value)}
                                 />
                             </FormControl>
 
