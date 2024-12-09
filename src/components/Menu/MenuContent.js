@@ -38,6 +38,16 @@ const mainListItems = [
         link: 'admin/suppliers'
     },
     {
+        text: 'Request Import',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/import'
+    },
+    {
+        text: 'History Import',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/historyimport'
+    },
+    {
         text: 'Warehouse',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/warehouse'
