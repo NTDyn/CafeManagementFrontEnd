@@ -10,6 +10,7 @@ import dataProductRecipe from './productRecipe/index';
 import dataMenu from './menu';
 import dataMenuDetail from './menuDetail/index'
 import apiRequestReducer from './apiResult';
+import BasicTabs from '../../pages/backend/RequestImport/RequestPage';
 
 const rootReducer = combineReducers({
 
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     dataProductRecipe: dataProductRecipe,
     dataMenu: dataMenu,
     dataMenuDetail: dataMenuDetail,
+
 
 });
 

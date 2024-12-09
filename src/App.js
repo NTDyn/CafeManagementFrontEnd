@@ -12,6 +12,9 @@ import ProtectedRoute from './global/ProtectedRoute ';
 import IngredientCategory from './pages/backend/IngredientCategory/index';
 import Ingredient from './pages/backend/Ingredient/index'
 import Menu from './pages/backend/Menu/index';
+import BasicTabs from './pages/backend/RequestImport/RequestPage';
+import RequestImport from './pages/backend/RequestImport';
+import Request from './pages/backend/CreateRequestImport/Index';
 const App = () => {
   return (
     <>
@@ -62,6 +65,12 @@ const App = () => {
               <ProtectedRoute role={8}>
                 <Menu />
               </ProtectedRoute>} />
+              <Route path="/admin/import" element={
+              <ProtectedRoute role={"admin_menu"}>
+                <Request />
+              </ProtectedRoute>} />
+             
+              
           </Routes>
         </Router>
       </UserProvider>
