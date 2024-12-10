@@ -60,8 +60,9 @@ export const updateData = (data) => {
           if (response.status !== 200) {
 
           } else {
-            dispatch({ type: "UPDATE_BACK_END_MENU", data: data });
-            console.log(data);
+            console.log(response.data);
+            dispatch({ type: "UPDATE_BACK_END_MENU", data: response.data });
+
           }
         }
       )

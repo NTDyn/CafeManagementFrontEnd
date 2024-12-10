@@ -19,6 +19,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 
 function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
+    const [active, setIsActive] = useState(isActive)
     const [open, setOpen] = useState(false);
     const [nameChange, setNameChange] = useState(null);
     const dataMenu = useSelector(state => state.dataMenu.data)
@@ -34,8 +35,9 @@ function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
 
             "menu_ID": menuID,
             "menu_Name": nameChange,
-            "isActive": isActive
+            "isActive": active
         }
+        console.log(data)
         dispatch(updateData(data))
     };
 
@@ -48,6 +50,7 @@ function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
                 denyButtonText: `Don't lock`
             }).then((result) => {
                 if (result.isConfirmed) {
+                    setIsActive(false)
                     UpdateFunction()
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -63,6 +66,7 @@ function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
                 denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
+                    setIsActive(true)
                     UpdateFunction()
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
