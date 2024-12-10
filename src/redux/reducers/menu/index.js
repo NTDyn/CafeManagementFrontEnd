@@ -2,40 +2,35 @@ const initialState = {
     data: []
 }
 
+
 const Menus = (state = initialState, action) => {
     switch (action.type) {
         case "REFETCH_MENU":
-            let result = [];
-            action.data.forEach((el, i) => {
-                result.push(el);
-                result[i]["id"] = el.menu_ID;
-            });
+            return {
+                ...state,
+                data: action.data.map(el => ({
+                    ...el,
+                    id: el.menu_ID // Tạo mảng mới với thuộc tính id được thêm
+                }))
+            };
 
-            return {
-                ...state,
-                data: result
-            }
         case "ADD_BACK_END_MENU":
-            let itemAdd = action.data;
-            let listNew = state.data.push(itemAdd);
             return {
                 ...state,
-                data: listNew
-            }
+                data: [...state.data, action.data] // Sử dụng spread để tạo mảng mới
+            };
 
         case "UPDATE_BACK_END_MENU":
-            let itemUP = action.data;
-            let listOld = state.data;
-            let index = listOld.findIndex(x => x.menu_ID === itemUP.menu_ID);
-            listOld[index] = itemUP;
             return {
                 ...state,
-                data: listOld
-            }
+                data: state.data.map(item =>
+                    item.menu_ID === action.data.menu_ID ? action.data : item
+                )
+            };
+
         default:
             return state;
     }
-
-}
+};
 
 export default Menus;
