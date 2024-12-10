@@ -70,9 +70,7 @@ export default function SignIn(props) {
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
     const [open, setOpen] = React.useState(false);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const apiResult = useSelector(state => state.apiRequestReducer);
+    
 
 
     const handleClickOpen = () => {
@@ -82,10 +80,12 @@ export default function SignIn(props) {
     const handleClose = () => {
         setOpen(false);
     };
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const apiResult = useSelector(state => state.apiRequestReducer);
     const HandleSubmit = async (event) => {
+        event.preventDefault();
         if (emailError || passwordError) {
-            event.preventDefault();
             return;
         }
         const email = document.getElementById('email');
@@ -95,18 +95,14 @@ export default function SignIn(props) {
             password: password.value
         }
 
-        dispatch(await login(data))
-        if (apiResult.status === 200) {
-            navigate("/");
-            // event.preventDefault();
-            return;
-
-        } else {
-            event.preventDefault();
+        try {
+            const response = await dispatch(login(data)); 
+            if (response.status === 200) {
+                navigate("/"); 
+            }
+        } catch (error) {
             Swal.fire("Username or password is wrong. Please check again!", "", "error");
         }
-
-        event.preventDefault();
     };
 
     const validateInputs = () => {
