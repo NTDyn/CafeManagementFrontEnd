@@ -84,8 +84,8 @@ export default function SignIn(props) {
     };
 
     const HandleSubmit = async (event) => {
+        event.preventDefault();
         if (emailError || passwordError) {
-            event.preventDefault();
             return;
         }
         const email = document.getElementById('email');
@@ -94,19 +94,17 @@ export default function SignIn(props) {
             email: email.value,
             password: password.value
         }
-
+        console.log(apiResult)
         dispatch(await login(data))
         if (apiResult.status === 200) {
             navigate("/");
-            // event.preventDefault();
             return;
 
         } else {
-            event.preventDefault();
             Swal.fire("Username or password is wrong. Please check again!", "", "error");
         }
 
-        event.preventDefault();
+
     };
 
     const validateInputs = () => {
