@@ -99,9 +99,11 @@ export default function SignIn(props) {
             const response = await dispatch(login(data)); 
             if (response.status === 200) {
                 navigate("/"); 
+            }else{
+                Swal.fire("Username or password is wrong. Please check again!", "", "error");
             }
         } catch (error) {
-            Swal.fire("Username or password is wrong. Please check again!", "", "error");
+            Swal.fire(error, "", "error");
         }
     };
 
