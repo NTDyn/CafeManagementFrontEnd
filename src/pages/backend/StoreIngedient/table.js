@@ -4,6 +4,8 @@ import { getMenu } from "../../../redux/actions/menu";
 import { DataGrid } from '@mui/x-data-grid';
 import '../../../css/backend/product/index.css';
 import { Box } from "@mui/material";
+import { Button } from "@mui/joy";
+
 
 
 const TableMenu = (props) => {
@@ -12,18 +14,14 @@ const TableMenu = (props) => {
     const formatData = () => {
         let data = [];
         props.batchRecipes.forEach(element => {
-            let ingredient = props.ingredients.find(x => x.ingredient_ID == element.ingredientResult_ID);
+            let ingredient = props.ingredients.find(x => x.ingredient_ID == element.ingredient_ID);
             data.push({
-                batchRecipe_ID: element.batchRecipe_ID,
-                ingredientResult_ID: element.ingredientResult_ID,
-                quality: element.quality,
-                unit: element.unit,
-                staff_ID: element.staff_ID,
-                ingredient_Name: ingredient.ingredient_Name,
-                isActive: element.isActive,
-                createdDate: element.createdDate,
-                details: element.details,
+                price: element.price,
                 ingredient: ingredient,
+                ingredient_Name: ingredient.ingredient_Name,
+                quality: element.quality,
+                unit: ingredient.unit_Min,
+                report: element.report,
                 id: element.id
             })
 
@@ -33,7 +31,7 @@ const TableMenu = (props) => {
     useEffect(() => {
         formatData()
     }, [props.batchRecipes]);
-    console.log(dataTable);
+
     let columns = [
         {
             field: "id",
@@ -67,17 +65,7 @@ const TableMenu = (props) => {
             flex: 1,
             minWidth: 100
         },
-        {
-            field: "isActive",
-            headerName: 'Status',
-            headerAlign: 'center',
-            align: 'center',
-            flex: 1,
-            minWidth: 100,
-            renderCell: (params) => {
-                return params.value ? "Using" : "Unused";
-            }
-        },
+       
         {
             field: "features",
             headerName: "Features",
@@ -87,19 +75,14 @@ const TableMenu = (props) => {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            gap: 1,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: "100%",
-                            height: "100%",
-                            overflow: "hidden", // Đảm bảo không bị tràn
-                        }}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', verticalAlign: 'middle' , alignItems: 'center'}}>
+                    <Button
+                        sx={{ width: '80px', bgcolor: '#000000' }}
+                        onClick={() => props.showDetail(params.row.report)}
                     >
-                    </Box>
-
+                        Detail
+                    </Button>
+                </Box>
                 )
             }
         }

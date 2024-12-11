@@ -12,11 +12,11 @@ import ProtectedRoute from './global/ProtectedRoute ';
 import IngredientCategory from './pages/backend/IngredientCategory/index';
 import Ingredient from './pages/backend/Ingredient/index'
 import Menu from './pages/backend/Menu/index';
-import BasicTabs from './pages/backend/RequestImport/RequestPage';
-import RequestImport from './pages/backend/RequestImport';
 import Request from './pages/backend/CreateRequestImport/Index';
 import BatchRecipe from './pages/backend/BatchRecipe';
-import Customer from './pages/backend/Customer/index'
+import Customer from './pages/backend/Customer/index';
+import SpoiledIngredient from './pages/backend/spoiledIngredient';
+import StoreIngedient from './pages/backend/StoreIngedient';
 const App = () => {
   return (
     <>
@@ -75,7 +75,12 @@ const App = () => {
             <Route path="/admin/batch-recipe" element={
               <BatchRecipe />
             } />
-
+            <Route path="/admin/spoiled-ingredient" element={
+              <SpoiledIngredient />
+            } />
+            <Route path="/admin/store-ingedient" element={
+              <StoreIngedient />
+            } />
             <Route path="/admin/customer" element={
               <ProtectedRoute role={10}>
                 <Customer />

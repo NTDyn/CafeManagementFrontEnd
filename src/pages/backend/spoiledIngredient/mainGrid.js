@@ -9,7 +9,7 @@ import ModalDetail from './modalDetail';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getInitialData } from "../../../redux/actions/ingredient"
-import { getInitialData as getDataBatch, addData } from '../../../redux/actions/batchRecipe';
+import { getInitialData as getDataBatch, addData } from '../../../redux/actions/spoiledIngredient';
 import { Button } from '@mui/joy';
 
 export default function MainGrid() {
@@ -20,17 +20,14 @@ export default function MainGrid() {
     })
     const [openModal, setOpenModal] = React.useState(false);
     const [dataModalDetail, setDataModalDetail] = React.useState({
-        "quality": 1,
-        "ingredient_ID": -1,
-        "unit": 0,
-        'ingredientResult_ID': -1,
+        "spoiled_ID": 1,
         'details': []
     })
     const [openModalDetail, setOpenModalDetail] = React.useState(false);
     const dispatch = useDispatch();
     const ingredients = useSelector(state => state.dataIngredient.data);
-    const batchRecipes = useSelector(state => state.dataBatch.data);
-    React.useEffect( async () => {
+    const spoiledIngredients = useSelector(state => state.dataSpoiled.data);
+    React.useEffect(async () => {
         await dispatch(getInitialData());
          dispatch(getDataBatch());
     }, [dispatch])
@@ -64,12 +61,12 @@ export default function MainGrid() {
                                     setOpenModal(true)
                                 }}
                             >
-                                Add Batch Recipe
+                                Spoiled Ingredient
                             </Button>
                         </Box>
 
                         <Table
-                            batchRecipes={batchRecipes}
+                            batchRecipes={spoiledIngredients}
                             ingredients={ingredients}
                             showDetail={showDetail}
                         />

@@ -4,41 +4,32 @@ import Box from '@mui/material/Box';
 import Copyright from '../../../components/Footer/Copyright';
 import Table from './table';
 import Add from '@mui/icons-material/Add';
-import Modal from './modal'
 import ModalDetail from './modalDetail';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getInitialData } from "../../../redux/actions/ingredient"
-import { getInitialData as getDataBatch, addData } from '../../../redux/actions/batchRecipe';
+import { getInitialData as getDataBatch} from '../../../redux/actions/storeIngedient';
 import { Button } from '@mui/joy';
 
 export default function MainGrid() {
-    const [dataModal, setDataModal] = React.useState({
-        "quantity": 1,
-        "ingredient_ID": -1,
-        "unit": 0
-    })
+
     const [openModal, setOpenModal] = React.useState(false);
     const [dataModalDetail, setDataModalDetail] = React.useState({
-        "quality": 1,
-        "ingredient_ID": -1,
-        "unit": 0,
-        'ingredientResult_ID': -1,
-        'details': []
+        "type": 1,
+        'quantity': 0,
+        'unit':0,
+        'ingredient_ID': 0,
+        'createdDate': '2024-12-01'
     })
     const [openModalDetail, setOpenModalDetail] = React.useState(false);
     const dispatch = useDispatch();
     const ingredients = useSelector(state => state.dataIngredient.data);
-    const batchRecipes = useSelector(state => state.dataBatch.data);
-    React.useEffect( async () => {
+    const dataStore = useSelector(state => state.dataStore.data);
+    React.useEffect(async () => {
         await dispatch(getInitialData());
          dispatch(getDataBatch());
     }, [dispatch])
 
-    const createData = async (_data) => {
-        await dispatch(addData(_data));
-        setOpenModal(false);
-    }
     const showDetail = (_data) => {
         setDataModalDetail(_data);
         setOpenModalDetail(true);
@@ -49,36 +40,11 @@ export default function MainGrid() {
                 <Grid container spacing={2} columns={12}>
 
                     <Grid size={{ md: 12, lg: 12 }}>
-                        <Box sx={{ justifyContent: "flex-end", display: "flex", margin: "40px 40px 40px auto" }}>
-                            <Button
-                                variant="outlined"
-                                color="neutral"
-                                startDecorator={<Add />}
-
-                                onClick={() => {
-                                    setDataModal({
-                                        "quantity": 1,
-                                        "ingredient_ID": -1,
-                                        "unit": 0
-                                    });
-                                    setOpenModal(true)
-                                }}
-                            >
-                                Add Batch Recipe
-                            </Button>
-                        </Box>
 
                         <Table
-                            batchRecipes={batchRecipes}
+                            batchRecipes={dataStore}
                             ingredients={ingredients}
                             showDetail={showDetail}
-                        />
-                        <Modal
-                            data={dataModal}
-                            openModal={openModal}
-                            setOpenModal={setOpenModal}
-                            ingredients={ingredients}
-                            createData={createData}
                         />
                         <ModalDetail
                             data={dataModalDetail}

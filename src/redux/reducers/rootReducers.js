@@ -14,6 +14,8 @@ import BasicTabs from '../../pages/backend/RequestImport/RequestPage';
 import dataBatch from './batchRecipe'
 import dataCustomer from './customer/index';
 import dataCustomerLevel from './customerLevel/index'
+import dataSpoiled from './spoiledIngredient';
+import dataStore from './storeIngedient'
 
 const rootReducer = combineReducers({
 
@@ -31,6 +33,8 @@ const rootReducer = combineReducers({
     dataBatch: dataBatch,
     dataCustomer: dataCustomer,
     dataCustomerLevel: dataCustomerLevel,
+    dataSpoiled: dataSpoiled,
+    dataStore: dataStore
 });
 
 export default rootReducer;
