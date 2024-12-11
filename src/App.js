@@ -12,15 +12,16 @@ import ProtectedRoute from './global/ProtectedRoute ';
 import IngredientCategory from './pages/backend/IngredientCategory/index';
 import Ingredient from './pages/backend/Ingredient/index'
 import Menu from './pages/backend/Menu/index';
+import RequestImport from './pages/backend/RequestImport';
 import Request from './pages/backend/CreateRequestImport/Index';
-
 import FormRequest from './pages/backend/CreateRequestImport/AddRequest';
 import ModalForm from './pages/backend/CreateRequestImport/AddRequest';
-
 import BatchRecipe from './pages/backend/BatchRecipe';
 import Customer from './pages/backend/Customer/index';
 import SpoiledIngredient from './pages/backend/spoiledIngredient';
 import StoreIngedient from './pages/backend/StoreIngedient';
+
+
 const App = () => {
   return (
     <>
@@ -77,16 +78,21 @@ const App = () => {
                 <Request />
               </ProtectedRoute>} />
             <Route path="/admin/batch-recipe" element={
-              <BatchRecipe />
+              <ProtectedRoute role={10}>
+                <BatchRecipe />
+              </ProtectedRoute>
+
             } />
             <Route path="/admin/spoiled-ingredient" element={
-              <SpoiledIngredient />
+              <ProtectedRoute role={11}> <SpoiledIngredient /></ProtectedRoute>
+
             } />
-            <Route path="/admin/store-ingedient" element={
-              <StoreIngedient />
+            <Route path="/admin/store-ingredient" element={
+              <ProtectedRoute role={12}><StoreIngedient /></ProtectedRoute>
+
             } />
             <Route path="/admin/customer" element={
-              <ProtectedRoute role={10}>
+              <ProtectedRoute role={13}>
                 <Customer />
               </ProtectedRoute>} />
             <Route path="/admin/historyimport" element={
@@ -94,17 +100,6 @@ const App = () => {
                 <RequestImport />
               </ProtectedRoute>} />
 
-            {/* <Route path="/admin/archives" element={
-              <ProtectedRoute role = {11}>
-                <Archives />
-              </ProtectedRoute>} /> */}
-
-            <Route path="/admin/batch-recipe" element={
-              <ProtectedRoute role={12}>
-                <BatchRecipe />
-              </ProtectedRoute>
-
-            } />
 
           </Routes>
         </Router>

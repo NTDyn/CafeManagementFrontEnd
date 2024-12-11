@@ -30,9 +30,9 @@ export default function MainGrid() {
     const dispatch = useDispatch();
     const ingredients = useSelector(state => state.dataIngredient.data);
     const batchRecipes = useSelector(state => state.dataBatch.data);
-    React.useEffect( async () => {
-        await dispatch(getInitialData());
-         dispatch(getDataBatch());
+    React.useEffect(() => {
+        //dispatch(getInitialData());
+        dispatch(getDataBatch());
     }, [dispatch])
 
     const createData = async (_data) => {

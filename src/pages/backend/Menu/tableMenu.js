@@ -6,10 +6,19 @@ import '../../../css/backend/product/index.css';
 import { Box } from "@mui/material";
 import UpdateMenu from "./updateMenu";
 import MenuDetail from "./MenuDetail/menuDetail";
+import { getInitialData } from "../../../redux/actions/menuDetail";
 
 
 const TableMenu = (props) => {
-    console.log(props.dataMenu)
+
+    const dataDetail = useSelector(state => state.dataMenuDetail.data)
+    const dispatch = useDispatch();
+
+
+    const getMenuDetail = async (_id) => {
+        return await dispatch(getInitialData(_id))
+
+    }
 
     let columns = [
         {
@@ -67,7 +76,9 @@ const TableMenu = (props) => {
 
                         />
                         <MenuDetail
-                            menu={params.row}
+                            menuID={params.row.menu_ID}
+                            dataDetail={dataDetail}
+                            getMenuDetail={getMenuDetail}
                         />
                     </Box>
 

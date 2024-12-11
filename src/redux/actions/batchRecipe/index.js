@@ -2,14 +2,27 @@ import { fetchAPI, postAPI, putAPI } from "../../../api";
 
 export const getInitialData = () => {
     return async dispatch => {
-        fetchAPI("/api/BatchRecipe").then(
+        await Promise.all([
+            fetchAPI("/api/Ingredient"),
+            fetchAPI("/api/BatchRecipe")
+
+        ]).then(
             response => {
+                let i = 0;
+                response.forEach(element => {
+                    console.log('sdsdsddfsfd')
+                    if (element.status !== 200) {
 
-                if (response.status !== 200) {
-
-                } else {
-                    dispatch({ type: "APPEND_BACK_END_BATCH", data: response.data })
-                }
+                    } else {
+                        if (i === 0) {
+                            dispatch({ type: "APPEND_BACK_END_INGREDIENT", data: element.data })
+                        }
+                        else {
+                            dispatch({ type: "APPEND_BACK_END_BATCH", data: element.data })
+                        }
+                        i++;
+                    }
+                });
             }
         )
     }

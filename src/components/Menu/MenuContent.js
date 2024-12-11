@@ -54,6 +54,11 @@ const mainListItems = [
         link: 'admin/historyimport'
     },
     {
+        text: 'Products',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/product'
+    },
+    {
         text: 'Batch Recipe',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/batch-recipe'
@@ -70,10 +75,11 @@ const mainListItems = [
         link: 'admin/ingredient'
     },
     {
-        text: 'Products',
+        text: 'Spoiled Ingredient',
         icon: <AssignmentRoundedIcon />,
-        link: 'admin/product'
+        link: 'admin/spoiled-ingredient'
     },
+
     {
         text: 'Product Categories',
         icon: <AssignmentRoundedIcon />,
@@ -82,7 +88,7 @@ const mainListItems = [
     {
         text: 'Archives',
         icon: <AssignmentRoundedIcon />,
-        link: 'admin/archives'
+        link: 'admin/store-ingredient'
     },
     {
         text: 'Menu ',

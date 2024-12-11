@@ -21,32 +21,27 @@ import { getInitialData } from "../../../../redux/actions/menuDetail";
 import '../../../../css/backend/menu/index.css'
 import { ClassNames } from "@emotion/react";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchAPI } from "../../../../api";
 
 
-export default function MenuDetail({ menu }) {
+
+export default function MenuDetail(props) {
     const [detailRows, setDetailRows] = useState([]);
     const [openDetail, setOpenDetail] = useState(false);
-    const dataMenuDetail = useSelector(state => state.dataMenuDetail.data)
-    const dispatch = useDispatch()
-    useEffect(() => {
-        console.log("change")
-        dispatch(getInitialData(menu.menu_ID))
-
-    }, [dispatch, menu.menu_ID])
-
-    useEffect(() => {
-        if (dataMenuDetail) {
-            setDetailRows(dataMenuDetail);
-        }
-    }, [dataMenuDetail, menu.menu_ID]);
 
 
+    const handleClickOpenDetail = async () => {
+        let result = await fetchAPI(`/api/MenuDetail?MenuID=${props.menuID}`);
+        console.log(result)
+        setDetailRows(result.data)
+        setOpenDetail(true)
+    }
     return (
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
                     sx={{ width: '80px', bgcolor: '#000000' }}
-                    onClick={() => setOpenDetail(true)}
+                    onClick={() => handleClickOpenDetail()}
                 >
                     Detail
                 </Button>
@@ -75,7 +70,7 @@ export default function MenuDetail({ menu }) {
                                     {detailRows.map((row) => (
                                         <TableRow
                                             className="border-detail-table"
-                                            key={row.name}
+                                            key={row.setup_ID}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell align="center" component="th" scope="row" sx={{ width: 300, height: 100 }}>

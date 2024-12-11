@@ -28,7 +28,6 @@ export const getInitialData = () => {
                 if (response.status !== 200) {
                     //dispatch({ type: "SHOW_ERROR_API", message: result.message })
                 } else {
-                    console.log(response)
                     dispatch({ type: "APPEND_BACK_END_PRODUCT", data: response.data })
                 }
             }
@@ -37,7 +36,6 @@ export const getInitialData = () => {
 }
 
 export const addData = (data) => {
-    console.log(data)
     return async dispatch => {
         postAPI("/api/Product", data).then(
             response => {

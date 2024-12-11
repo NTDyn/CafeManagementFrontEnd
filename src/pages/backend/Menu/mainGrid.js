@@ -11,7 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function MainGrid() {
     const [dataDetail, setDataDetail] = React.useState({
-        "menuName": "123"
+        "menu_ID": 1,
+        "product_ID": 0,
+        "product": []
     });
     const [openModal, setOpenModal] = React.useState(false);
 

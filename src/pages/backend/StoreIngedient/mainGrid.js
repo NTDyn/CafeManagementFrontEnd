@@ -8,7 +8,7 @@ import ModalDetail from './modalDetail';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getInitialData } from "../../../redux/actions/ingredient"
-import { getInitialData as getDataBatch} from '../../../redux/actions/storeIngedient';
+import { getInitialData as getDataBatch } from '../../../redux/actions/storeIngedient';
 import { Button } from '@mui/joy';
 
 export default function MainGrid() {
@@ -17,7 +17,7 @@ export default function MainGrid() {
     const [dataModalDetail, setDataModalDetail] = React.useState({
         "type": 1,
         'quantity': 0,
-        'unit':0,
+        'unit': 0,
         'ingredient_ID': 0,
         'createdDate': '2024-12-01'
     })
@@ -25,9 +25,9 @@ export default function MainGrid() {
     const dispatch = useDispatch();
     const ingredients = useSelector(state => state.dataIngredient.data);
     const dataStore = useSelector(state => state.dataStore.data);
-    React.useEffect(async () => {
-        await dispatch(getInitialData());
-         dispatch(getDataBatch());
+    React.useEffect(() => {
+        dispatch(getInitialData());
+        dispatch(getDataBatch());
     }, [dispatch])
 
     const showDetail = (_data) => {
