@@ -15,6 +15,8 @@ import Menu from './pages/backend/Menu/index';
 import BasicTabs from './pages/backend/RequestImport/RequestPage';
 import RequestImport from './pages/backend/RequestImport';
 import Request from './pages/backend/CreateRequestImport/Index';
+import FormRequest from './pages/backend/CreateRequestImport/AddRequest';
+import ModalForm from './pages/backend/CreateRequestImport/AddRequest';
 const App = () => {
   return (
     <>
@@ -25,50 +27,55 @@ const App = () => {
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             <Route path="/" element={
-              <ProtectedRoute role={1}>
+              <ProtectedRoute role={5}>
                 <Home />
               </ProtectedRoute>
 
             } />
             <Route path="/admin/product" element={
-              <ProtectedRoute role={2}>
+              <ProtectedRoute role={6}>
                 <Product />
               </ProtectedRoute>
             } />
             <Route path="/admin/warehouse" element={
-              <ProtectedRoute role={3}>
+              <ProtectedRoute role={8}>
                 <Warehouse />
               </ProtectedRoute>
             } />
             <Route path="/admin/productCategory" element={
-              <ProtectedRoute role={4}>
+              <ProtectedRoute role={9}>
                 <ProductCategory />
               </ProtectedRoute>
             } />
             <Route path="/admin/suppliers" element={
-              <ProtectedRoute role={5}>
+              <ProtectedRoute role={10}>
                 <Supplier />
               </ProtectedRoute>
 
             } />
             <Route path="/admin/ingredientCategory" element={
-              <ProtectedRoute role={6}>
+              <ProtectedRoute role={11}>
                 <IngredientCategory />
               </ProtectedRoute>
             } />
             <Route path="/admin/ingredient" element={
-              <ProtectedRoute role={7}>
+              <ProtectedRoute role={12}>
                 <Ingredient />
               </ProtectedRoute>
             } />
             <Route path="/admin/menu" element={
-              <ProtectedRoute role={8}>
+              <ProtectedRoute role={13}>
                 <Menu />
               </ProtectedRoute>} />
               <Route path="/admin/import" element={
-              <ProtectedRoute role={"admin_menu"}>
+              <ProtectedRoute role={14}>
                 <Request />
               </ProtectedRoute>} />
+
+              <Route path="/admin/historyimport" element={
+              <ProtectedRoute role={14}>
+                <RequestImport/>
+              </ProtectedRoute>}/>
              
               
           </Routes>

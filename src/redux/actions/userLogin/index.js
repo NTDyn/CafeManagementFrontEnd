@@ -12,6 +12,7 @@ export const login = async (_data) => {
                     dispatch({ type: "API_SUCCESS", message: response.message, status: response.status, data: response.data })
                     dispatch({ type: "LOGIN_SUCCESS", isAuthenticated: true, roles: roles, userName: response.data.staff_FullName });
                     sessionStorage.setItem("authToken", "user-authentication-token");
+                    sessionStorage.setItem("userName",response.data.staff_UserName);
                 }
                 if (response.status !== 200) {
                     dispatch({ type: "API_FAILURE", message: response.message, status: response.status, data: response.data })
