@@ -18,7 +18,7 @@ export const getMenu = (_id = -1) => {
             dispatch({ type: "API_FAILURE", status: '', message: '' });
           } else {
             dispatch({ type: "API_SUCCESS", status: '', message: '' });
-            dispatch({ type: types[i], data: result });
+            dispatch({ type: types[i], data: result.data });
           }
           i++;
         }

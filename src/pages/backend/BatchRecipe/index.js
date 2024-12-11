@@ -36,7 +36,7 @@ export default function Dashboard(props) {
                         }}
                     >
                         <Header
-                            pageName="Menus"
+                            pageName="Batch Recipe"
                         />
                         <MainGrid />
                     </Stack>

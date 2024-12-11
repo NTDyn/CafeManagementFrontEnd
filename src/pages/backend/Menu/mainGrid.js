@@ -6,15 +6,22 @@ import Table from './tableMenu';
 import Modal from './modal';
 import { Button } from '@mui/material';
 import AddMenu from './addMenu';
+import { getMenu } from '../../../redux/actions/menu/index';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function MainGrid() {
     const [dataDetail, setDataDetail] = React.useState({
         "menuName": "123"
     });
     const [openModal, setOpenModal] = React.useState(false);
-    const update = (_data) => {
 
-    }
+    const dataMenu = useSelector(state => state.dataMenu.data);
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        dispatch(getMenu())
+    }, [dispatch]);
+
     return (
         <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
             <Grid
@@ -26,7 +33,6 @@ export default function MainGrid() {
                 <Modal
                     data={dataDetail}
                     openModal={openModal}
-                    update={update}
                 />
 
             </Grid>
@@ -48,6 +54,7 @@ export default function MainGrid() {
                         <Table
                             setDataDetail={setDataDetail}
                             setOpenModal={setOpenModal}
+                            dataMenu={dataMenu}
                         />
                     </Grid>
 

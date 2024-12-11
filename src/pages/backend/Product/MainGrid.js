@@ -8,6 +8,8 @@ import Copyright from '../../../components/Footer/Copyright';
 import CustomizedDataGrid from './TableProduct.js';
 import StatCard from './StatCard';
 import AddProduct from './AddProduct.js'
+import { useDispatch, useSelector } from 'react-redux';
+import { getInitialData as dataProduct } from '../../../redux/actions/products/index.js';
 
 const data = [
     {
@@ -43,6 +45,11 @@ const data = [
 ];
 
 export default function MainGrid() {
+    const listProducts = useSelector(state => state.dataProduct.data);
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        dispatch(dataProduct());
+    }, [dispatch])
     return (
         <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
             {/* cards */}
@@ -65,7 +72,11 @@ export default function MainGrid() {
             <Grid>
                 <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
                     <span>Details</span>
-
+                    <Box>
+                        <Button>
+                            Query All
+                        </Button>
+                    </Box>
                     <span>
                         <AddProduct />
                     </span>
@@ -75,7 +86,9 @@ export default function MainGrid() {
 
             <Grid container spacing={2} columns={12}>
                 <Grid size={{ md: 12, lg: 12 }}>
-                    <CustomizedDataGrid />
+                    <CustomizedDataGrid
+                        listProducts={listProducts}
+                    />
                 </Grid>
             </Grid>
             <Copyright sx={{ my: 4 }} />

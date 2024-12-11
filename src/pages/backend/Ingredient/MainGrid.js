@@ -5,7 +5,8 @@ import Button from '@mui/material/Button';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import Copyright from '../../../components/Footer/Copyright';
 import TableIngredient from './TableIngredient';
-import AddIngredient from './AddIngredient'
+import AddIngredient from './AddIngredient';
+import AddRecipe from './AddRecipe'
 
 const handleNext = () => {
     console.log("button add")
@@ -21,7 +22,13 @@ export default function MainGrid() {
                 columns={12}
                 sx={{ justifyContent: "flex-end", margin: "40px 40px 40px auto" }}
             >
-                <AddIngredient />
+                <Grid size={6}>
+                    <AddRecipe />
+                </Grid>
+                <Grid size={6} sx={{ display: 'flex', justifyContent: 'end' }}>
+                    <AddIngredient />
+                </Grid>
+
 
             </Grid>
             <Grid container spacing={2} columns={12}>

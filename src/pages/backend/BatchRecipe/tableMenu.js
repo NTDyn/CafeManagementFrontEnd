@@ -12,7 +12,7 @@ const TableMenu = (props) => {
     const formatData = () => {
         let data = [];
         props.batchRecipes.forEach(element => {
-            let ingredient = props.ingredients.find(x=>x.ingredient_ID == element.ingredientResult_ID);
+            let ingredient = props.ingredients.find(x => x.ingredient_ID == element.ingredientResult_ID);
             data.push({
                 batchRecipe_ID: element.batchRecipe_ID,
                 ingredientResult_ID: element.ingredientResult_ID,
@@ -22,11 +22,11 @@ const TableMenu = (props) => {
                 ingredient_Name: ingredient.ingredient_Name,
                 isActive: element.isActive,
                 createdDate: element.createdDate,
-                details : element.details,
+                details: element.details,
                 ingredient: ingredient,
                 id: element.id
             })
-            
+
         });
         setDataTable(data);
     }

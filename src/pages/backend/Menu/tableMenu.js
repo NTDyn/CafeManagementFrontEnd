@@ -8,13 +8,8 @@ import UpdateMenu from "./updateMenu";
 import MenuDetail from "./MenuDetail/menuDetail";
 
 
-const TableMenu = () => {
-    const data = useSelector(state => state.dataMenu.data);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getMenu())
-    }, [dispatch]);
+const TableMenu = (props) => {
+    console.log(props.dataMenu)
 
     let columns = [
         {
@@ -85,7 +80,7 @@ const TableMenu = () => {
 
             autoHeight
             checkboxSelection
-            rows={data}
+            rows={props.dataMenu}
             columns={columns}
             getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'

@@ -8,13 +8,14 @@ import { Box } from "@mui/material";
 import { NumericFormat } from 'react-number-format';
 import Loading from '../../../components/Loading/loading';
 
-const useCustomizedDataGrid = () => {
-  const data = useSelector(state => state.dataProduct.data);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getInitialData())
+const useCustomizedDataGrid = (props) => {
+  const data = props.listProducts
 
-  }, [dispatch])
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getInitialData())
+
+  // }, [dispatch])
 
   const listProductCategory = useSelector(state => state.dataProductCategory.data);
 
