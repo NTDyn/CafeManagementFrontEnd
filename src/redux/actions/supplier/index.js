@@ -27,7 +27,7 @@ export const getIngredientActive=()=>{
 export const getIngredientId=(id)=>{
     
     // console.log(API_URL_BASE_SUPPLIER+"/Ingredient/",id)
-    return axios.get(API_URL_BASE_SUPPLIER+"/Ingredient"+"/"+id);
+    return axios.get(API_URL_BASE_SUPPLIER+"/Ingredient/"+id);
 }
 
 //staff
@@ -64,3 +64,4 @@ export const GetStaffById=(id)=>{
 export const getImportDetail=(id)=>{
     return axios.get(API_URL_BASE_SUPPLIER+"/RequestImport/detaillink?id="+id);
 }
+
