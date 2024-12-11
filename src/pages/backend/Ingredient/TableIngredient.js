@@ -6,15 +6,9 @@ import UpdateIngredient from "./UpdateIngredient";
 import DetailIngredient from "./DetailIngredient"
 import { Box } from "@mui/material";
 
-const TableIngredient = () => {
-    const data = useSelector(state => state.dataIngredient.data);
-
+const TableIngredient = (props) => {
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getInitialData())
-    }, [dispatch]);
-
+    const dataIngredient = props.dataIngredient;
     let columns = [
         {
             field: "id",
@@ -84,7 +78,7 @@ const TableIngredient = () => {
 
             autoHeight
             checkboxSelection
-            rows={data}
+            rows={dataIngredient}
             columns={columns}
             getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'

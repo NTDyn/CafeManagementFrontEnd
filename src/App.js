@@ -69,18 +69,27 @@ const App = () => {
                 <Menu />
               </ProtectedRoute>} />
             <Route path="/admin/import" element={
-              <ProtectedRoute role={"9"}>
+              <ProtectedRoute role={9}>
                 <Request />
               </ProtectedRoute>} />
-            <Route path="/admin/batch-recipe" element={
-              <BatchRecipe />
-            } />
+
 
             <Route path="/admin/customer" element={
               <ProtectedRoute role={10}>
                 <Customer />
               </ProtectedRoute>} />
 
+            {/* <Route path="/admin/archives" element={
+              <ProtectedRoute role = {11}>
+                <Archives />
+              </ProtectedRoute>} /> */}
+
+            <Route path="/admin/batch-recipe" element={
+              <ProtectedRoute role={12}>
+                <BatchRecipe />
+              </ProtectedRoute>
+
+            } />
 
           </Routes>
         </Router>

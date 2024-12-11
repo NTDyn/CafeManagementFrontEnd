@@ -34,6 +34,11 @@ const mainListItems = [
         link: 'admin/customer'
     },
     {
+        text: 'Warehouse',
+        icon: <InventoryIcon />,
+        link: 'admin/warehouse'
+    },
+    {
         text: 'Suppliers',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/suppliers'
@@ -49,20 +54,16 @@ const mainListItems = [
         link: 'admin/historyimport'
     },
     {
-        text: 'Warehouse',
-        icon: <InventoryIcon />,
-        link: 'admin/warehouse'
+        text: 'Batch Recipe',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/batch-recipe'
     },
     {
         text: 'Ingredient Category',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/ingredientCategory'
     },
-    {
-        text: 'Batch Recipe',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/batch-recipe'
-    },
+
     {
         text: 'Ingredients',
         icon: <AssignmentRoundedIcon />,
@@ -77,6 +78,11 @@ const mainListItems = [
         text: 'Product Categories',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/productCategory'
+    },
+    {
+        text: 'Archives',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/archives'
     },
     {
         text: 'Menu ',

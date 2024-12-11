@@ -8,7 +8,6 @@ import Input from '@mui/joy/Input';
 import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from "react-redux";
 import { getInitialData } from "../../../redux/actions/productCategory";
@@ -22,7 +21,6 @@ import Grid from '@mui/material/Grid2';
 import withReactContent from 'sweetalert2-react-content';
 import '../../../css/backend/product/index.css'
 import DeleteIcon from '@mui/icons-material/Delete';
-import { NumericFormat } from 'react-number-format';
 import CancelIcon from '@mui/icons-material/Close';
 import {
     Unstable_NumberInput as BaseNumberInput,
