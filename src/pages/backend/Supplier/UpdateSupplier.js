@@ -18,8 +18,7 @@ import Grid from '@mui/material/Grid2';
 import { Box } from "@mui/material";
 import { updateSupplier } from "../../../redux/actions/supplier";
 import dayjs from "dayjs";
-
-function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
+function UpdateSupplier({ onUpdate,supplier_ID, supplier_Name, buttonLabel, isActive }) {
     const [open, setOpen] = useState(false);
     const [supplierID, setSupplierID] = useState(supplier_ID);
     const [supplierName, setSupplierName] = useState(supplier_Name);
@@ -38,7 +37,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
         }
     }, [dataSupplier, supplierID]);
 
-    const UpdateInformation = () => {
+    const UpdateInformation = async() => {
 
         let data = {
             "supplier_ID": supplierID,
@@ -48,11 +47,12 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
         updateSupplier(data).then((res)=>{
             console.log(res.data.data);
         })
+        onUpdate();
 
         
     };
 
-    const UpdateStatus = () => {
+    const UpdateStatus = async() => {
 
         let data = {
             "supplier_ID": supplier_ID,
@@ -62,6 +62,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
         updateSupplier(data).then((res)=>{
             console.log(res.data.data);
         })
+        onUpdate()
        
     }
 
@@ -75,7 +76,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateStatus();
-                    window.location.reload()
+                  
                     Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -92,7 +93,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateStatus();
-                    window.location.reload()
+                   
                     Swal.fire("Successfully", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -100,6 +101,7 @@ function UpdateSupplier({ supplier_ID, supplier_Name, buttonLabel, isActive }) {
 
             })
         }
+        onUpdate();
 
     }
 

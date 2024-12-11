@@ -15,8 +15,13 @@ import Menu from './pages/backend/Menu/index';
 import BasicTabs from './pages/backend/RequestImport/RequestPage';
 import RequestImport from './pages/backend/RequestImport';
 import Request from './pages/backend/CreateRequestImport/Index';
+
+import FormRequest from './pages/backend/CreateRequestImport/AddRequest';
+import ModalForm from './pages/backend/CreateRequestImport/AddRequest';
+
 import BatchRecipe from './pages/backend/BatchRecipe';
 import Customer from './pages/backend/Customer/index'
+
 const App = () => {
   return (
     <>
@@ -80,6 +85,10 @@ const App = () => {
               <ProtectedRoute role={10}>
                 <Customer />
               </ProtectedRoute>} />
+                <Route path="/admin/historyimport" element={
+              <ProtectedRoute role={14}>
+                <RequestImport/>
+              </ProtectedRoute>}/>
 
 
           </Routes>

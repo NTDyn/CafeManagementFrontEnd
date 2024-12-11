@@ -1,29 +1,36 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Pagination } from '@mui/material';
 
-const TableApproveRequest = ({ data, onAction, currentPage, totalPages, onPageChange,onDetail}) => {
+const TableApproveRequest = ({ data,  onActionAccept,onActionDetail,currentPage, totalPages, onPageChange,onDetail}) => {
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+       <Table sx={{ minWidth: 700 }}>
         <TableHead>
           <TableRow>
-            <TableCell>Header</TableCell>
-            <TableCell>Content</TableCell>
+            <TableCell>Num.</TableCell>
+            <TableCell>Total</TableCell>
+            <TableCell>Date Create</TableCell>
             <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row,index) => (
-            <TableRow key={row.totalPrice}>
+            <TableRow key={row.linkID}>
+            <TableCell>{row.link_ID}</TableCell>
+            <TableCell>{row.totalPrice}</TableCell>
               <TableCell>{row.createdDate}</TableCell>
-              <TableCell>{row.modifiedDate}</TableCell>
+              
               <TableCell>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, auto)', gap: '8px' }}>
   
-  <Button variant="contained" color="primary" onClick={() => onAction(row.id)}>
+  <Button variant="contained" color="primary" onClick={() => onActionDetail(row.link_ID)}>
     Detail
   </Button>
+  <Button variant="contained" color="primary" onClick={() => onActionAccept(row.link_ID)}>
+    Check
+  </Button>
+  
 </div>
               </TableCell>
             </TableRow>

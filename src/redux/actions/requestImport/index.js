@@ -13,3 +13,9 @@ export const getListRequestDeny=()=>{
 export const getListRequestCheck=()=>{
     return axios.get(API_URL_BASE_REQUEST+"/RequestImport/3");
 }
+export const ChangeStatusRequest=(data)=>{
+    return axios.put(API_URL_BASE_REQUEST+"/RequestImport",data);
+}
+export const UpdateDetailInteredientandSupplier=(data)=>{
+    return axios.put(API_URL_BASE_REQUEST+"/RequestImport/updatedetail",data);
+}

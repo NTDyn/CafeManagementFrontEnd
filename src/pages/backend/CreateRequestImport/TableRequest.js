@@ -4,16 +4,21 @@ import '../../../css/backend/product/index.css';
 import { useState } from "react";
 import { getListRequestStart } from "../../../redux/actions/requestImport";
 import { Box } from "@mui/material";
+import UpdateSupplier from "./UpdateRequest";
 
 
 const TableRequest = (async) => {
-    const [suppliers,setSuppliers]=useState([]);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [request,setRequest]=useState([]);
+    const handleStateChange = () => {
+        setRefreshKey((prev) => prev + 1); // Tăng giá trị trigger để reload dữ liệu
+    };
     useEffect(()=>{
         getListRequestStart().then((res)=>{
-            setSuppliers(res.data.data);
+            setRequest(res.data.data);
             console.log(res.data.data);
           })
-    },[]);
+    },[refreshKey]);
     
     let columns = [
         {
@@ -32,18 +37,6 @@ const TableRequest = (async) => {
             align: 'center',
             flex: 1,
             minWidth: 100
-        },
-        {
-            field: "isActive",
-            headerName: 'Status',
-            headerAlign: 'center',
-            align: 'center',
-            flex: 1,
-            minWidth: 100,
-            renderCell: (params) => {
-                const supplier = params.row;
-                return supplier.isActive ? "Using" : "Unused";
-            }
         },
         {
             field: "features",
@@ -69,12 +62,13 @@ const TableRequest = (async) => {
                         }}
                     >
                         
-                    {/* <UpdateSupplier
-                        supplier_ID={supplier.supplier_ID}
-                        supplier_Name={supplier.supplier_Name}
-                        buttonLabel={supplier.isActive ? " Lock " : "Unlock"}
-                        isActive={supplier.isActive ? false: true}
-                    /> */}
+                    <UpdateSupplier
+                    onUpdate={handleStateChange}
+                        supplier_ID={params.row.link_ID}
+                        // supplier_Name={supplier.supplier_Name}
+                        // buttonLabel={supplier.isActive ? " Lock " : "Unlock"}
+                        // isActive={supplier.isActive ? false: true}
+                    />
                     </Box>
 
                 )
@@ -90,9 +84,9 @@ const TableRequest = (async) => {
 
             autoHeight
             checkboxSelection
-            rows={suppliers}
+            rows={request}
             columns={columns}
-            getRowId={(row) => row.supplier_ID}
+            getRowId={(row) => row.link_ID}
             getRowClassName={(params) =>
                
                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
