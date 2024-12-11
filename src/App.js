@@ -16,6 +16,7 @@ import BasicTabs from './pages/backend/RequestImport/RequestPage';
 import RequestImport from './pages/backend/RequestImport';
 import Request from './pages/backend/CreateRequestImport/Index';
 import BatchRecipe from './pages/backend/BatchRecipe';
+import Customer from './pages/backend/Customer/index'
 const App = () => {
   return (
     <>
@@ -32,7 +33,7 @@ const App = () => {
 
             } />
             <Route path="/admin/product" element={
-              
+
               <ProtectedRoute role={2}>
                 <Product />
               </ProtectedRoute>
@@ -67,14 +68,20 @@ const App = () => {
               <ProtectedRoute role={8}>
                 <Menu />
               </ProtectedRoute>} />
-              <Route path="/admin/import" element={
-              <ProtectedRoute role={"admin_menu"}>
+            <Route path="/admin/import" element={
+              <ProtectedRoute role={"9"}>
                 <Request />
               </ProtectedRoute>} />
-              <Route path="/admin/batch-recipe" element={
+            <Route path="/admin/batch-recipe" element={
               <BatchRecipe />
             } />
-              
+
+            <Route path="/admin/customer" element={
+              <ProtectedRoute role={10}>
+                <Customer />
+              </ProtectedRoute>} />
+
+
           </Routes>
         </Router>
       </UserProvider>

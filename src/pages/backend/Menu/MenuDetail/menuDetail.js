@@ -32,7 +32,7 @@ export default function MenuDetail({ menu }) {
 
         dispatch(getInitialData(menu.menu_ID))
 
-    }, [dispatch])
+    }, [dispatch, menu.menu_ID])
 
     useEffect(() => {
         if (dataMenuDetail) {
@@ -45,7 +45,7 @@ export default function MenuDetail({ menu }) {
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
-                    sx={{ width: '80px', bgcolor: '#a79c9c' }}
+                    sx={{ width: '80px', bgcolor: '#000000' }}
                     onClick={() => setOpenDetail(true)}
                 >
                     Detail
