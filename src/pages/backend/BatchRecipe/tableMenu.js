@@ -1,16 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getMenu } from "../../../redux/actions/menu";
 import { DataGrid } from '@mui/x-data-grid';
 import '../../../css/backend/product/index.css';
 import { Box } from "@mui/material";
-import UpdateMenu from "./updateMenu";
-import MenuDetail from "./MenuDetail/menuDetail";
 
 
 const TableMenu = (props) => {
-    console.log(props.dataMenu)
 
+    const [dataTable, setDataTable] = useState([]);
+    const formatData = () => {
+        let data = [];
+        props.batchRecipes.forEach(element => {
+            let ingredient = props.ingredients.find(x => x.ingredient_ID == element.ingredientResult_ID);
+            data.push({
+                batchRecipe_ID: element.batchRecipe_ID,
+                ingredientResult_ID: element.ingredientResult_ID,
+                quality: element.quality,
+                unit: element.unit,
+                staff_ID: element.staff_ID,
+                ingredient_Name: ingredient.ingredient_Name,
+                isActive: element.isActive,
+                createdDate: element.createdDate,
+                details: element.details,
+                ingredient: ingredient,
+                id: element.id
+            })
+
+        });
+        setDataTable(data);
+    }
+    useEffect(() => {
+        formatData()
+    }, [props.batchRecipes]);
+    console.log(dataTable);
     let columns = [
         {
             field: "id",
@@ -21,8 +44,24 @@ const TableMenu = (props) => {
             minWidth: 100
         },
         {
-            field: "menu_Name",
-            headerName: 'Menu Name',
+            field: "ingredient_Name",
+            headerName: 'Name',
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,
+            minWidth: 100
+        },
+        {
+            field: "quality",
+            headerName: 'Quantity',
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,
+            minWidth: 100
+        },
+        {
+            field: "unit",
+            headerName: 'Unit',
             headerAlign: 'center',
             align: 'center',
             flex: 1,
@@ -59,16 +98,6 @@ const TableMenu = (props) => {
                             overflow: "hidden", // Đảm bảo không bị tràn
                         }}
                     >
-                        <UpdateMenu
-                            menuID={params.row.id}
-                            menuName={params.row.categoryName}
-                            buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                            isActive={params.row.isActive ? false : true}
-
-                        />
-                        <MenuDetail
-                            menu={params.row}
-                        />
                     </Box>
 
                 )
@@ -77,10 +106,9 @@ const TableMenu = (props) => {
     ];
     return (
         <DataGrid
-
             autoHeight
             checkboxSelection
-            rows={props.dataMenu}
+            rows={dataTable}
             columns={columns}
             getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'

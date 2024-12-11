@@ -15,8 +15,13 @@ import Menu from './pages/backend/Menu/index';
 import BasicTabs from './pages/backend/RequestImport/RequestPage';
 import RequestImport from './pages/backend/RequestImport';
 import Request from './pages/backend/CreateRequestImport/Index';
+
 import FormRequest from './pages/backend/CreateRequestImport/AddRequest';
 import ModalForm from './pages/backend/CreateRequestImport/AddRequest';
+
+import BatchRecipe from './pages/backend/BatchRecipe';
+import Customer from './pages/backend/Customer/index'
+
 const App = () => {
   return (
     <>
@@ -27,57 +32,65 @@ const App = () => {
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             <Route path="/" element={
-              <ProtectedRoute role={5}>
+              <ProtectedRoute role={1}>
                 <Home />
               </ProtectedRoute>
 
             } />
             <Route path="/admin/product" element={
-              <ProtectedRoute role={6}>
+
+              <ProtectedRoute role={2}>
                 <Product />
               </ProtectedRoute>
             } />
             <Route path="/admin/warehouse" element={
-              <ProtectedRoute role={8}>
+              <ProtectedRoute role={3}>
                 <Warehouse />
               </ProtectedRoute>
             } />
             <Route path="/admin/productCategory" element={
-              <ProtectedRoute role={9}>
+              <ProtectedRoute role={4}>
                 <ProductCategory />
               </ProtectedRoute>
             } />
             <Route path="/admin/suppliers" element={
-              <ProtectedRoute role={10}>
+              <ProtectedRoute role={5}>
                 <Supplier />
               </ProtectedRoute>
 
             } />
             <Route path="/admin/ingredientCategory" element={
-              <ProtectedRoute role={11}>
+              <ProtectedRoute role={6}>
                 <IngredientCategory />
               </ProtectedRoute>
             } />
             <Route path="/admin/ingredient" element={
-              <ProtectedRoute role={12}>
+              <ProtectedRoute role={7}>
                 <Ingredient />
               </ProtectedRoute>
             } />
             <Route path="/admin/menu" element={
-              <ProtectedRoute role={13}>
+              <ProtectedRoute role={8}>
                 <Menu />
               </ProtectedRoute>} />
-              <Route path="/admin/import" element={
-              <ProtectedRoute role={14}>
+            <Route path="/admin/import" element={
+              <ProtectedRoute role={"9"}>
                 <Request />
               </ProtectedRoute>} />
+            <Route path="/admin/batch-recipe" element={
+              <BatchRecipe />
+            } />
 
-              <Route path="/admin/historyimport" element={
+            <Route path="/admin/customer" element={
+              <ProtectedRoute role={10}>
+                <Customer />
+              </ProtectedRoute>} />
+                <Route path="/admin/historyimport" element={
               <ProtectedRoute role={14}>
                 <RequestImport/>
               </ProtectedRoute>}/>
-             
-              
+
+
           </Routes>
         </Router>
       </UserProvider>

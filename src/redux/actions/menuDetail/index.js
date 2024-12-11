@@ -8,7 +8,7 @@ export const getInitialData = (menuID) => {
             if (response.status !== 200) {
                 dispatch({ type: "SHOW_ERROR_API", message: response.message });
             } else {
-
+                console.log(response.data)
                 dispatch({ type: "APPEND_BACK_END_MENU_DETAIL", data: response.data });
             }
         } catch (error) {

@@ -141,7 +141,6 @@ export default function AddProduct() {
             "productRecipe": recipeRows,
             "isActive": true,
         }
-        console.log("pImage: " + data)
         dispatch(addDataProduct(data));
     };
 

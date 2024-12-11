@@ -11,6 +11,9 @@ import dataMenu from './menu';
 import dataMenuDetail from './menuDetail/index'
 import apiRequestReducer from './apiResult';
 import BasicTabs from '../../pages/backend/RequestImport/RequestPage';
+import dataBatch from './batchRecipe'
+import dataCustomer from './customer/index';
+import dataCustomerLevel from './customerLevel/index'
 
 const rootReducer = combineReducers({
 
@@ -25,8 +28,9 @@ const rootReducer = combineReducers({
     dataProductRecipe: dataProductRecipe,
     dataMenu: dataMenu,
     dataMenuDetail: dataMenuDetail,
-
-
+    dataBatch: dataBatch,
+    dataCustomer: dataCustomer,
+    dataCustomerLevel: dataCustomerLevel,
 });
 
 export default rootReducer;

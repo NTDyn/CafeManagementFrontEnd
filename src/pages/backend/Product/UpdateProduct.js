@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import Button from '@mui/joy/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,9 +11,8 @@ import Add from '@mui/icons-material/Add';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from "react-redux";
-import { getInitialData } from "../../../redux/actions/productCategory";
-import { updateData, getInitialData as dataProduct } from "../../../redux/actions/products";
-import { getInitialData as dataIngredient } from "../../../redux/actions/ingredient"
+import { getInitialData } from "../../../redux/actions/products";
+import { updateData } from "../../../redux/actions/products";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box, Modal } from "@mui/material";
@@ -47,17 +46,26 @@ import { ModalDialog } from "@mui/joy";
 
 export default function UpdateProduct({ product, buttonLabel }) {
 
-    const dispatchCategory = useDispatch()
-    useEffect(() => {
-        dispatchCategory(getInitialData())
-    }, [dispatchCategory])
-
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(dataProduct())
+        dispatch(getInitialData())
     }, [dispatch])
 
-    const initialRows = [];
+    const listIngredient = useSelector((state) => state.dataIngredient.data);
+    const initialRows = useMemo(() => {
+
+        if (product.productRecipe) {
+            return product.productRecipe.map(element => {
+                const ingredient = listIngredient.find(ing => ing.ingredient_ID === element.ingredient_ID);
+                return {
+                    ...element,
+                    id: element.recipe_ID,
+                    ingredientName: ingredient ? ingredient.ingredient_Name : null // Nếu không tìm thấy ingredient thì trả về null
+                };
+            });
+        }
+        return [];
+    }, [product.productRecipe, listIngredient]);;
     const [recipeRows, setRecipeRows] = useState(initialRows);
     const [currentId, setCurrentId] = useState(1); // Bắt đầu từ ID 1
     const [rowModesModel, setRowModesModel] = useState({});
@@ -70,10 +78,8 @@ export default function UpdateProduct({ product, buttonLabel }) {
     const [categoryName, setCategoryName] = useState(listProductCategory?.find(cate => cate.category_ID === productCategory)?.category_Name || '');
     const [productImage, setProductImage] = useState(product.product_Image);
     const [baseURL, setBaseURL] = useState(null);
-    const [isActive, setIsActive] = useState(product.isActive);
-    const [recipeIngredientID, setRecipeIngredientID] = useState(0);
-    const [recipeQuantity, setRecipeQuantity] = useState(0);
-    const [recipeUnit, setRecipeUnit] = useState(0);
+
+
 
     const listProduct = useSelector(state => state.dataProduct.data)
     const existingProduct = () => {
@@ -84,10 +90,8 @@ export default function UpdateProduct({ product, buttonLabel }) {
             listProduct => listProduct.product_Name === productName
         )
     }
-    const listIngredient = useSelector(state => state.dataIngredient.data)
-    useEffect(() => {
-        dispatch(dataIngredient())
-    }, [dispatch])
+
+
 
     const checkListRecipe = () => {
         return recipeRows.find(
@@ -101,17 +105,20 @@ export default function UpdateProduct({ product, buttonLabel }) {
 
 
     const UpdateInformation = () => {
-
+        let img = null;
+        if (productImage !== product.product_Image) {
+            img = productImage
+        }
         let data = {
             "product_ID": product.product_ID,
             "product_Name": productName,
             "product_Category": productCategory,
             "price": productPrice,
             "point": productPoint,
-            "product_Image": productImage,
+            "product_Image": img,
             "productRecipe": recipeRows,
         }
-
+        console.log(data)
         dispatch(updateData(data));
 
     };
@@ -119,7 +126,8 @@ export default function UpdateProduct({ product, buttonLabel }) {
 
         let data = {
             "product_ID": product.product_ID,
-            "isActive": isActive ? false : true
+            "isActive": !product.isActive,
+            "productRecipe": []
         }
         dispatch(updateData(data));
 
@@ -135,7 +143,7 @@ export default function UpdateProduct({ product, buttonLabel }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateIsActive()
-                    setIsActive(true)
+
                     Swal.fire("Saved!", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -151,7 +159,7 @@ export default function UpdateProduct({ product, buttonLabel }) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     UpdateIsActive()
-                    setIsActive(false)
+
                     Swal.fire("Saved!", "", "success");
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");

@@ -18,7 +18,7 @@ export const getMenu = (_id = -1) => {
             dispatch({ type: "API_FAILURE", status: '', message: '' });
           } else {
             dispatch({ type: "API_SUCCESS", status: '', message: '' });
-            dispatch({ type: types[i], data: result });
+            dispatch({ type: types[i], data: result.data });
           }
           i++;
         }
@@ -60,8 +60,9 @@ export const updateData = (data) => {
           if (response.status !== 200) {
 
           } else {
-            dispatch({ type: "UPDATE_BACK_END_MENU", data: data });
-            console.log(data);
+            console.log(response.data);
+            dispatch({ type: "UPDATE_BACK_END_MENU", data: response.data });
+
           }
         }
       )

@@ -59,6 +59,11 @@ const mainListItems = [
         link: 'admin/ingredientCategory'
     },
     {
+        text: 'Batch Recipe',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/batch-recipe'
+    },
+    {
         text: 'Ingredients',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/ingredient'

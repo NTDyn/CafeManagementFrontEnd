@@ -1,4 +1,4 @@
-import { getMenu, updateData } from "../../../redux/actions/menu";
+import { getInitialData, updateData } from "../../../../redux/actions/customerLevel";
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2'
@@ -18,40 +18,46 @@ import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 
-function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
-    const [active, setIsActive] = useState(isActive)
+function UpdateCustomerLevel({ customerLevel, buttonLabel }) {
     const [open, setOpen] = useState(false);
-    const [nameChange, setNameChange] = useState(null);
-    const dataMenu = useSelector(state => state.dataMenu.data)
+    const [isActive, setIsActive] = useState(customerLevel.isActive)
+    const [pointApply, setPointApply] = useState(customerLevel.pointApply)
+    const [nameChange, setNameChange] = useState(customerLevel.level_Name);
+    const dataCustomerLevel = useSelector(state => state.dataCustomerLevel.data)
 
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getMenu())
+        dispatch(getInitialData())
     }, [dispatch])
 
     const UpdateFunction = () => {
 
         let data = {
-
-            "menu_ID": menuID,
-            "menu_Name": nameChange,
-            "isActive": active
+            "level_ID": customerLevel.level_ID,
+            "level_Name": nameChange,
+            "pointApply": pointApply,
         }
-        console.log(data)
         dispatch(updateData(data))
     };
 
+    const UpdateIsActive = () => {
+
+        let data = {
+            "level_ID": customerLevel.level_ID,
+            "isActive": isActive ? false : true
+        }
+        dispatch(updateData(data))
+    };
     const confirmSwal = () => {
         if (isActive === false) {
             withReactContent(Swal).fire({
-                title: "Do you want to lock this menu?",
+                title: "Do you want to unlock this level?",
                 showDenyButton: true,
-                confirmButtonText: "Lock",
-                denyButtonText: `Don't lock`
+                confirmButtonText: "UnLock",
+                denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    setIsActive(false)
-                    UpdateFunction()
+                    UpdateIsActive()
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
@@ -60,14 +66,13 @@ function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
         }
         if (isActive === true) {
             withReactContent(Swal).fire({
-                title: "Do you want to unlock this menu?",
+                title: "Do you want to lock this level?",
                 showDenyButton: true,
-                confirmButtonText: "Unlock",
+                confirmButtonText: "Lock",
                 denyButtonText: `Cancel`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    setIsActive(true)
-                    UpdateFunction()
+                    UpdateIsActive()
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
                 }
@@ -77,33 +82,37 @@ function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
 
     }
 
-    const existingMenu = dataMenu.find(
-        dataProductCategory => dataProductCategory.category_Name === nameChange
+    const existingLevel = dataCustomerLevel.find(
+        data => data.level_Name === nameChange
     );
     const confirmChangeNameSwal = (e) => {
         e.preventDefault()
-        if (existingMenu) {
-            Swal.fire("Menu name is existing");
-        } else {
-            withReactContent(Swal).fire({
-                title: "Do you want to change name of menu?",
-                showDenyButton: true,
-                confirmButtonText: "Change",
-                denyButtonText: `Cancel`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    UpdateFunction();
-                } else if (result.isDenied) {
-                    Swal.fire("Changes are not saved", "", "info");
-                }
-
-            })
+        if (nameChange !== customerLevel.level_Name) {
+            if (existingLevel) {
+                Swal.fire("Level name is existing");
+                return
+            }
         }
+
+        withReactContent(Swal).fire({
+            title: "Do you want to change information of customer level?",
+            showDenyButton: true,
+            confirmButtonText: "Change",
+            denyButtonText: `Cancel`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                UpdateFunction();
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+
+        })
+
         handleClose()
     }
 
     const handleClose = () => {
-        setNameChange(null);
+
         setOpen(false);
     };
 
@@ -162,23 +171,31 @@ function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
 
             <Modal open={open} onClose={() => setOpen(false)}>
                 <ModalDialog>
-                    <DialogTitle>Change name of menu</DialogTitle>
+                    <DialogTitle>Change information of customer level</DialogTitle>
                     <DialogContent>Fill in the information.</DialogContent>
                     <form
                         onSubmit={confirmChangeNameSwal}
                     >
                         <Stack spacing={2}>
                             <FormControl>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>Name Level</FormLabel>
                                 <Input
                                     autoFocus
                                     required
-                                    name="nameMenu"
-                                    value={menuName}
+                                    name="nameLevel"
+                                    value={nameChange}
                                     onChange={(e) => setNameChange(e.target.value)}
                                 />
                             </FormControl>
-
+                            <FormControl>
+                                <FormLabel>Point Apply</FormLabel>
+                                <Input
+                                    required
+                                    name="pointApply"
+                                    value={pointApply}
+                                    onChange={(e) => setPointApply(e.target.value)}
+                                />
+                            </FormControl>
                             <Button
                                 type="submit"
 
@@ -194,6 +211,9 @@ function UpdateMenu({ menuID, menuName, buttonLabel, isActive }) {
     );
 };
 
+// DeleteCategory.propTypes = {
+//     categoryID: PropTypes.number.isRequired,
+// }
 
 
-export default UpdateMenu;
+export default UpdateCustomerLevel;

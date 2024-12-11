@@ -23,10 +23,9 @@ export const addData = (data) => {
             .then(
                 response => {
                     if (response.status !== 200) {
-                        //   dispatch({ type: "SHOW_ERROR_API", message: result.message })
+                        dispatch({ type: "SHOW_ERROR_API", message: response.message })
                     } else {
                         dispatch({ type: "ADD_BACK_END_PRODUCT_CATEGORY", data: data });
-                        console.log(data)
                     }
                 }
             )
@@ -40,14 +39,13 @@ export const addData = (data) => {
 
 export const updateData = (data) => {
     return async dispatch => {
-        putAPI("/api/ProductCategory/Update", data)
+        putAPI("/api/ProductCategory", data)
             .then(
                 response => {
                     if (response.status !== 200) {
 
                     } else {
                         dispatch({ type: "UPDATE_BACK_END_PRODUCT_CATEGORY", data: data });
-                        console.log(data);
                     }
                 }
             )

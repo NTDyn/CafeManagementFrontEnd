@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -70,9 +71,7 @@ export default function SignIn(props) {
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
     const [open, setOpen] = React.useState(false);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const apiResult = useSelector(state => state.apiRequestReducer);
+    
 
 
     const handleClickOpen = () => {
@@ -82,10 +81,12 @@ export default function SignIn(props) {
     const handleClose = () => {
         setOpen(false);
     };
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const apiResult = useSelector(state => state.apiRequestReducer);
     const HandleSubmit = async (event) => {
+        event.preventDefault();
         if (emailError || passwordError) {
-            event.preventDefault();
             return;
         }
         const email = document.getElementById('email');
@@ -94,25 +95,17 @@ export default function SignIn(props) {
             email: email.value,
             password: password.value
         }
-         try{
-            dispatch(await login(data))
-            if (apiResult?.status === 200) {
-              
-                navigate("/");
-                // event.preventDefault();
-                return;
-    
-            } else {
-                event.preventDefault();
+
+        try {
+            const response = await dispatch(login(data)); 
+            if (response.status === 200) {
+                navigate("/"); 
+            }else{
                 Swal.fire("Username or password is wrong. Please check again!", "", "error");
             }
-            // event.preventDefault();
-         }catch{
-
-         }
-        
-       
-       
+        } catch (error) {
+            Swal.fire(error, "", "error");
+        }
     };
 
     const validateInputs = () => {
@@ -226,38 +219,9 @@ export default function SignIn(props) {
                         >
                             Sign in
                         </Button>
-                        <Typography sx={{ textAlign: 'center' }}>
-                            Don&apos;t have an account?{' '}
-                            <span>
-                                <Link
-                                    href="/material-ui/getting-started/templates/sign-in/"
-                                    variant="body2"
-                                    sx={{ alignSelf: 'center' }}
-                                >
-                                    Sign up
-                                </Link>
-                            </span>
-                        </Typography>
+                        
                     </Box>
-                    <Divider>or</Divider>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => alert('Sign in with Google')}
-                            startIcon={<GoogleIcon />}
-                        >
-                            Sign in with Google
-                        </Button>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => alert('Sign in with Facebook')}
-                            startIcon={<FacebookIcon />}
-                        >
-                            Sign in with Facebook
-                        </Button>
-                    </Box>
+                    
                 </Card>
             </SignInContainer>
         </AppTheme>

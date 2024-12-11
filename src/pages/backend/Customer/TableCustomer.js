@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getMenu } from "../../../redux/actions/menu";
+import { getInitialData } from "../../../redux/actions/customer";
 import { DataGrid } from '@mui/x-data-grid';
-import '../../../css/backend/product/index.css';
+import UpdateCustomer from "./UpdateCustomer";
+import DetailCustomer from "./DetailCustomer"
 import { Box } from "@mui/material";
-import UpdateMenu from "./updateMenu";
-import MenuDetail from "./MenuDetail/menuDetail";
 
+const TableCustomer = (dataCustomerLevel) => {
+    const data = useSelector(state => state.dataCustomer.data);
+    const dispatch = useDispatch();
 
-const TableMenu = (props) => {
-    console.log(props.dataMenu)
+    useEffect(() => {
+        dispatch(getInitialData())
+    }, [dispatch]);
 
     let columns = [
         {
@@ -21,8 +24,16 @@ const TableMenu = (props) => {
             minWidth: 100
         },
         {
-            field: "menu_Name",
-            headerName: 'Menu Name',
+            field: "customer_Name",
+            headerName: 'Customer Name',
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,
+            minWidth: 100
+        },
+        {
+            field: "customer_Phone",
+            headerName: ' Phone Number',
             headerAlign: 'center',
             align: 'center',
             flex: 1,
@@ -59,28 +70,31 @@ const TableMenu = (props) => {
                             overflow: "hidden", // Đảm bảo không bị tràn
                         }}
                     >
-                        <UpdateMenu
-                            menuID={params.row.id}
-                            menuName={params.row.categoryName}
+                        <UpdateCustomer
+                            dataCustomer={data}
+                            customer={params.row}
+                            dataCustomerLevel={dataCustomerLevel}
                             buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                            isActive={params.row.isActive ? false : true}
-
                         />
-                        <MenuDetail
-                            menu={params.row}
+                        <DetailCustomer
+                            customer={params.row}
+                            dataCustomerLevel={dataCustomerLevel}
                         />
                     </Box>
 
                 )
             }
         }
-    ];
+    ]
+
+
+
     return (
         <DataGrid
 
             autoHeight
             checkboxSelection
-            rows={props.dataMenu}
+            rows={data}
             columns={columns}
             getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
@@ -122,4 +136,4 @@ const TableMenu = (props) => {
     )
 }
 
-export default TableMenu;
+export default TableCustomer;
