@@ -15,6 +15,7 @@ import Menu from './pages/backend/Menu/index';
 import BasicTabs from './pages/backend/RequestImport/RequestPage';
 import RequestImport from './pages/backend/RequestImport';
 import Request from './pages/backend/CreateRequestImport/Index';
+import BatchRecipe from './pages/backend/BatchRecipe';
 const App = () => {
   return (
     <>
@@ -31,6 +32,7 @@ const App = () => {
 
             } />
             <Route path="/admin/product" element={
+              
               <ProtectedRoute role={2}>
                 <Product />
               </ProtectedRoute>
@@ -69,7 +71,9 @@ const App = () => {
               <ProtectedRoute role={"admin_menu"}>
                 <Request />
               </ProtectedRoute>} />
-             
+              <Route path="/admin/batch-recipe" element={
+              <BatchRecipe />
+            } />
               
           </Routes>
         </Router>
