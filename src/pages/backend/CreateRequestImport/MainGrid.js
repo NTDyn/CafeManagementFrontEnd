@@ -3,6 +3,8 @@ import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Copyright from '../../../components/Footer/Copyright';
 import TableRequest from './TableRequest';
+import ModalForm from './AddRequest';
+import AddImport from './AddImport';
 // import AddSupplierModal from './AddSupplierModal';
 
 
@@ -16,6 +18,7 @@ export default function MainGrid() {
                 sx={{ justifyContent: "flex-end", margin: "40px 40px 40px auto" }}
             >
                 {/* <AddSupplierModal /> */}
+                <AddImport/>
 
             </Grid>
             <Grid container spacing={2} columns={12}>

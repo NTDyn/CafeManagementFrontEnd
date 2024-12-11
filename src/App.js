@@ -13,6 +13,10 @@ import IngredientCategory from './pages/backend/IngredientCategory/index';
 import Ingredient from './pages/backend/Ingredient/index'
 import Menu from './pages/backend/Menu/index';
 import Request from './pages/backend/CreateRequestImport/Index';
+
+import FormRequest from './pages/backend/CreateRequestImport/AddRequest';
+import ModalForm from './pages/backend/CreateRequestImport/AddRequest';
+
 import BatchRecipe from './pages/backend/BatchRecipe';
 import Customer from './pages/backend/Customer/index';
 import SpoiledIngredient from './pages/backend/spoiledIngredient';
@@ -85,6 +89,10 @@ const App = () => {
               <ProtectedRoute role={10}>
                 <Customer />
               </ProtectedRoute>} />
+                <Route path="/admin/historyimport" element={
+              <ProtectedRoute role={14}>
+                <RequestImport/>
+              </ProtectedRoute>}/>
 
 
           </Routes>

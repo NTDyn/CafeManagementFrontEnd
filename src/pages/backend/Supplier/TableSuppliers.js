@@ -8,13 +8,17 @@ import { Box } from "@mui/material";
 
 
 const TableSuppliers = (async) => {
+    const [refreshKey, setRefreshKey] = useState(0);
     const [suppliers,setSuppliers]=useState([]);
+    const handleStateChange = () => {
+        setRefreshKey((prev) => prev + 1); // Tăng giá trị trigger để reload dữ liệu
+    };
     useEffect(()=>{
         getAllSuppliers().then((res)=>{
             setSuppliers(res.data.data);
             console.log(res.data.data);
           })
-    },[]);
+    },[refreshKey]);
     
     let columns = [
         {
@@ -71,6 +75,7 @@ const TableSuppliers = (async) => {
                     >
                         
                     <UpdateSupplier
+                       onUpdate={handleStateChange}
                         supplier_ID={supplier.supplier_ID}
                         supplier_Name={supplier.supplier_Name}
                         buttonLabel={supplier.isActive ? " Lock " : "Unlock"}
