@@ -73,7 +73,7 @@ const App = () => {
                 <Menu />
               </ProtectedRoute>} />
             <Route path="/admin/import" element={
-              <ProtectedRoute role={"9"}>
+              <ProtectedRoute role={9}>
                 <Request />
               </ProtectedRoute>} />
             <Route path="/admin/batch-recipe" element={
@@ -89,11 +89,22 @@ const App = () => {
               <ProtectedRoute role={10}>
                 <Customer />
               </ProtectedRoute>} />
-                <Route path="/admin/historyimport" element={
+            <Route path="/admin/historyimport" element={
               <ProtectedRoute role={14}>
-                <RequestImport/>
-              </ProtectedRoute>}/>
+                <RequestImport />
+              </ProtectedRoute>} />
 
+            {/* <Route path="/admin/archives" element={
+              <ProtectedRoute role = {11}>
+                <Archives />
+              </ProtectedRoute>} /> */}
+
+            <Route path="/admin/batch-recipe" element={
+              <ProtectedRoute role={12}>
+                <BatchRecipe />
+              </ProtectedRoute>
+
+            } />
 
           </Routes>
         </Router>

@@ -11,10 +11,12 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Stack from '@mui/joy/Stack';
 import TextField from '@mui/material/TextField';
+import { DataGrid } from '@mui/x-data-grid';
 
 function DetailIngredient({ ingredient }) {
 
     const [openDetail, setOpenDetail] = useState(false);
+    const [recipeRows, setRecipeRows] = useState(ingredient.recipeRaws ? ingredient.recipeRaws : [])
     const [ingredientName, setIngredientName] = useState(ingredient.ingredient_Name);
     const [ingredientCategory, setIngredientCategory] = useState(ingredient.ingredient_Category)
     const [ingredientType, setIngredientType] = useState(ingredient.ingredient_Type);
@@ -25,10 +27,28 @@ function DetailIngredient({ ingredient }) {
     const [maxPerTransfer, setMaxPerTransfer] = useState(ingredient.maxPerTransfer);
     const dataIngredient = useSelector(state => state.dataIngredient.data)
     const dataIngredientCategory = useSelector(state => state.dataIngredientCategory.data)
+
+    const ingredientMap = new Map(
+        dataIngredient.map(data => [data.ingredient_ID, data.ingredient_Name])
+    );
+    const rowsConfix = recipeRows.map(row => ({
+        ...row,
+        ingredient_Name: ingredientMap.get(row.ingredient_Raw) || 'Unknown',
+        unit: row.unit === 1
+            ? ingredient.unit_Min
+            : row.unit === 2
+                ? ingredient.unit_Transfer
+                : row.unit === 3
+                    ? ingredient.unit_Max
+                    : row.unit
+    }));
+
     const nameCate = dataIngredientCategory.find(
         cate => cate.ingredient_Category_ID === ingredientCategory
     )
+
     const [categoryName, setCategoryName] = useState(nameCate ? nameCate.ingredient_Category_Name : '');
+
     const dataIngredientType = [
         {
             ingredient_Type_ID: 1,
@@ -47,6 +67,35 @@ function DetailIngredient({ ingredient }) {
         dataIngredientType => dataIngredientType.ingredient_Type_ID === ingredient.ingredient_Type)
 
     const [typeName, setTypeName] = useState(typeIn ? typeIn.ingredient_Type_Name : '')
+    const columns = [
+        {
+
+            field: 'ingredient_Name',
+            headerName: 'Ingredient Raw',
+            width: 280,
+            align: 'center',
+            headerAlign: 'center',
+
+        },
+        {
+
+            field: 'unit',
+            headerName: 'Unit',
+            width: 280,
+            align: 'center',
+            headerAlign: 'center',
+
+        },
+        {
+
+            field: 'quantity',
+            headerName: 'Quantity',
+            width: 280,
+            align: 'center',
+            headerAlign: 'center',
+
+        },
+    ]
 
     return (
         <>
@@ -196,6 +245,15 @@ function DetailIngredient({ ingredient }) {
                                     </TextField>
                                 </FormControl>
 
+                            </Stack>
+                            <Stack>
+                                <DataGrid
+                                    rows={rowsConfix}
+                                    columns={columns}
+                                    getRowId={(row) => row.recipe_ID}
+                                >
+
+                                </DataGrid>
                             </Stack>
                             <Button
                                 onClick={() => setOpenDetail(false)}

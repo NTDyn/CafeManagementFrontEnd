@@ -16,6 +16,7 @@ import dataCustomer from './customer/index';
 import dataCustomerLevel from './customerLevel/index'
 import dataSpoiled from './spoiledIngredient';
 import dataStore from './storeIngedient'
+import dataRecipeRaw from './recipeRaw/index';
 
 const rootReducer = combineReducers({
 
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
     dataCustomer: dataCustomer,
     dataCustomerLevel: dataCustomerLevel,
     dataSpoiled: dataSpoiled,
-    dataStore: dataStore
+    dataStore: dataStore,
+    dataRecipeRaw: dataRecipeRaw,
 });
 
 export default rootReducer;

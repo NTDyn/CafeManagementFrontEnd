@@ -24,21 +24,21 @@ import { useSelector, useDispatch } from "react-redux";
 
 
 export default function MenuDetail({ menu }) {
-    const [rows, setRows] = useState([]);
+    const [detailRows, setDetailRows] = useState([]);
     const [openDetail, setOpenDetail] = useState(false);
     const dataMenuDetail = useSelector(state => state.dataMenuDetail.data)
     const dispatch = useDispatch()
     useEffect(() => {
-
+        console.log("change")
         dispatch(getInitialData(menu.menu_ID))
 
     }, [dispatch, menu.menu_ID])
 
     useEffect(() => {
         if (dataMenuDetail) {
-            setRows(dataMenuDetail);
+            setDetailRows(dataMenuDetail);
         }
-    }, [dataMenuDetail]);
+    }, [dataMenuDetail, menu.menu_ID]);
 
 
     return (
@@ -72,7 +72,7 @@ export default function MenuDetail({ menu }) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.map((row) => (
+                                    {detailRows.map((row) => (
                                         <TableRow
                                             className="border-detail-table"
                                             key={row.name}

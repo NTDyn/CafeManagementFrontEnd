@@ -50,7 +50,7 @@ export default function AddIngredient() {
             ingredient_Type_Name: "Nguyên liệu thực phẩm cần qua chế biến"
         },
         {
-            ingredient_Type_ID: 3,
+            ingredient_Type_ID: 0,
             ingredient_Type_Name: "Không phải thực phẩm"
         }
     ]

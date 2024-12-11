@@ -11,10 +11,11 @@ export const getMenu = (_id = -1) => {
       fetchAPI(url)
     ]).then(
       response => {
+
         let i = 0;
         let types = ["REFETCH_MENU"];
         for (const result of response) {
-          if (!result.length) {
+          if (!Object.keys(result).length) {
             dispatch({ type: "API_FAILURE", status: '', message: '' });
           } else {
             dispatch({ type: "API_SUCCESS", status: '', message: '' });
