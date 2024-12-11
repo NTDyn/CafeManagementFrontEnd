@@ -1,3 +1,5 @@
+import { isAction } from "redux";
+
 const initialState = {
     data: [],
     error: "",
@@ -28,9 +30,10 @@ const ProductBackEnd = (state = initialState, action) => {
                 data: list
             }
         case "UPDATE_BACK_END_PRODUCT":
-            console.log(action.data)
             const updatedData = state.data.map(item => {
+                console.log(item)
                 let itemUP = action.data;
+                console.log(itemUP)
                 if (item.product_ID === itemUP.product_ID) {
                     if (action.data.product_Name && action.data.product_Category && action.data.price && action.data.point && action.data.product_Image) {
                         return {
@@ -39,15 +42,12 @@ const ProductBackEnd = (state = initialState, action) => {
                             product_Category: action.data.product_Category,
                             price: action.data.price,
                             point: action.data.point,
-                            product_Image: action.data.product_Image
+                            product_Image: action.data.product_Image,
+                            isActive: action.data.isActive
+
                         };
                     }
-                    if (itemUP.product_Name === undefined && itemUP.product_Category === undefined && itemUP.price === undefined && itemUP.point === undefined) {
-                        return {
-                            ...item,
-                            isActive: action.data.isActive
-                        }
-                    }
+
                 }
                 return item;
 

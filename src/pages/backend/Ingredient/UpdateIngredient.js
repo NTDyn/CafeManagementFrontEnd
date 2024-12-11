@@ -294,7 +294,7 @@ function UpdateIngredient({ buttonLabel, ingredient }) {
             )
         }
     }
-    const confirmInformation = (e) => {
+    function confirmInformation(e) {
         e.preventDefault()
         if (existingIngredient()) {
             Swal.fire("Ingredient name is existing");

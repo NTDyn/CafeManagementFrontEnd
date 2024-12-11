@@ -20,7 +20,6 @@ import { getInitialData as dataProduct } from "../../../redux/actions/products";
 import { getInitialData as dataProductRecipe } from '../../../redux/actions/productRecipe';
 import { getInitialData as dataProductCategory } from '../../../redux/actions/productCategory';
 function DetailProduct({ product }) {
-
     const [IDProduct, setIDProduct] = useState(product.product_ID)
     const [openDetail, setOpenDetail] = useState(false);
     const [nameProduct, setNameProduct] = useState(product.product_Name);
@@ -33,10 +32,11 @@ function DetailProduct({ product }) {
 
     const [categoryProduct, setCategoryProduct] = useState(cateProduct?.category_Name || '');
     const listIngredient = useSelector((state) => state.dataIngredient.data);
-    const [recipeRows, setRecipeRows] = useState(product.productRecipe);
-    useEffect(() => {
+
+    const recipeRows = useMemo(() => {
+
         if (product.productRecipe) {
-            const updatedRecipeRows = product.productRecipe.map(element => {
+            return product.productRecipe.map(element => {
                 const ingredient = listIngredient.find(ing => ing.ingredient_ID === element.ingredient_ID);
                 return {
                     ...element,
@@ -44,10 +44,10 @@ function DetailProduct({ product }) {
                     ingredientName: ingredient ? ingredient.ingredient_Name : null // Nếu không tìm thấy ingredient thì trả về null
                 };
             });
-
-            setRecipeRows(updatedRecipeRows);
         }
+        return [];
     }, [product.productRecipe, listIngredient]);
+    // const [recipeRows, setRecipeRows] = useState(initialRecipeRows);
     const [productImages, setProductImages] = useState(product.productImage)
 
     function formatPrice(value) {
@@ -90,7 +90,7 @@ function DetailProduct({ product }) {
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
-                    sx={{ width: '80px', bgcolor: '#a79c9c' }}
+                    sx={{ width: '80px', bgcolor: '#000000' }}
                     onClick={() => setOpenDetail(true)}
                 >
                     Detail

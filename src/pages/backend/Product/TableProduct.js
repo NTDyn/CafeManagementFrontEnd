@@ -12,7 +12,6 @@ const useCustomizedDataGrid = () => {
   const data = useSelector(state => state.dataProduct.data);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('cn')
     dispatch(getInitialData())
 
   }, [dispatch])
@@ -130,7 +129,7 @@ const useCustomizedDataGrid = () => {
               <UpdateProduct
                 product={params.row}
                 buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                isActive={params.row.isActive ? false : true}
+                isActive={params.row.isActive}
 
               />
               <DetailProduct
