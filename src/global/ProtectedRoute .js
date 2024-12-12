@@ -5,7 +5,7 @@ import { UserContext } from "./UserProvider";
 const ProtectedRoute = ({ children, role }) => {
   const { user } = useContext(UserContext);
   const token = sessionStorage.getItem("authToken");
-  return children;
+
   if (token != null && token != '' && user.roles.includes(role)) {
     return children;
   }

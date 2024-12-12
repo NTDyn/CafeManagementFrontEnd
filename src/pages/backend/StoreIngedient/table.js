@@ -15,15 +15,18 @@ const TableMenu = (props) => {
         let data = [];
         props.batchRecipes.forEach(element => {
             let ingredient = props.ingredients.find(x => x.ingredient_ID == element.ingredient_ID);
-            data.push({
-                price: element.price,
-                ingredient: ingredient,
-                ingredient_Name: ingredient.ingredient_Name,
-                quality: element.quality,
-                unit: ingredient.unit_Min,
-                report: element.report,
-                id: element.id
-            })
+            if (ingredient) {
+                data.push({
+                    price: element.price,
+                    ingredient: ingredient,
+                    ingredient_Name: ingredient.ingredient_Name,
+                    quality: element.quality,
+                    unit: ingredient.unit_Min,
+                    report: element.report,
+                    id: element.id
+                })
+            }
+
 
         });
         setDataTable(data);
@@ -65,7 +68,7 @@ const TableMenu = (props) => {
             flex: 1,
             minWidth: 100
         },
-       
+
         {
             field: "features",
             headerName: "Features",
@@ -75,14 +78,14 @@ const TableMenu = (props) => {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', verticalAlign: 'middle' , alignItems: 'center'}}>
-                    <Button
-                        sx={{ width: '80px', bgcolor: '#000000' }}
-                        onClick={() => props.showDetail(params.row.report)}
-                    >
-                        Detail
-                    </Button>
-                </Box>
+                    <Box sx={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Button
+                            sx={{ width: '80px', bgcolor: '#000000' }}
+                            onClick={() => props.showDetail(params.row.report)}
+                        >
+                            Detail
+                        </Button>
+                    </Box>
                 )
             }
         }

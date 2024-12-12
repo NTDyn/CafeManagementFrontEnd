@@ -18,8 +18,10 @@ import withReactContent from 'sweetalert2-react-content'
 import { Box } from "@mui/material";
 
 export default function UpdateCustomer({ customer, buttonLabel, dataCustomerLevel, dataCustomer }) {
+
     const dispatch = useDispatch()
     const [isActive, setIsActive] = useState(customer.isActive)
+    const [customerID, setCustomerID] = useState(customer.customer_Id);
     const [customerName, setCustomerName] = useState(customer.customer_Name);
     const [customerPhone, setCustomerPhone] = useState(customer.customer_Phone);
     const [customerEmail, setCustomerEmail] = useState(customer.customer_Email);
@@ -73,7 +75,7 @@ export default function UpdateCustomer({ customer, buttonLabel, dataCustomerLeve
 
     const updateCustomer = () => {
         let data = {
-            "customer_ID": customer.customer_Id,
+            "customer_Id": customerID,
             "customer_Name": "" + customerName,
             "customer_Phone": customerPhone,
             "customer_Email": customerEmail,
@@ -84,7 +86,7 @@ export default function UpdateCustomer({ customer, buttonLabel, dataCustomerLeve
 
     const UpdateIsActive = () => {
         let data = {
-            "customer_ID": customer.customer_Id,
+            "customer_Id": customerID,
             "isActive": !isActive
         }
         console.log(data)

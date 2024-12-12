@@ -21,7 +21,8 @@ const TableCustomer = (dataCustomerLevel) => {
             headerAlign: 'center',
             align: 'center',
             flex: 1,
-            minWidth: 100
+            minWidth: 20,
+            maxWidth: 50
         },
         {
             field: "customer_Name",
@@ -93,7 +94,6 @@ const TableCustomer = (dataCustomerLevel) => {
         <DataGrid
 
             autoHeight
-            checkboxSelection
             rows={data}
             columns={columns}
             getRowClassName={(params) =>

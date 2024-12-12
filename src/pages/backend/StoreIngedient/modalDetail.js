@@ -11,7 +11,7 @@ import moment from "moment";
 export default function ModalDetail(props) {
     const renderRecipeRaw = () => {
         let result = props.data.length > 0 ?
-        props.data.map((el) => {
+            props.data.map((el) => {
                 let item = props.ingredients.find(x => x.ingredient_ID == el.ingredient_ID);
                 let units = (el.type == "Batch" || el.type == "Purchase Order") ? ("+ " + (el.unit == 2 ? (el.quantity * item.transferPerMin * item.maxPerTransfer) : el.unit == 1 ? (el.quantity * item.transferPerMin) : el.quantity)) : ("- " + el.quantity);
                 return (
@@ -30,7 +30,7 @@ export default function ModalDetail(props) {
     return (
         <React.Fragment>
             <Modal open={props.openModal} >
-                <ModalDialog sx={{ width: '70%' , overflow:'scroll' }}>
+                <ModalDialog sx={{ width: '70%', overflow: 'scroll' }}>
                     <Grid container>
                         <Grid size={6}>
                             <DialogTitle>Store Ingedient History</DialogTitle>

@@ -72,11 +72,7 @@ export default function MainGrid() {
             <Grid>
                 <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
                     <span>Details</span>
-                    <Box>
-                        <Button>
-                            Query All
-                        </Button>
-                    </Box>
+
                     <span>
                         <AddProduct />
                     </span>

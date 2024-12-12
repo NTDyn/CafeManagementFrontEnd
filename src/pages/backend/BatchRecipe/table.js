@@ -27,7 +27,7 @@ const TableMenu = (props) => {
                 details: element.details,
                 ingredient: ingredient,
                 id: element.id,
-                date : moment(element.createdDate).format("DD-MM-YYYY HH:mm"),
+                date: moment(element.createdDate).format("DD-MM-YYYY HH:mm"),
                 unitName: element.unit == 2 ? ingredient.unit_Max : element.unit == 1 ? ingredient.unit_Transfer : ingredient.unit_Min
             })
 
@@ -88,14 +88,14 @@ const TableMenu = (props) => {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', verticalAlign: 'middle' , alignItems: 'center'}}>
-                    <Button
-                        sx={{ width: '80px', bgcolor: '#000000' }}
-                        onClick={() => props.showDetail(params.row)}
-                    >
-                        Detail
-                    </Button>
-                </Box>
+                    <Box sx={{ display: 'flex', height: '100%', justifyContent: 'center', verticalAlign: 'middle', alignItems: 'center' }}>
+                        <Button
+                            sx={{ width: '80px', bgcolor: '#000000' }}
+                            onClick={() => props.showDetail(params.row)}
+                        >
+                            Detail
+                        </Button>
+                    </Box>
                 )
             }
         }

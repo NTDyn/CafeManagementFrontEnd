@@ -28,14 +28,14 @@ export default function ModalCreate(props) {
     }, [props.data]);
     const handleOnClickSave = () => {
         let data = {
-            
+
             Staff_ID: 1,
             Reason: reason,
             Details: [{
                 Ingredient_ID: ingredientID,
                 Unit: unit,
                 Quality: quantity,
-                
+
             }]
         }
         props.createData(data);
@@ -189,11 +189,11 @@ export default function ModalCreate(props) {
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                        
+
 
                             <Grid container spacing={2}>
 
-                                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'center', margin: 'auto' }}>
                                     <Button type="button" onClick={() => { handleOnClickSave() }}>
                                         Submit
                                     </Button>

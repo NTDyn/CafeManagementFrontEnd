@@ -86,7 +86,7 @@ const mainListItems = [
         link: 'admin/productCategory'
     },
     {
-        text: 'Archives',
+        text: 'Stored Ingredient',
         icon: <AssignmentRoundedIcon />,
         link: 'admin/store-ingredient'
     },

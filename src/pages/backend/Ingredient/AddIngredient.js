@@ -100,7 +100,9 @@ export default function AddIngredient() {
         dispatch(addData(data));
         setIngredientName('');
         setIngredientCategory('');
+        setCategoryName('');
         setIngredientType('');
+        setTypeName('');
         setUnitMax('');
         setUnitMin('');
         setMaxPerTransfer('');
