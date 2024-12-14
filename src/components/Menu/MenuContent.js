@@ -21,12 +21,7 @@ const mainListItems = [
     {
         text: 'Home',
         icon: <HomeRoundedIcon />,
-        link: '/home'
-    },
-    {
-        text: 'Analytics',
-        icon: <AnalyticsRoundedIcon />,
-        link: 'admin/analytic'
+        link: ''
     },
     {
         text: 'Customers',

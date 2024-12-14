@@ -6,6 +6,7 @@ const ProtectedRoute = ({ children, role }) => {
   const { user } = useContext(UserContext);
   const token = sessionStorage.getItem("authToken");
 
+
   if (token != null && token != '' && user.roles.includes(role)) {
     return children;
   }
@@ -16,7 +17,6 @@ const ProtectedRoute = ({ children, role }) => {
   if (role && user.roles && !user.roles.includes(role)) {
     return <Navigate to="/unauthorized" />;
   }
-
   return children;
 };
 

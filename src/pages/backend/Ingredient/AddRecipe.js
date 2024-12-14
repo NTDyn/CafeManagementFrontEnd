@@ -28,7 +28,7 @@ export default function AddRecipe(props) {
     const [currentId, setCurrentId] = useState(1);
     const dataIngredient = props.dataIngredient;
     const dataIngredientResult = dataIngredient.filter(list => list.ingredient_Type === 1);
-    const dataIngredientRaw = dataIngredient.filter(list => list.ingredient_Type === 2);
+    const dataIngredientRaw = dataIngredient.filter(list => list.ingredient_Type === 0);
     const [ingredientResultID, setIngredientResultID] = useState("");
     const [ingredientResultName, setIngredientResultName] = useState();
     const [ingredientRawID, setIngredientRawID] = useState("");

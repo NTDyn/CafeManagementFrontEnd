@@ -13,7 +13,7 @@ export default function ModalDetail(props) {
         let result = props.data.length > 0 ?
             props.data.map((el) => {
                 let item = props.ingredients.find(x => x.ingredient_ID == el.ingredient_ID);
-                let units = (el.type == "Batch" || el.type == "Purchase Order") ? ("+ " + (el.unit == 2 ? (el.quantity * item.transferPerMin * item.maxPerTransfer) : el.unit == 1 ? (el.quantity * item.transferPerMin) : el.quantity)) : ("- " + el.quantity);
+                let units = (el.type == "Batch" || el.type == "Purchase Order") ? ("+ " + (el.unit == 2 ? (el.quantity * item.transferPerMin * item.maxPerTransfer) : el.unit == 1 ? (el.quantity * item.transferPerMin) : el.quantity)) : ("- " + (el.unit == 2 ? (el.quantity * item.transferPerMin * item.maxPerTransfer) : el.unit == 1 ? (el.quantity * item.transferPerMin) : el.quantity));
                 return (
                     <>
                         <TableRow>

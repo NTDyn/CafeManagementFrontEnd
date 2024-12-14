@@ -1,19 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getInitialData } from "../../../redux/actions/customer";
 import { DataGrid } from '@mui/x-data-grid';
 import UpdateCustomer from "./UpdateCustomer";
 import DetailCustomer from "./DetailCustomer"
 import { Box } from "@mui/material";
+import HistoryPoint from "./HistoryPoint";
+import { getInitialData as getHistory } from "../../../redux/actions/historyDiscount";
+import { Button } from "@mui/joy";
+import { PropaneSharp } from "@mui/icons-material";
 
-const TableCustomer = (dataCustomerLevel) => {
-    const data = useSelector(state => state.dataCustomer.data);
+const TableCustomer = (props) => {
+
+    const [openModal, setOpenModal] = useState(false);
+    const data = props.customers;
+    const [dataHistory, setDataHistory] = useState({
+        "customer_ID": 0,
+        "cuppon_ID": 0,
+        "priceDiscount": 0,
+        'receipt_ID': -1,
+        'createdDate': '0000-00-00'
+    })
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getInitialData())
-    }, [dispatch]);
 
+
+    const getDataHistory = (_data) => {
+        setDataHistory(_data);
+
+    }
     let columns = [
         {
             field: "id",
@@ -74,13 +89,22 @@ const TableCustomer = (dataCustomerLevel) => {
                         <UpdateCustomer
                             dataCustomer={data}
                             customer={params.row}
-                            dataCustomerLevel={dataCustomerLevel}
+                            dataCustomerLevel={props.dataCustomerLevel}
                             buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
                         />
                         <DetailCustomer
                             customer={params.row}
-                            dataCustomerLevel={dataCustomerLevel}
+                            dataCustomerLevel={props.dataCustomerLevel}
                         />
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Button
+                                sx={{ width: '80px', }}
+                                variant="outlined"
+                                onClick={() => props.showHistory(params.row.customer_Id)}
+                            >
+                                Point
+                            </Button>
+                        </Box>
                     </Box>
 
                 )

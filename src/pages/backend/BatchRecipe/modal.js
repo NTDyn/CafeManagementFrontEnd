@@ -187,6 +187,7 @@ export default function ModalCreate(props) {
                                             value={unitName ? { unit: unitName } : null}
                                             onChange={(event, newValue) => {
                                                 if (newValue) {
+                                                    console.log(newValue)
                                                     setUnit(newValue.value)
                                                     setUnitName(newValue.unit)
                                                 } else {

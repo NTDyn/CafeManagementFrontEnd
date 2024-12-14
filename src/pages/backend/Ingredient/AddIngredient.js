@@ -42,15 +42,15 @@ export default function AddIngredient() {
     const dataIngredientCategory = useSelector(state => state.dataIngredientCategory.data)
     const dataIngredientType = [
         {
-            ingredient_Type_ID: 1,
+            ingredient_Type_ID: 0,
             ingredient_Type_Name: "Nguyên liệu thực phẩm dùng trực tiếp"
         },
         {
-            ingredient_Type_ID: 2,
+            ingredient_Type_ID: 1,
             ingredient_Type_Name: "Nguyên liệu thực phẩm cần qua chế biến"
         },
         {
-            ingredient_Type_ID: 0,
+            ingredient_Type_ID: 2,
             ingredient_Type_Name: "Không phải thực phẩm"
         }
     ]

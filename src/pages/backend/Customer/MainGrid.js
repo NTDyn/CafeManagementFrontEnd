@@ -8,17 +8,40 @@ import Copyright from '../../../components/Footer/Copyright';
 import TableCustomer from './TableCustomer';
 import AddCustomer from './AddCustomer'
 import CustomerLevel from './CustomerLevel/CustomerLevel'
-import { getInitialData } from "../../../redux/actions/customerLevel";
-
+import { getInitialData as getCustomerLevel } from "../../../redux/actions/customerLevel";
+import HistoryPoint from "./HistoryPoint";
+import { getInitialData as getHistory } from "../../../redux/actions/historyDiscount";
+import { getInitialData as getCustomer } from "../../../redux/actions/customer";
 
 export default function MainGrid() {
-
+    const [openModalHistory, setOpenModalHistory] = useState(false);
     const dataCustomerLevel = useSelector(state => state.dataCustomerLevel.data)
+    const customers = useSelector(state => state.dataCustomer.data)
+    const historyDiscount = useSelector(state => state.dataHistoryDiscount.data)
+    const [dataModalHistory, setDataModalHistory] = useState({
+        "customer_ID": 0,
+        "cuppon_ID": -1,
+        "receipt_ID": 0,
+        'createdDate': 0,
+        'priceDisscount': 0
 
+    })
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getInitialData())
+        dispatch(getCustomerLevel());
+        dispatch(getCustomer())
     }, [dispatch])
+
+    const showHistory = async (_id) => {
+        try {
+            const dataDiscount = await dispatch(getHistory(_id));  // Make sure to await the dispatch
+            console.log(dataDiscount);
+            setDataModalHistory(dataDiscount);  // Use the returned data to update state
+            setOpenModalHistory(true);  // Open the modal after setting the data
+        } catch (error) {
+            console.error('Failed to fetch history data:', error);
+        }
+    }
     return (
 
         <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
@@ -43,11 +66,19 @@ export default function MainGrid() {
 
                 <Grid size={{ md: 12, lg: 12 }}>
                     <TableCustomer
+                        customers={customers}
                         dataCustomerLevel={dataCustomerLevel}
+                        showHistory={showHistory}
                     />
                 </Grid>
 
             </Grid>
+            <HistoryPoint
+                data={historyDiscount}
+                openModalHistory={openModalHistory}
+                customers={customers}
+                setOpenModalHistory={setOpenModalHistory}
+            />
             <Copyright sx={{ my: 4 }} />
         </Box>
     );

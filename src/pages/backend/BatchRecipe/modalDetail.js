@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid2';
 export default function ModalDetail(props) {
     const renderRecipeRaw = () => {
         let result = props.data.details.length > 0 ?
-        props.data.details.map((el) => {
+            props.data.details.map((el) => {
                 let item = props.ingredients.find(x => x.ingredient_ID == el.ingredient_ID);
                 let units = -el.quality;
                 return (
@@ -29,7 +29,7 @@ export default function ModalDetail(props) {
     }
     const renderUnit = (_el) => {
         let item = props.ingredients.find(x => x.ingredient_ID == _el.ingredientResult_ID);
-        let unit = typeof item !== 'undefined' ? (_el.unit == 2 ? item.unit_Min : _el.unit == 1 ? item.unit_Transfer : item.unit_Max) : "";
+        let unit = typeof item !== 'undefined' ? (_el.unit == 2 ? item.unit_Max : _el.unit == 1 ? item.unit_Transfer : item.unit_Min) : "";
         return unit;
     }
     return (
