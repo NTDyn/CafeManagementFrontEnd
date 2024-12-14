@@ -65,3 +65,35 @@ export const getImportDetail=(id)=>{
     return axios.get(API_URL_BASE_SUPPLIER+"/RequestImport/detaillink?id="+id);
 }
 
+//product
+export const getProductActive=()=>{
+    return axios.get(API_URL_BASE_SUPPLIER+"/Product?isActive=true");
+}
+export const getProductById=(id)=>{
+    return axios.get(API_URL_BASE_SUPPLIER+"/Product/id?id="+id);
+}
+
+//login
+export const LoginUser=(userName,password)=>{
+    return axios.post(API_URL_BASE_SUPPLIER+"/Login/user?userName="+userName+"&password="+password);
+}
+
+// customer
+export const getCustomerLoginByUserName=(userName)=>{
+    return axios.get(API_URL_BASE_SUPPLIER+"/Customer/userName?userName="+userName);
+}
+
+//checkout
+export const checkoutReceipt=(data)=>{
+    return axios.post(API_URL_BASE_SUPPLIER+"/Receipt/createCheckout",data);
+}
+
+//cart
+export const getListCart=(id)=>{
+    return axios.get(API_URL_BASE_SUPPLIER+"/Receipt/getcart?id="+id);
+}
+
+export const AddCart  =(data)=>{
+    return axios.post(API_URL_BASE_SUPPLIER+"/Receipt/addCart",data);
+}
+

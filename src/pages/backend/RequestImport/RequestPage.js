@@ -110,6 +110,7 @@ const BasicTabs = () => {
     const updatedData = [...getImportDetal];
     updatedData[index].quality = value; // Cập nhật trường được sửa
     setImportDetail(updatedData);
+    console.log(getImportDetal);
 
   };
 
