@@ -20,6 +20,13 @@ import BatchRecipe from './pages/backend/BatchRecipe';
 import Customer from './pages/backend/Customer/index';
 import SpoiledIngredient from './pages/backend/spoiledIngredient';
 import StoreIngedient from './pages/backend/StoreIngedient';
+import ProductPage from './pages/User/ProductUser/ProductList';
+import HomeUser from './pages/User/HomeUser/Index';
+import ProductDetail from './pages/User/ProductUser/ProductDetail';
+import LoginModal from './pages/User/HomeUser/Login';
+import CheckoutForm from './pages/User/Cart/Checkout';
+import CartPage from './pages/User/Cart/Cart';
+
 
 
 const App = () => {
@@ -101,6 +108,17 @@ const App = () => {
               </ProtectedRoute>} />
 
 
+
+
+ 
+
+{/* useruser */}
+              <Route path="/user/" element={<HomeUser/>} />
+              <Route path="/user/product" element={<ProductPage/>} />
+              <Route path ="/user/product/:id" element={<ProductDetail/>}/>
+              <Route path ="/user/login" element={<LoginModal/>}/>
+              <Route path ="/user/checkout" element={<CheckoutForm/>}/>
+              <Route path ="/user/cart" element={<CartPage/>}/>
           </Routes>
         </Router>
       </UserProvider>
