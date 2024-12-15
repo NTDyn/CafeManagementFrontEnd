@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { LoginUser } from "../../../redux/actions/supplier";
 import Swal from 'sweetalert2';
-
+import { Button, Typography } from "@mui/material";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 const LoginModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,23 +53,22 @@ const LoginModal = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{marginLeft:"80%", padding: "20px", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
       {!isLoggedIn ? (
-        <button
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-          onClick={() => setIsOpen(true)}
-          onMouseEnter={(e) => (e.target.style.backgroundColor = "#e7e7e7")}
-          onMouseLeave={(e) => (e.target.style.backgroundColor = "#f0f0f0")}
-        >
-          Đăng nhập
-        </button>
+        <Button
+      variant="contained"
+      color="primary"
+      startIcon={<LockOutlinedIcon />}
+      sx={{
+        padding: '12px 30px',
+        borderRadius: '30px',
+        textTransform: 'none',
+        fontSize: '16px',
+      }}
+      onClick={() => setIsOpen(true)}
+    >
+      <Typography variant="button">Login</Typography>
+    </Button>
       ) : (
         <div>
           <p>Chào mừng, {showUserName}!</p>

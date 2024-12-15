@@ -5,6 +5,7 @@ import { getProductById } from '../../../redux/actions/supplier';
 import { AddCart } from '../../../redux/actions/supplier';
 import { getCustomerLoginByUserName } from '../../../redux/actions/supplier';
 import { Alert } from '@mui/material';
+import Swal from 'sweetalert2'
 import CheckIcon from '@mui/icons-material/Check';
 import Header from '../HomeUser/Header';
 const ProductDetail = () => {
@@ -26,28 +27,35 @@ const ProductDetail = () => {
 
     const handleAddCart=async(id)=>{
         const userName=sessionStorage.getItem("Account_UserName");
-        const cus=getCustomerLoginByUserName(userName);
-        const data_cart={
-            receiptDetail:{
-                product_ID:id,
-                quantity:quantity,
-                price:getProduct.price,
-                isActive:true,
-                status:0,
+        
+        if(userName!=null){
+            const cus=getCustomerLoginByUserName(userName);
+            const data_cart={
 
-            },
-            id_customer:(await cus).data.data.customer_Id
-        }
-        const res=await AddCart(data_cart);
-        if(res.data.status===200){
-            setTimeout(() => {
-                setAlert({ message: "Success" });
+                receiptDetail:{
+                    product_ID:id,
+                    quantity:quantity,
+                    price:getProduct.price,
+                    isActive:true,
+                    status:0,
+    
+                },
+                id_customer:(await cus).data.data?.customer_Id
+            }
+            const res=await AddCart(data_cart);
+            if(res.data.status===200){
                 setTimeout(() => {
-                    setAlert(false);
-                  }, 2000);
-              }, 1000);
-           
+                    setAlert({ message: "Success" });
+                    setTimeout(() => {
+                        setAlert(false);
+                      }, 2000);
+                  }, 1000);
+               
+            }
+        }else{
+             Swal.fire("Please Login to buy some items", "", "warning");
         }
+       
       
       
        

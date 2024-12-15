@@ -90,6 +90,11 @@ const mainListItems = [
         icon: <AssignmentRoundedIcon />,
         link: 'admin/menu'
     },
+    {
+        text: 'Receipt ',
+        icon: <AssignmentRoundedIcon />,
+        link: 'admin/receipt'
+    },
 ];
 
 const secondaryListItems = [

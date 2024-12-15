@@ -97,3 +97,27 @@ export const AddCart  =(data)=>{
     return axios.post(API_URL_BASE_SUPPLIER+"/Receipt/addCart",data);
 }
 
+//cart
+export const ChangeQuantityDetailReceipt=(id,quantity)=>{
+    return axios.put(API_URL_BASE_SUPPLIER+"/Receipt/changeQuantity?id="+id+"&quantity="+quantity);
+}
+export const DeleteDetailReceipt=( id)=>{
+    return axios.delete(API_URL_BASE_SUPPLIER+"/Receipt/deleteDetail?id="+id);
+}
+
+//change status receipt
+export const ChangeStatusReceipt=(form)=>{
+    return axios.put(API_URL_BASE_SUPPLIER+"/Receipt/changeStatus",form);
+}
+
+//get receipt by status
+ 
+export const getReceiptByStatus=(status)=>{
+    return axios.get(API_URL_BASE_SUPPLIER+"/Receipt/getReceiptByStatus?status="+status);
+}
+
+//get detail receipt
+
+export const getDetailReceipt=(id)=>{
+    return axios.get(API_URL_BASE_SUPPLIER+"/Receipt/getDetailById?id="+id);
+}
