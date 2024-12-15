@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { checkoutReceipt, getCustomerLoginByUserName } from '../../../redux/actions/supplier';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2'
+import { ChangeStatusReceipt } from '../../../redux/actions/supplier';
 import { useNavigate } from 'react-router-dom';
 // CSS-in-JS styles
 const styles = {
@@ -132,11 +133,11 @@ const CheckoutForm = () => {
   };
 
    const confirmCreateReceipt= (e) => {
-  
+    if(getCustomerLogin!=null){
       withReactContent(Swal).fire({
         title: "Do you want to approve this request?",
         showDenyButton: true,
-        confirmButtonText: "Change",
+        confirmButtonText: "CheckoutCheckout",
         denyButtonText: `Cancel`
       }).then((result) => {
         if (result.isConfirmed) {
@@ -150,30 +151,60 @@ const CheckoutForm = () => {
         }
   
       })
+    }else{
+      Swal.fire("Please Login to buy some items", "", "warning");
+    }
+  
+    
+   
+     
     }
 
   const handleSubmit = async(e) => {
+  
+  if(checkout.length==1){
+    const data={
+      staff_ID:0,
+      customer_ID:getCustomerLogin?.customer_Id,
+      totalPrice:totalPrice,
+      status:1,
+      isActive:true,
+      details:checkout.map((item,index)=>{
+          return{
+              product_ID:item.id_product,
+              quantity:item.quantity_product,
+              price:item.price,
+              isActive:true,
+              status:1
+          };
+      })
+  
+  
+        
+     };
+     const create =await checkoutReceipt(data);
+  }else{
+    const data={
+      receipt:{
+        receipt_ID:checkout[0].id_receipt,
+        status:11
+      },
+      listReceipt:checkout.map((item,index)=>{
+        return {
+          detail_ID:item.id_detail,
+          status:1,
+          receipt_ID:item.d_receipt
+        }
+      })
+    }
+    const create =await ChangeStatusReceipt(data);
+   
+  }
+ 
+  
 
-   const data={
-    staff_ID:0,
-    customer_ID:getCustomerLogin?.customer_Id,
-    totalPrice:totalPrice,
-    status:1,
-    isActive:true,
-    details:checkout.map((item,index)=>{
-        return{
-            product_ID:item.id_product,
-            quantity:item.quantity_product,
-            price:item.price,
-            isActive:true,
-            status:1
-        };
-    })
 
-      
-   };
-   const create =await checkoutReceipt(data);
-   console.log(data.message);
+
   };
 
   const handleDicrect=()=>{

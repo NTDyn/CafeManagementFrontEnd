@@ -1,53 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { getCustomerLoginByUserName, getListCart, getProductById } from "../../../redux/actions/supplier";
+import { ChangeQuantityDetailReceipt } from "../../../redux/actions/supplier";
+import { DeleteDetailReceipt } from "../../../redux/actions/supplier";
+import { ChangeStatusReceipt } from "../../../redux/actions/supplier";
+import { useNavigate } from "react-router-dom";
 const CartPage = () => {
+  const [refreshKey, setRefreshKey] = useState(0);
   const[listCart,setListCart]=useState([])
   const [cart, setCart] = useState([]);
+  const [showcart,setShowCart]=useState([]);
   const[listProduct,setListProduct]=useState([]);
   const [getCustomerLogin,setCustomerLogin]=useState({});
   const getUserAccount=sessionStorage?.getItem("Account_UserName");
+  const navigate=useNavigate();
   useEffect(() => {
     getCustomerLoginByUserName(getUserAccount).then((res) => {
       setCustomerLogin(res.data.data);
+      handleStateChange();
     });
-  }, []);
+  }, [getUserAccount]);
+  const handleStateChange = () => {
+    setRefreshKey((prev) => prev + 1); // Tăng giá trị trigger để reload dữ liệu
+};
   
   useEffect(() => {
-    if (getCustomerLogin.customer_Id) {
+    if (getCustomerLogin && getCustomerLogin.customer_Id) {  // Check if customerLogin is set
       getListCart(getCustomerLogin.customer_Id).then((res) => {
-        setCart(res.data.data[0].details);
-        console.log(res.data.data[0].details);
+        // handle response
+        setShowCart(res.data.data);
+     
       });
     }
-  }, [getCustomerLogin]);
+  }, [refreshKey]);  
   
-  useEffect(() => {
-    if (cart.length > 0) {
-      cart.forEach((item) => {
-        getProductById(item.product_ID).then((res) => {
-          setListProduct((pre) => [...pre, res.data.data]);
-        });
-      });
-    }
-  }, [cart]);
+
+  
 
 
 
-  const incrementQuantity = (id) => {
-    const updatedCart = cart.map((item) =>
-      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setCart(updatedCart);
-  };
 
-  const decrementQuantity = (id) => {
-    const updatedCart = cart.map((item) =>
-      item.id === id && item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1 }
-        : item
-    );
-    setCart(updatedCart);
-  };
+  // const incrementQuantity = (id) => {
+  //   const updatedCart = cart.map((item) =>
+  //     item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+  //   );
+  //   setCart(updatedCart);
+  // };
+
+  // const decrementQuantity = (id) => {
+  //   const updatedCart = cart.map((item) =>
+  //     item.id === id && item.quantity > 1
+  //       ? { ...item, quantity: item.quantity - 1 }
+  //       : item
+  //   );
+  //   setCart(updatedCart);
+  // };
+  
+  const ChangeQuantity=(id,quantity)=>{
+    // alert(id)
+    ChangeQuantityDetailReceipt(id,quantity).then((res)=>{
+      handleStateChange();
+    })
+  }
+
+  
 
   const removeItem = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
@@ -55,8 +70,24 @@ const CartPage = () => {
   };
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    return showcart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
+  const handleCheckout=()=>{
+    // console.log(showcart);
+    
+    let data =showcart.map(item=>({
+      id_product:item.product_ID,
+      quantity_product:item.quantity,
+      price:item.price,
+      name_product:item.productName,
+      id_detail:item.detail_ID,
+      id_receipt:item.receipt_ID
+    }));
+  
+     sessionStorage.setItem("checkout_product",JSON.stringify(data));
+     window.location.replace('http://localhost:3000/user/checkout');
+
+  }
 
   const styles = {
     container: {
@@ -145,13 +176,13 @@ const CartPage = () => {
         <span>Số Lượng</span>
       </div>
       <div style={styles.itemContainer}>
-        {cart.map((item,index) => (
+        {showcart.map((item,index) => (
           
           <div key={item.detail_ID} style={styles.item}>
             <div style={styles.itemDetails}>
-              <img src= {`${process.env.REACT_APP_BASE_URL}/${listProduct[index]?.product_Image}?t=${Date.now()}`}  alt={item.name} style={styles.image} />
+              <img src= {`${process.env.REACT_APP_BASE_URL}/${item.product_Image}?t=${Date.now()}`}  alt={item.name} style={styles.image} />
               <div>
-                <h3 style={styles.itemInfo}>{listProduct[index]?.product_Name}</h3>
+                <h3 style={styles.itemInfo}>{item.productName}</h3>
                 
                 <p style={styles.itemInfo}>
                   {item.price.toLocaleString()}đ
@@ -162,14 +193,14 @@ const CartPage = () => {
             <div style={styles.itemActions}>
               <button
                 style={styles.button}
-                onClick={() => decrementQuantity(item.id)}
+                onClick={() => ChangeQuantity(item.detail_ID,-1)}
               >
                 -
               </button>
               <span style={styles.quantity}>{item.quantity}</span>
               <button
                 style={styles.button}
-                onClick={() => incrementQuantity(item.id)}
+                onClick={() => ChangeQuantity(item.detail_ID,1)}
               >
                 +
               </button>
@@ -185,9 +216,9 @@ const CartPage = () => {
       </div>
       <div style={styles.summary}>
         <h3>Đơn Hàng</h3>
-        <p>{cart.length} Sản Phẩm</p>
+        <p>{showcart.length} Sản Phẩm</p>
         <p>{calculateTotal().toLocaleString()}đ</p>
-        <button style={styles.checkoutButton}>THANH TOÁN</button>
+        <button onClick={()=>handleCheckout()} style={styles.checkoutButton}>THANH TOÁN</button>
       </div>
     </div>
    
