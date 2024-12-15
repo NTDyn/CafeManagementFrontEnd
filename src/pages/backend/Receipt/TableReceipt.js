@@ -4,6 +4,7 @@ import '../../../css/backend/product/index.css';
 import { getReceiptByStatus } from "../../../redux/actions/supplier";
 import { Box } from "@mui/material";
 import DetailReceipt from "./DetailReceipt";
+import { showListReceiptAdmin } from "../../../redux/actions/supplier";
 
 const TableReceipt = () => {
     const [refreshKey, setRefreshKey] = useState(0);
@@ -16,7 +17,7 @@ const TableReceipt = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await getReceiptByStatus(1);
+                const res = await showListReceiptAdmin();
                 setReceipt(res.data.data || []);
                 console.log(res.data.data);
             } catch (error) {
@@ -41,8 +42,8 @@ const TableReceipt = () => {
                 return receipt.status === 1
                     ? "Pending"
                     : receipt.status === 2
-                    ? "Deny"
-                    : "Approve";
+                        ? "Deny"
+                        : "Approve";
             },
         },
         {

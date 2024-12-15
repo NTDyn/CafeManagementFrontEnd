@@ -34,6 +34,7 @@ export default function MenuDetail(props) {
         let result = await fetchAPI(`/api/MenuDetail?MenuID=${props.menuID}`);
         console.log(result)
         setDetailRows(result.data)
+        console.log(detailRows)
         setOpenDetail(true)
     }
     return (

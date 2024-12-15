@@ -17,6 +17,7 @@ export default function MainGrid() {
     const [openModalHistory, setOpenModalHistory] = useState(false);
     const dataCustomerLevel = useSelector(state => state.dataCustomerLevel.data)
     const customers = useSelector(state => state.dataCustomer.data)
+    console.log(customers)
     const historyDiscount = useSelector(state => state.dataHistoryDiscount.data)
     const [dataModalHistory, setDataModalHistory] = useState({
         "customer_ID": 0,

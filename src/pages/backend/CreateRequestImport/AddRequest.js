@@ -11,14 +11,14 @@ import {
 import { use } from "react";
 import withReactContent from "sweetalert2-react-content";
 const FormModal = ({ showModal, onClose, onAddRecord }) => {
-  const [rows, setRows] = useState([{ ingredient: "", unit: "", quantity: 0, price: 0,listunit:{} }]);
+  const [rows, setRows] = useState([{ ingredient: "", unit: "", quantity: 0, price: 0, listunit: {} }]);
   const [listSupplier, setListSupplier] = useState([]);
   const [listWareHouse, setListWareHouse] = useState([]);
   const [listIngredient, setListIngredient] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [getIngredient, setIngredient] = useState(null); // Đảm bảo bạn lưu đúng ingredient
-  const [getSelectSuppler,setSelectedSupplier]=useState(0);
-  const [getSelectWareHouse,setSelectedWareHouse]=useState(0);
+  const [getSelectSuppler, setSelectedSupplier] = useState(0);
+  const [getSelectWareHouse, setSelectedWareHouse] = useState(0);
 
   const addRow = () => {
     setRows([...rows, { ingredient: "", unit: "", quantity: 0, price: 0 }]);
@@ -40,26 +40,26 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
     const ingredientData = res.data.data;
     const updatedRows = [...rows];
     // updatedRows[index].unit = ingredientData.unit_Min; 
-    updatedRows[index].listunit=ingredientData;
+    updatedRows[index].listunit = ingredientData;
     setRows(updatedRows); // Cập nhật lại state rows
-   
-    
+
+
   };
 
   const handleAddRequest = async () => {
-    const getUserName=sessionStorage.getItem("userName");
-    const staff=(await getStaffByUserName(getUserName)).data.data
+    const getUserName = sessionStorage.getItem("userName");
+    const staff = (await getStaffByUserName(getUserName)).data.data
     const Data = {
-     supplierLink: {
-    supplierID:parseInt(getSelectSuppler),
-      staffRequestID:staff.staff_ID,
-      staffApprovedID: 0,
-      staffReceivedID: 0,
-      totalPrice: parseInt(totalPrice),
-      warehouseID: parseInt(getSelectWareHouse),
-      isActive: true,
-  },
-      
+      supplierLink: {
+        supplierID: parseInt(getSelectSuppler),
+        staffRequestID: staff.staff_ID,
+        staffApprovedID: 0,
+        staffReceivedID: 0,
+        totalPrice: parseInt(totalPrice),
+        warehouseID: parseInt(getSelectWareHouse),
+        isActive: true,
+      },
+
       supplierDetails: rows.map((row) => {
         if (row?.ingredient != null) {
           return {
@@ -74,29 +74,29 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
       }).filter((item) => item !== null), // Lọc bỏ các giá trị null không hợp lệ
     };
 
-   const add=await AddRequest(Data);
+    const add = await AddRequest(Data);
   };
 
-  const confirmApproveSwal=(e)=>{
-    onClose(); 
+  const confirmApproveSwal = (e) => {
+    onClose();
     withReactContent(Swal).fire({
-        title: "Do you want to approve this request?",
-        showDenyButton: true,
-        confirmButtonText: "Change",
-        denyButtonText: `Cancel`
+      title: "Do you want to approve this request?",
+      showDenyButton: true,
+      confirmButtonText: "Change",
+      denyButtonText: `Cancel`
     }).then((result) => {
-        if (result.isConfirmed) {
-          handleAddRequest();
-         
-            
-           
-            Swal.fire("Successfully", "", "success");
-        } else if (result.isDenied) {
-            Swal.fire("Changes are not saved", "", "info");
-        }
+      if (result.isConfirmed) {
+        handleAddRequest();
+
+
+
+        Swal.fire("Successfully", "", "success");
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
 
     })
-}
+  }
 
 
   const calculateTotalPrice = () => {
@@ -128,10 +128,10 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
         <div style={styles.modalBody}>
           <div style={styles.formGroup}>
             <label>Supplier</label>
-            <select required style={styles.select} onChange={(e)=>{  setSelectedSupplier(e.target.value)}}>
-            <option value="">
-                 
-                </option>
+            <select required style={styles.select} onChange={(e) => { setSelectedSupplier(e.target.value) }}>
+              <option value="">
+
+              </option>
               {listSupplier.map((x) => (
                 <option key={x.Supplier_ID} value={x.supplier_ID}>
                   {x.supplier_Name}
@@ -141,15 +141,15 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
           </div>
           <div style={styles.formGroup}>
             <label>WareHouse</label>
-            <select required style={styles.select} onChange={(e) => {setSelectedWareHouse(e.target.value)}}>
-            <option value="">
-              
-                  
-                </option>
+            <select required style={styles.select} onChange={(e) => { setSelectedWareHouse(e.target.value) }}>
+              <option value="">
+
+
+              </option>
               {listWareHouse.map((x) => (
                 <option key={x.wareHouse_ID} value={x.wareHouse_ID}>
                   {x.wareHouse_Name}
-                  
+
                 </option>
               ))}
             </select>
@@ -174,7 +174,7 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
                   <tr key={index}>
                     <td>
                       <select
-                      required
+                        required
                         value={row.ingredient}
                         onChange={(e) => {
                           updateRow(index, "ingredient", e.target.value);
@@ -182,7 +182,7 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
                         }}
                         style={styles.select}
                       >
-                      <option value=""></option>
+                        <option value=""></option>
                         {listIngredient.map((i) => (
                           <option key={i.ingredient_ID} value={i.ingredient_ID}>
                             {i.ingredient_Name}
@@ -191,14 +191,14 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
                       </select>
                     </td>
                     <td>
-                      <select  required value={row.unit} onChange={(e) => updateRow(index, "unit", e.target.value)} style={styles.select}>
+                      <select required value={row.unit} onChange={(e) => updateRow(index, "unit", e.target.value)} style={styles.select}>
                         <option value=""></option>
                         {/* {getIngredient && ( */}
-                          <>
-                            <option value={1}>{rows[index]?.listunit?.unit_Min}</option>
-                            <option value={2}>{rows[index]?.listunit?.unit_Transfer}</option>
-                            <option value={3}>{rows[index]?.listunit?.unit_Max}</option>
-                          </>
+                        <>
+                          <option value={0}>{rows[index]?.listunit?.unit_Min}</option>
+                          <option value={1}>{rows[index]?.listunit?.unit_Transfer}</option>
+                          <option value={2}>{rows[index]?.listunit?.unit_Max}</option>
+                        </>
                         )
                         {/* } */}
                       </select>
@@ -238,7 +238,7 @@ const FormModal = ({ showModal, onClose, onAddRecord }) => {
           </div>
         </div>
         <div style={styles.modalFooter}>
-          <button onClick={() =>confirmApproveSwal()} style={styles.saveButton}>
+          <button onClick={() => confirmApproveSwal()} style={styles.saveButton}>
             Save Product
           </button>
         </div>

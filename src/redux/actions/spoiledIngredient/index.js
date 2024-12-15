@@ -44,6 +44,7 @@ export const addData = (data) => {
             response => {
                 if (response.status !== 200) {
                 } else {
+                    console.log(response)
                     dispatch({ type: "ADD_BACK_END_SPOILED", data: response.data })
                 }
 

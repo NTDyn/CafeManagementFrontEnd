@@ -91,30 +91,30 @@ const styles = {
 
 
 const CheckoutForm = () => {
-    const navigate=useNavigate();
-    const [getCustomerLogin,setCustomerLogin]=useState({});
-    const getUserAccount=sessionStorage?.getItem("Account_UserName");
-    const [checkout, setCheckout] = useState([]);
-    const [totalPrice,setTotalPrice]=useState();
-    const [totalQuantity,setTotalQuantity]=useState();
-    useEffect(() => {
-        const storedCart = JSON.parse(sessionStorage.getItem('checkout_product')) || [];
-        setCheckout(storedCart);
-        let total_q=0;
-        let total_p=0;
-        storedCart.forEach(item => {
-            total_p+=item.quantity_product*item.price;
-            total_q+=item.quantity_product;
-        });
-        setTotalPrice(total_p);
-        setTotalQuantity(total_q);
-      }, []);
+  const navigate = useNavigate();
+  const [getCustomerLogin, setCustomerLogin] = useState({});
+  const getUserAccount = sessionStorage?.getItem("Account_UserName");
+  const [checkout, setCheckout] = useState([]);
+  const [totalPrice, setTotalPrice] = useState();
+  const [totalQuantity, setTotalQuantity] = useState();
+  useEffect(() => {
+    const storedCart = JSON.parse(sessionStorage.getItem('checkout_product')) || [];
+    setCheckout(storedCart);
+    let total_q = 0;
+    let total_p = 0;
+    storedCart.forEach(item => {
+      total_p += item.quantity_product * item.price;
+      total_q += item.quantity_product;
+    });
+    setTotalPrice(total_p);
+    setTotalQuantity(total_q);
+  }, []);
 
-    useEffect(()=>{
-        getCustomerLoginByUserName(getUserAccount).then((res)=>{
-                setCustomerLogin(res.data.data);
-        })
-    },[]);
+  useEffect(() => {
+    getCustomerLoginByUserName(getUserAccount).then((res) => {
+      setCustomerLogin(res.data.data);
+    })
+  }, []);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -132,8 +132,8 @@ const CheckoutForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-   const confirmCreateReceipt= (e) => {
-    if(getCustomerLogin!=null){
+  const confirmCreateReceipt = (e) => {
+    if (getCustomerLogin != null) {
       withReactContent(Swal).fire({
         title: "Do you want to approve this request?",
         showDenyButton: true,
@@ -141,73 +141,73 @@ const CheckoutForm = () => {
         denyButtonText: `Cancel`
       }).then((result) => {
         if (result.isConfirmed) {
-  
+
           handleSubmit();
           sessionStorage.removeItem("checkout_product")
-  
+
           Swal.fire("Successfully", "", "success");
         } else if (result.isDenied) {
           Swal.fire("Changes are not saved", "", "info");
         }
-  
+
       })
-    }else{
+    } else {
       Swal.fire("Please Login to buy some items", "", "warning");
     }
-  
-    
-   
-     
+
+
+
+
+  }
+
+  const handleSubmit = async (e) => {
+
+    if (checkout.length == 1) {
+      const data = {
+        staff_ID: 0,
+        customer_ID: getCustomerLogin?.customer_Id,
+        totalPrice: totalPrice,
+        status: 1,
+        isActive: true,
+        details: checkout.map((item, index) => {
+          return {
+            product_ID: item.id_product,
+            quantity: item.quantity_product,
+            price: item.price,
+            isActive: true,
+            status: 1
+          };
+        })
+
+
+
+      };
+      const create = await checkoutReceipt(data);
+    } else {
+      const data = {
+        receipt: {
+          receipt_ID: checkout[0].id_receipt,
+          status: 1
+        },
+        listReceipt: checkout.map((item, index) => {
+          return {
+            detail_ID: item.id_detail,
+            status: 1,
+            receipt_ID: item.d_receipt
+          }
+        })
+      }
+      const create = await ChangeStatusReceipt(data);
+
     }
 
-  const handleSubmit = async(e) => {
-  
-  if(checkout.length==1){
-    const data={
-      staff_ID:0,
-      customer_ID:getCustomerLogin?.customer_Id,
-      totalPrice:totalPrice,
-      status:1,
-      isActive:true,
-      details:checkout.map((item,index)=>{
-          return{
-              product_ID:item.id_product,
-              quantity:item.quantity_product,
-              price:item.price,
-              isActive:true,
-              status:1
-          };
-      })
-  
-  
-        
-     };
-     const create =await checkoutReceipt(data);
-  }else{
-    const data={
-      receipt:{
-        receipt_ID:checkout[0].id_receipt,
-        status:11
-      },
-      listReceipt:checkout.map((item,index)=>{
-        return {
-          detail_ID:item.id_detail,
-          status:1,
-          receipt_ID:item.d_receipt
-        }
-      })
-    }
-    const create =await ChangeStatusReceipt(data);
-   
-  }
- 
-  
+
 
 
 
   };
 
-  const handleDicrect=()=>{
+  const handleDicrect = () => {
     navigate("/user/");
   }
 
@@ -264,12 +264,12 @@ const CheckoutForm = () => {
               style={styles.input}
             />
           </div>
-        
-        
-          <button onClick={()=>confirmCreateReceipt()} type="button" style={styles.submitButton}>
+
+
+          <button onClick={() => confirmCreateReceipt()} type="button" style={styles.submitButton}>
             Đặt hàng
           </button>
-          <button onClick={()=>handleDicrect()} type="button" style={styles.submitButton}>
+          <button onClick={() => handleDicrect()} type="button" style={styles.submitButton}>
             Quay về
           </button>
         </form>
@@ -279,15 +279,15 @@ const CheckoutForm = () => {
       <div style={styles.cartSection}>
         <h2 style={styles.cartHeader}>Đơn hàng ({totalQuantity} sản phẩm)</h2>
         <div style={styles.cartItems}>
-       {checkout.map((item,index)=>(
-        <div style={styles.cartItem}>
-            <span>{item?.name_product}</span>
-            <span>{item?.quantity_product}</span>
-            <span>{item?.price}</span>
-          </div>
-       ))}
-          
-         
+          {checkout.map((item, index) => (
+            <div style={styles.cartItem}>
+              <span>{item?.name_product}</span>
+              <span>{item?.quantity_product}</span>
+              <span>{item?.price}</span>
+            </div>
+          ))}
+
+
         </div>
         <div style={styles.cartSummary}>
           <div style={styles.cartRow}>

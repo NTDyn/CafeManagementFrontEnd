@@ -19,8 +19,10 @@ const SpoiledBackEnd = (state = initialState, action) => {
         case "ADD_BACK_END_SPOILED":
             let list = state.data;
             let elAdd = action.data;
-            let ingreID = list[list.length - 1].spoiled_ID + 1;
-            elAdd[0]["id"] = ingreID;
+            console.log(list)
+            let spID = list[list.length - 1].spoiled_ID + 1;
+
+            elAdd[0]["id"] = spID;
             list = [...list, elAdd[0]];
             return {
                 ...state,

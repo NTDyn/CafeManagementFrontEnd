@@ -53,7 +53,8 @@ const TableCustomer = (props) => {
             headerAlign: 'center',
             align: 'center',
             flex: 1,
-            minWidth: 100
+            minWidth: 100,
+            maxWidth: 150,
         },
         {
             field: "isActive",
@@ -62,6 +63,7 @@ const TableCustomer = (props) => {
             align: 'center',
             flex: 1,
             minWidth: 100,
+            maxWidth: 100,
             renderCell: (params) => {
                 return params.value ? "Using" : "Unused";
             }

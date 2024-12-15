@@ -1,4 +1,4 @@
-import { getImportDetail, getInitialData, updateData } from "../../../redux/actions/supplier";
+import { ChangeStatusReceipt, getImportDetail, getInitialData, updateData } from "../../../redux/actions/supplier";
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2'
@@ -12,20 +12,21 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
+import { HandleDeny } from "../../../redux/actions/supplier";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import Grid from '@mui/material/Grid2';
 // import { Box } from "@mui/material";
 import { getDetailReceipt } from "../../../redux/actions/supplier";
 import { Modal, Box, Typography, Table, TableBody, TableCell, ableContainer, TableHead, TableRow, Paper, Button, TableContainer } from "@mui/material";
-function DetailReceipt({ onUpdate,receiptId}) {
+function DetailReceipt({ onUpdate, receiptId }) {
   const [open, setOpen] = useState(false);
-
+  const [detail, setListDetail] = useState([]);
 
   const handleClose = () => setOpen(false);
 
- 
- const [detailReceipt,setReceiptDetail]=useState([]);
+
+  const [detailReceipt, setReceiptDetail] = useState([]);
   const [getStaff, setStaff] = useState({})
   // const [getStaffByUserName,setStaffByUerName]=useState({})
 
@@ -33,9 +34,9 @@ function DetailReceipt({ onUpdate,receiptId}) {
   const handleOpen = async () => {
 
     setOpen(true);
-    const res=await getDetailReceipt(receiptId);
+    const res = await getDetailReceipt(receiptId);
     setReceiptDetail(res.data.data);
-
+    console.log("ad");
 
   }
 
@@ -43,12 +44,27 @@ function DetailReceipt({ onUpdate,receiptId}) {
 
 
   const HandleDeny = async () => {
-    
-    onUpdate();
+    const res = await getDetailReceipt(receiptId);
+    setListDetail(res.data.data);
+    const data = {
+      receipt: {
+        receipt_ID: receiptId,
+        status: 2
+      },
+      listReceipt: detail.map((item, index) => {
+        return {
+          detail_ID: item.detail_ID,
+          status: 2,
+        }
+      })
+    }
+
+    const create = HandleDeny(data);
+
 
   }
   const HandleApprove = async () => {
-  
+
     onUpdate();
   }
 
@@ -72,12 +88,32 @@ function DetailReceipt({ onUpdate,receiptId}) {
     })
   }
 
+  const confirmDeny = () => {
+    withReactContent(Swal).fire({
+      title: "Do you want to approve this request?",
+      showDenyButton: true,
+      confirmButtonText: "Change",
+      denyButtonText: `Cancel`
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        HandleDeny();
+        onUpdate();
+
+        Swal.fire("Successfully", "", "success");
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+
+    })
+  }
 
 
-   
 
 
-  
+
+
+
 
 
   const theme = createTheme({
@@ -117,7 +153,7 @@ function DetailReceipt({ onUpdate,receiptId}) {
                     width: '80px',
                     bgcolor: '#23a736',
                   }}
-                
+                  onClick={() => confirmDeny()}
                 >
                   Deny
                 </Button>
@@ -184,13 +220,13 @@ function DetailReceipt({ onUpdate,receiptId}) {
 
             {/* Ingredients Table */}
             <Typography variant="h6" component="h2" sx={{ mb: 1 }}>
-              Receipt Detail 
+              Receipt Detail
             </Typography>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
-        
+
                     <TableCell>Product Name</TableCell>
                     <TableCell>Quantity</TableCell>
                     <TableCell>Price</TableCell>
