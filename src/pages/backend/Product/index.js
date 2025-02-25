@@ -8,14 +8,14 @@ import AppNavbar from './AppNavbar';
 import Header from '../../../components/Header/Header';
 import SideMenu from '../../../components/Menu/SideMenu';
 import MainGrid from './MainGrid';
+import Layout from '../../../components/Layout';
 
 
 export default function Dashboard(props) {
     return (
         <>
             <CssBaseline enableColorScheme />
-            <Box sx={{ display: 'flex' }}>
-                <SideMenu />
+            <Layout>
                 <AppNavbar />
                 {/* Main content */}
                 <Box
@@ -43,7 +43,7 @@ export default function Dashboard(props) {
                         <MainGrid />
                     </Stack>
                 </Box>
-            </Box>
+            </Layout>
         </>
     );
 }

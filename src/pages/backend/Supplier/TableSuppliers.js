@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import UpdateSupplier from "./UpdateSupplier";
 import '../../../css/backend/product/index.css';
 import { useState } from "react";
-import { getAllSuppliers } from "../../../redux/actions/supplier";
+import { getInitialData } from "../../../redux/actions/supplier";
 import { Box } from "@mui/material";
 
 
@@ -14,7 +14,7 @@ const TableSuppliers = (async) => {
         setRefreshKey((prev) => prev + 1); // Tăng giá trị trigger để reload dữ liệu
     };
     useEffect(()=>{
-        getAllSuppliers().then((res)=>{
+        getInitialData().then((res)=>{
             setSuppliers(res.data.data);
             console.log(res.data.data);
           })
@@ -95,7 +95,6 @@ const TableSuppliers = (async) => {
         <DataGrid
 
             autoHeight
-            checkboxSelection
             rows={suppliers}
             columns={columns}
             getRowId={(row) => row.supplier_ID}

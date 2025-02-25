@@ -9,6 +9,7 @@ import SideMenu from '../../../components/Menu/SideMenu';
 
 import NavbarBreadcrumbs from '../../../components/Header/NavbarBreadcrumbs';
 import MainGrid from './MainGrid';
+import Layout from '../../../components/Layout';
 
 
 export default function ReceiptTable(props) {
@@ -16,9 +17,7 @@ export default function ReceiptTable(props) {
         <>
             <CssBaseline enableColorScheme />
 
-            <Box sx={{ display: 'flex' }}>
-
-                <SideMenu />
+            <Layout>
                 {/* Main content */}
                 <Box
                     component="main"
@@ -45,7 +44,7 @@ export default function ReceiptTable(props) {
                         <MainGrid/>
                     </Stack>
                 </Box>
-            </Box>
+            </Layout>
         </>
     );
 }

@@ -7,15 +7,14 @@ import Stack from '@mui/material/Stack';
 import Header from '../../../components/Header/Header';
 import SideMenu from '../../../components/Menu/SideMenu';
 import MainGrid from './mainGrid';
+import Layout from '../../../components/Layout';
 
 export default function Dashboard(props) {
     return (
         <>
             <CssBaseline enableColorScheme />
 
-            <Box sx={{ display: 'flex' }}>
-
-                <SideMenu />
+            <Layout>
                 {/* Main content */}
                 <Box
                     component="main"
@@ -42,7 +41,7 @@ export default function Dashboard(props) {
                         <MainGrid />
                     </Stack>
                 </Box>
-            </Box>
+            </Layout>
         </>
     );
 }

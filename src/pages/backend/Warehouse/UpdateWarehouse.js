@@ -20,87 +20,107 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 
 function UpdateWarehouse({ wareHouseID, wareHouseName, buttonLabel, isActive }) {
+    const dispatch = useDispatch();
+    const dataWarehouse = useSelector(state => state.dataWarehouse.data);
+    const warehouse = useSelector(state =>
+        state.dataWarehouse.data.find(item => item.wareHouse_ID === wareHouseID)
+    );
+
+    const [formData, setFormData] = useState({ ...warehouse });
     const [open, setOpen] = useState(false);
-    const [nameChange, setNameChange] = useState(wareHouseName);
-    const dataWarehouse = useSelector(state => state.dataWarehouse.data)
 
-    const dispatch = useDispatch()
+
     useEffect(() => {
-        dispatch(getInitialData())
-    }, [dispatch])
-
-    const UpdateFunction = () => {
-
-        let data = {
-
-            "wareHouse_ID": wareHouseID,
-            "wareHouse_Name": nameChange,
-            "isActive": isActive
+        if (!warehouse) {
+            dispatch(getInitialData())
         }
-        dispatch(updateData(data))
+        
+    }, [dispatch, warehouse]);
+
+    useEffect(() => {
+        if (warehouse && formData.wareHouse_ID !== warehouse.wareHouse_ID) {
+            setFormData({ ...warehouse });
+        }
+    }, [warehouse]);
+
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
-    const confirmSwal = () => {
-        if (isActive === false) {
-            withReactContent(Swal).fire({
-                title: "Do you want to lock this warehouse?",
-                showDenyButton: true,
-                confirmButtonText: "Lock",
-                denyButtonText: `Don't lock`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    UpdateFunction()
-                } else if (result.isDenied) {
-                    Swal.fire("Changes are not saved", "", "info");
-                }
+    const UpdateFunction = () => {
+        const data = { wareHouse_ID: wareHouseID, ...formData }
+        console.log(data)
+        dispatch(updateData(data));
+    };
 
-            })
-        }
-        if (isActive === true) {
-            withReactContent(Swal).fire({
-                title: "Do you want to unlock this warehouse?",
-                showDenyButton: true,
-                confirmButtonText: "Unlock",
-                denyButtonText: `Cancel`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    UpdateFunction()
-                } else if (result.isDenied) {
-                    Swal.fire("Changes are not saved", "", "info");
-                }
+   const confirmSwal = () => {
+        const actionText = warehouse.isActive ? "lock" : "unlock";
 
-            })
-        }
+        withReactContent(Swal).fire({
+            title: `Do you want to ${actionText} this warehouse?`,
+            showDenyButton: true,
+            confirmButtonText: actionText.charAt(0).toUpperCase() + actionText.slice(1),
+            denyButtonText: `Cancel`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const updatedStatus = !warehouse.isActive;
 
-    }
+                setFormData((prev) => ({
+                    ...prev,
+                    isActive: updatedStatus
+                }));
+    
+                dispatch(updateData({ wareHouse_ID: wareHouseID, isActive: updatedStatus }));
+                 Swal.fire("Successfully", "", "success");
+            } else {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
+    };
 
     const existingWarehouse = dataWarehouse.find(
-        dataWarehouse => dataWarehouse.wareHouse_Name === nameChange
+        data => data.wareHouse_Name === formData.wareHouse_Name && data.wareHouse_ID !== wareHouseID
     );
+    
     const confirmChangeNameSwal = (e) => {
-        e.preventDefault()
-        if (existingWarehouse) {
-            Swal.fire("Warehouse name is existing");
-        } else {
-            withReactContent(Swal).fire({
-                title: "Do you want to change name of warehouse?",
-                showDenyButton: true,
-                confirmButtonText: "Change",
-                denyButtonText: `Cancel`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    UpdateFunction();
-                } else if (result.isDenied) {
-                    Swal.fire("Changes are not saved", "", "info");
-                }
+        e.preventDefault();
 
-            })
+        if (formData.wareHouse_Name === warehouse?.wareHouse_Name) {
+            Swal.fire("No changes detected", "", "info");
+            return;
         }
-        handleClose()
+
+        if (existingWarehouse) {
+            Swal.fire("Warehouse name already exists", "", "error");
+            return;
+        }
+
+        withReactContent(Swal).fire({
+            title: "Do you want to change the warehouse name?",
+            showDenyButton: true,
+            confirmButtonText: "Change",
+            denyButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                UpdateFunction();
+                 Swal.fire("Successfully", "", "success");
+                handleClose();
+            } else {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
     }
+    const handleOpen = () => {
+        setFormData({ ...warehouse });
+        setOpen(true);
+    };
 
     const handleClose = () => {
-        setNameChange(null);
         setOpen(false);
     };
 
@@ -130,12 +150,18 @@ function UpdateWarehouse({ wareHouseID, wareHouseName, buttonLabel, isActive }) 
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
                                     sx={
-                                        { width: '80px', bgcolor: '#23a736' }
+                                        { width: '80px', 
+                                            bgcolor: warehouse?.isActive ? '#23a736' : '#d32f2f', // Xanh nếu active, đỏ nếu inactive
+                                            color: '#fff', // Chữ trắng
+                                            '&:hover': {
+                                                bgcolor: warehouse?.isActive ? '#1e8e3e' : '#c62828' // Hover đậm hơn
+                                            }
+                                     }
                                     }
                                     onClick={confirmSwal}
 
                                 >
-                                    {buttonLabel}
+                                     {warehouse?.isActive ? "Lock" : "Unlock"}
                                 </Button>
                             </Box>
                         </Grid>
@@ -170,15 +196,14 @@ function UpdateWarehouse({ wareHouseID, wareHouseName, buttonLabel, isActive }) 
                                 <TextField
                                     autoFocus
                                     required
-                                    name="nameWarehouse"
-                                    value={wareHouseName}
-                                    onChange={(e) => setNameChange(e.target.value)}
+                                    name="wareHouse_Name"
+                                    value={formData.wareHouse_Name || ""}
+                                    onChange={handleChange}
                                 />
                             </FormControl>
 
                             <Button
                                 type="submit"
-
                             >
                                 Submit
                             </Button>
@@ -190,10 +215,6 @@ function UpdateWarehouse({ wareHouseID, wareHouseName, buttonLabel, isActive }) 
         </ >
     );
 };
-
-// DeleteCategory.propTypes = {
-//     categoryID: PropTypes.number.isRequired,
-// }
 
 
 export default UpdateWarehouse;

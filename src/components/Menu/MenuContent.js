@@ -5,6 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
+import Collapse from '@mui/material/Collapse';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
@@ -12,90 +13,17 @@ import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
+import StoreIcon from '@mui/icons-material/Store';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import '../../css/components/Menu/MenuContent.css'
 
-const mainListItems = [
-    {
-        text: 'Home',
-        icon: <HomeRoundedIcon />,
-        link: ''
-    },
-    {
-        text: 'Customers',
-        icon: <PeopleRoundedIcon />,
-        link: 'admin/customer'
-    },
-    {
-        text: 'Warehouse',
-        icon: <InventoryIcon />,
-        link: 'admin/warehouse'
-    },
-    {
-        text: 'Suppliers',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/suppliers'
-    },
-    {
-        text: 'Request Import',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/import'
-    },
-    {
-        text: 'History Import',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/historyimport'
-    },
-    {
-        text: 'Products',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/product'
-    },
-    {
-        text: 'Batch Recipe',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/batch-recipe'
-    },
-    {
-        text: 'Ingredient Category',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/ingredientCategory'
-    },
-
-    {
-        text: 'Ingredients',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/ingredient'
-    },
-    {
-        text: 'Spoiled Ingredient',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/spoiled-ingredient'
-    },
-
-    {
-        text: 'Product Categories',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/productCategory'
-    },
-    {
-        text: 'Stored Ingredient',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/store-ingredient'
-    },
-    {
-        text: 'Menu ',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/menu'
-    },
-    {
-        text: 'Receipt ',
-        icon: <AssignmentRoundedIcon />,
-        link: 'admin/receipt'
-    },
-];
 
 const secondaryListItems = [
     { text: 'Settings', icon: <SettingsRoundedIcon /> },
@@ -105,51 +33,116 @@ const secondaryListItems = [
 
 export default function MenuContent() {
     const location = useLocation();
+    const [openInventory , setOpenInventory] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const [openOrders, setOpenOrders] = React.useState(false);
 
+    const toggleOrders = () => setOpenOrders(!openOrders);
+    const toggleInventory = () => setOpenInventory(!openInventory);
     const handleListItemClick = (index) => {
         setSelectedIndex(index);
     };
-    React.useEffect(() => {
-        const currentIndex = mainListItems.findIndex(item => location.pathname.includes(item.link));
-        setSelectedIndex(currentIndex);
-    }, [location.pathname]);
 
+
+    
     return (
         <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
-            <List dense>
-                {mainListItems.map((item, index) => (
-                    <ListItem key={index} disablePadding sx={{ display: 'block', paddingTop: '2%', paddingBottom: '2%' }}>
-                        <ListItemButton
-                            component={Link}
-                            to={"/" + item.link}
-                            selected={location.pathname === "/" + item.link}
-                            onClick={() => handleListItemClick(index)}
-                            sx={{
-                                '&.Mui-selected': {
-                                    backgroundColor: 'rgba(25, 118, 210, 0.1)', // Màu khi chọn
-                                    color: '#0080ff',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(25, 118, 210, 0.15)', // Màu khi hover
-                                    },
-                                },
-                                '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.04)', // Màu khi hover nếu không được chọn
-                                },
+          <List dense>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/" selected={location.pathname === '/'}>
+                <ListItemIcon><HomeRoundedIcon /></ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItemButton>
+            </ListItem>
+    
+            <ListItemButton onClick={toggleInventory}>
+              <ListItemIcon><InventoryIcon /></ListItemIcon>
+              <ListItemText primary="Inventory" />
+              {openInventory ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openInventory} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {[
+                  { text: 'Warehouse', link: 'admin/warehouse' },
+                  { text: 'Request Import', link: 'admin/import' },
+                  { text: 'History Import', link: 'admin/historyimport' },
+                  { text: 'Ingredients', link: 'admin/ingredient' },
+                  { text: 'Stored Ingredients', link: 'admin/store-ingredient' },
+                  { text: 'Spoiled Ingredients', link: 'admin/spoiled-ingredient' },
+                  { text: 'Ingredient Category', link: 'admin/ingredientCategory' },
+                ].map((item) => (
+                  <ListItemButton
+                    key={item.text}
+                    component={Link}
+                    to={`/${item.link}`}
+                    sx={{
+                         pl: 4 ,
+                        '&.Mui-selected': {
+                            backgroundColor: 'rgba(25, 118, 210, 0.1)', // Màu khi chọn
+                            color: '#0080ff',
+                            '&:hover': {
+                                backgroundColor: 'rgba(25, 118, 210, 0.15)', // Màu khi hover
+                            },
+                        },
+                        '&:hover': {
+                            backgroundColor: 'rgba(0, 0, 0, 0.04)', // Màu khi hover nếu không được chọn
+                        },
 
-                            }}
-                        >
-
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text} className='CategoryName' />
-
-                        </ListItemButton>
-                    </ListItem>
+                    }}
+                    selected={location.pathname.includes(item.link)}
+                  >
+                    <ListItemIcon><NavigateNextRoundedIcon ></NavigateNextRoundedIcon></ListItemIcon>
+                    <ListItemText primary={item.text} primaryTypographyProps={{fontSize: '14px'}}/>
+                  </ListItemButton>
                 ))}
-            </List>
-
-            <List dense>
-                {secondaryListItems.map((item, index) => (
+              </List>
+            </Collapse>
+    
+            <ListItemButton onClick={toggleOrders}>
+              <ListItemIcon><LocalDiningIcon /></ListItemIcon>
+              <ListItemText primary="Orders & Menu" />
+              {openOrders ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openOrders} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {[
+                  { text: 'Menu', link: 'admin/menu' },
+                  { text: 'Receipt', link: 'admin/receipt' },
+                  { text: 'Batch Recipe', link: 'admin/batch-recipe' },
+                  { text: 'Products', link: 'admin/product' },
+                  { text: 'Product Categories', link: 'admin/productCategory' },
+                ].map((item) => (
+                  <ListItemButton
+                    key={item.text}
+                    component={Link}
+                    to={`/${item.link}`}
+                    sx={{ pl: 4 }}
+                    selected={location.pathname.includes(item.link)}
+                  >
+                      <ListItemIcon><NavigateNextRoundedIcon ></NavigateNextRoundedIcon></ListItemIcon>
+                       <ListItemText primary={item.text} primaryTypographyProps={{fontSize: '14px'}}/>
+                  </ListItemButton>
+                ))}
+              </List>
+            </Collapse>
+    
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin/customer" selected={location.pathname.includes('admin/customer')}>
+                <ListItemIcon><PeopleRoundedIcon /></ListItemIcon>
+                <ListItemText primary="Customers" />
+              </ListItemButton>
+            </ListItem>
+    
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin/suppliers" selected={location.pathname.includes('admin/suppliers')}>
+                <ListItemIcon><StoreIcon /></ListItemIcon>
+                <ListItemText primary="Suppliers" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+    
+          <List dense>
+                 {secondaryListItems.map((item, index) => (
                     <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton>
                             <ListItemIcon>{item.icon}</ListItemIcon>
@@ -158,6 +151,6 @@ export default function MenuContent() {
                     </ListItem>
                 ))}
             </List>
-        </Stack >
-    );
+        </Stack>
+      );
 }

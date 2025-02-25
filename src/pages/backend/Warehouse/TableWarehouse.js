@@ -2,17 +2,25 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getInitialData } from "../../../redux/actions/warehouse";
 import { DataGrid } from '@mui/x-data-grid';
-import UpdateWarehouse from './UpadateWarehouse';
+import UpdateWarehouse from './UpdateWarehouse';
 import { Box } from "@mui/material";
-
+import '../../../css/backend/warehouse/index.css'
 const useTableWarehouse = () => {
     const data = useSelector(state => state.dataWarehouse.data);
 
+    const rows = data?.map(item => ({
+        ...item,
+        id: item.wareHouse_ID // Thêm ID cho DataGrid
+    })) || [];
+
     const dispatch = useDispatch();
 
+
     useEffect(() => {
-        dispatch(getInitialData())
-    }, [dispatch])
+        if (!data || data.length === 0) {
+            dispatch(getInitialData())
+        }
+    }, [dispatch, data])
 
     let columns = [
         {
@@ -55,7 +63,8 @@ const useTableWarehouse = () => {
                             wareHouseID={params.row.id}
                             wareHouseName={params.row.wareHouse_Name}
                             buttonLabel={params.row.isActive ? " Lock " : "Unlock"}
-                            isActive={params.row.isActive ? false : true}
+                            isActive={!params.row.isActive}
+                        
 
                         />
                     </Box>
@@ -68,10 +77,10 @@ const useTableWarehouse = () => {
     return (
         <DataGrid
             autoHeight
-            checkboxSelection
-            rows={data}
+            rows={rows}
             columns={columns}
             getRowClassName={(params) =>
+                
                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
             }
             initialState={{

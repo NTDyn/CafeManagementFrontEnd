@@ -28,20 +28,21 @@ const WarehouseBackend = (state = initialState, action) => {
             }
 
         case "UPDATE_BACK_END_WAREHOUSE":
-            let itemUP = action.data;
+            const itemUP = action.data;
 
-            const updatedData = state.data.map(item => {
+            const updatedData = state.data.map(item =>
+                item.wareHouse_ID === itemUP.wareHouse_ID ? {
+                    ...item,
+                    wareHouse_Name: itemUP.wareHouse_Name ?? item.wareHouse_Name,
+                    isActive: itemUP.isActive ?? item.isActive,
+                } : item
+            );
 
-                if (item.wareHouse_ID === action.data.wareHouse_ID) {
-                    if (itemUP.wareHouse_Name !== null) {
-                        return { ...item, wareHouse_Name: action.data.wareHouse_Name };
-                    }
-                    if (itemUP.wareHouse_Name === null) {
-                        return { ...item, isActive: action.data.isActive };
-                    }
-                }
-                return item;
-            });
+            return {
+                ...state,
+                data: updatedData,
+            };
+
 
             return {
                 ...state,

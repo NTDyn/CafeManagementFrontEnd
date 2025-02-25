@@ -13,7 +13,7 @@ export default function Copyright() {
         >
             {'Copyright © '}
             <MuiLink color="inherit" href="https://mui.com/">
-                Your Website
+                 DYN Website
             </MuiLink>{' '}
             {new Date().getFullYear()}.
         </Typography>

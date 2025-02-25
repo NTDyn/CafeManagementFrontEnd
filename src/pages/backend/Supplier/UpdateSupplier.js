@@ -16,7 +16,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import Grid from '@mui/material/Grid2';
 import { Box } from "@mui/material";
-import { updateSupplier } from "../../../redux/actions/supplier";
 import dayjs from "dayjs";
 function UpdateSupplier({ onUpdate,supplier_ID, supplier_Name, buttonLabel, isActive }) {
     const [open, setOpen] = useState(false);
@@ -44,12 +43,7 @@ function UpdateSupplier({ onUpdate,supplier_ID, supplier_Name, buttonLabel, isAc
             "supplier_Name": supplierName,
            "isActive":isActive?false:true,
         }
-        updateSupplier(data).then((res)=>{
-            console.log(res.data.data);
-        })
-        onUpdate();
-
-        
+        updateSupplier(data)
     };
 
     const UpdateStatus = async() => {
@@ -59,10 +53,7 @@ function UpdateSupplier({ onUpdate,supplier_ID, supplier_Name, buttonLabel, isAc
             "supplier_Name":supplierName,
             "isActive": isActive
         }
-        updateSupplier(data).then((res)=>{
-            console.log(res.data.data);
-        })
-        onUpdate()
+        updateSupplier(data)
        
     }
 
@@ -176,7 +167,15 @@ function UpdateSupplier({ onUpdate,supplier_ID, supplier_Name, buttonLabel, isAc
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
                                     sx={
-                                        { width: '80px', bgcolor: '#23a736' }
+                                        { 
+                                            width: '80px', 
+                                            bgcolor: !isActive ? '#23a736' : '#d32f2f', // Xanh nếu active, đỏ nếu inactive
+                                            color: '#fff', // Chữ trắng
+                                            '&:hover': {
+                                                bgcolor: !isActive ? '#1e8e3e' : '#c62828' // Hover đậm hơn
+                                            }
+                                    
+                                         }
                                     }
                                     onClick={confirmSwal}
 

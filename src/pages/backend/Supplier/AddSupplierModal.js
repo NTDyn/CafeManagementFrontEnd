@@ -53,16 +53,11 @@ export default function AddSupplierModal() {
     }
 
 
-    
-
-
     const confirmSwal = () => {
         withReactContent(Swal).fire({
             title: "Do you want to add this supplier?",
-            showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: "Add",
-            denyButtonText: `Don't add`
         }).then((result) => {
             if (result.isConfirmed) {
                 hanleAddSupplier();
