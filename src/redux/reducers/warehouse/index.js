@@ -29,7 +29,7 @@ const WarehouseBackend = (state = initialState, action) => {
 
         case "UPDATE_BACK_END_WAREHOUSE":
             const itemUP = action.data;
-
+            console.log(itemUP)
             const updatedData = state.data.map(item =>
                 item.wareHouse_ID === itemUP.wareHouse_ID ? {
                     ...item,

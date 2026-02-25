@@ -24,6 +24,7 @@ export const addData = (data) => {
                     if (response.status !== 200) {
                         //   dispatch({ type: "SHOW_ERROR_API", message: result.message })
                     } else {
+                        console.log(response)
                         dispatch({ type: "ADD_BACK_END_SUPPLIER", data: data });
                     }
                 }
@@ -37,6 +38,7 @@ export const addData = (data) => {
 }
 
 export const updateData = (data) => {
+
     return async dispatch => {
         putAPI("/api/Supplier", data)
             .then(

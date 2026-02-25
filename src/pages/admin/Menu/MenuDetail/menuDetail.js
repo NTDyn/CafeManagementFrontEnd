@@ -1,0 +1,108 @@
+import { Button, Typography } from "@mui/joy";
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Input from '@mui/joy/Input';
+import Modal from '@mui/joy/Modal';
+import ModalDialog from '@mui/joy/ModalDialog';
+import DialogTitle from '@mui/joy/DialogTitle';
+import DialogContent from '@mui/joy/DialogContent';
+import Stack from '@mui/joy/Stack';
+import Grid from '@mui/material/Grid2';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { getInitialData } from "../../../../redux/actions/menuDetail";
+import '../../../../css/backend/menu/index.css'
+import { ClassNames } from "@emotion/react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchAPI } from "../../../../api";
+
+
+
+export default function MenuDetail(props) {
+    const [detailRows, setDetailRows] = useState([]);
+    const [openDetail, setOpenDetail] = useState(false);
+
+
+    const handleClickOpenDetail = async () => {
+        let result = await fetchAPI(`/api/MenuDetail?MenuID=${props.menuID}`);
+        setDetailRows(result.data)
+        setOpenDetail(true)
+    }
+    const formatCurrency = (number) => {
+        return number.toLocaleString('vi-VN');
+    }
+
+    return (
+        <>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button
+                    sx={{ width: '80px', bgcolor: '#000000' }}
+                    onClick={() => handleClickOpenDetail()}
+                >
+                    Detail
+                </Button>
+            </Box>
+
+            <Modal
+                open={openDetail}
+                onClose={() => setOpenDetail(false)}
+
+            >
+                <ModalDialog sx={{ width: '50%', overflow: 'scroll' }} >
+                    <Grid container sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center', }} className='card-menu'>
+                        <Typography sx={{ textAlign: 'center', marginBottom: '2%', marginTop: '2%', fontSize: '34px', fontWeight: 'bold' }}>
+                            Menu
+                        </Typography>
+                        <TableContainer component={Paper} sx={{ margin: '2%' }}>
+                            <Table sx={{ minWidth: 400 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow className="border-detail-table">
+                                        <TableCell align="center" sx={{ fontWeight: 'bold' }}>Num</TableCell>
+                                        <TableCell align="center" sx={{ fontWeight: 'bold' }}>Picture</TableCell>
+                                        <TableCell align="center" sx={{ fontWeight: 'bold' }}>Dishes</TableCell>
+                                        <TableCell align="center" sx={{ fontWeight: 'bold' }}>Price</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {detailRows.map((row, index) => (
+                                        <TableRow
+                                            className="border-detail-table"
+                                            key={row.setup_ID}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell sx={{ fontWeight: 'bold' }}>{index + 1}</TableCell>
+                                            <TableCell align="center" component="th" scope="row" sx={{ width: 300, height: 100 }}>
+                                                <img
+                                                    src={`${process.env.REACT_APP_BASE_URL}/${row.product.product_Image}?t=${Date.now()}`}
+                                                    alt="Product"
+                                                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                                                    onError={(e) => {
+                                                        e.target.onerror = null; // Ngăn vòng lặp vô tận
+                                                        e.target.src = '/path/to/placeholder.png';
+                                                    }}
+                                                ></img>
+                                            </TableCell>
+                                            <TableCell align="center" component="th" scope="row"> {row.product.product_Name}</TableCell>
+                                            <TableCell align="center">{formatCurrency(row.product.price)}</TableCell>
+
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
+
+
+                </ModalDialog>
+            </Modal >
+
+        </>
+    )
+} 

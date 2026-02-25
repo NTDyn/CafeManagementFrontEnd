@@ -21,11 +21,34 @@ const Menus = (state = initialState, action) => {
             };
 
         case "UPDATE_BACK_END_MENU":
+            const itemUP = action.data[0];
+            console.log(itemUP);
+
+            const updatedData = state.data.map(item => {
+                if (item.menu_ID === itemUP.menu_ID) {
+                    return {
+                        ...item,
+                        ...(itemUP.menu_Name !== null && { menu_Name: itemUP.menu_Name }),
+                        ...(itemUP.isActive !== null && { isActive: itemUP.isActive })
+                    };
+                }
+                return item;
+            });
+
             return {
                 ...state,
-                data: state.data.map(item =>
-                    item.menu_ID === action.data.menu_ID ? action.data : item
-                )
+                data: updatedData
+            };
+
+        case "DELETE_BACK_END_MENU":
+            return {
+                ...state,
+                data: state.data.filter(menu => menu.menu_ID !== action.data.menu_ID)
+            };
+        case "SET_SELECTED_MENU":
+            return {
+                ...state,
+                selectedMenuId: action.data
             };
 
         default:

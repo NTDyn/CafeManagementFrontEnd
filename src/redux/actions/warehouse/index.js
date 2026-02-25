@@ -44,6 +44,7 @@ export const updateData = (data) => {
                     if (response.status !== 200) {
                         dispatch({ type: "SHOW_ERROR_API", message: response.message || "Failed to update warehouse" });
                     } else {
+                        console.log(data)
                         dispatch({ type: "UPDATE_BACK_END_WAREHOUSE", data: data });
                     }
                 }

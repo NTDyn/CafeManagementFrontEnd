@@ -1,0 +1,42 @@
+.cart-contain {
+    background-image: url(../../../image/client/yourcart/brown-background.jpg);
+    background-size: cover;
+    min-height: 101vh;
+    width: 100vw;
+}
+
+.product-img {
+    width: 100%;
+    border: solid 1px;
+    border-radius: 50%;
+    max-height: 150px;
+    margin: 1%;
+}
+
+.minusQuality,
+.addQuality {
+    border: none;
+    background: none;
+}
+
+.cart-item {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin-top: 2%;
+}
+
+#btn-remove {
+    border: none;
+    color: red;
+    background: none;
+}
+
+.table-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 2% !important;
+    border-bottom: 1px solid;
+    border-color: #debcbc;
+}

@@ -30,20 +30,23 @@ const IngredientBackEnd = (state = initialState, action) => {
         case "UPDATE_BACK_END_INGREDIENT":
 
             let itemUP = action.data;
+            let updatedData;
+            if (itemUP.isActive === false) {
+                updatedData = state.map.filter(item => item.ingredient_ID === itemUP.ingredient_ID)
+            } else {
+                updatedData = state.data.map(item => {
+                    if (item.ingredient_ID === action.data.ingredient_ID) {
+                        if (itemUP.ingredient_Name !== undefined && itemUP.ingredient_Type !== undefined && itemUP.ingredient_Category !== undefined && itemUP.unit_Max !== undefined && itemUP.unit_Min !== undefined && itemUP.unit_Transfer !== undefined && itemUP.transferPerMin !== undefined && itemUP.maxPerTransfer !== undefined) {
+                            return { ...item, ingredient_Name: action.data.ingredient_Name };
+                        }
+                        if (action.data.isActive !== undefined) {
 
-            const updatedData = state.data.map(item => {
-                if (item.ingredient_ID === action.data.ingredient_ID) {
-                    if (itemUP.ingredient_Name !== undefined && itemUP.ingredient_Type !== undefined && itemUP.ingredient_Category !== undefined && itemUP.unit_Max !== undefined && itemUP.unit_Min !== undefined && itemUP.unit_Transfer !== undefined && itemUP.transferPerMin !== undefined && itemUP.maxPerTransfer !== undefined) {
-                        return { ...item, ingredient_Name: action.data.ingredient_Name };
+                            return { ...item, isActive: action.data.isActive };
+                        }
                     }
-                    if (action.data.isActive !== undefined) {
-
-                        return { ...item, isActive: action.data.isActive };
-                    }
-                }
-                return item;
-            });
-
+                    return item;
+                });
+            }
             return {
                 ...state,
                 data: updatedData,

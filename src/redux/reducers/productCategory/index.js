@@ -30,20 +30,21 @@ const ProductCategoryBackend = (state = initialState, action) => {
 
         case "UPDATE_BACK_END_PRODUCT_CATEGORY":
             let itemUP = action.data;
+            let updatedData;
+            if (itemUP.isActive === false) {
+                updatedData = state.data.filter(item => item.category_ID !== itemUP.category_ID)
+            } else {
+                updatedData = state.data.map(item => {
 
-            const updatedData = state.data.map(item => {
+                    if (item.category_ID === action.data.category_ID) {
+                        if (itemUP.category_Name !== null) {
+                            return { ...item, category_Name: action.data.category_Name };
+                        }
 
-                if (item.category_ID === action.data.category_ID) {
-                    if (itemUP.category_Name !== null) {
-                        return { ...item, category_Name: action.data.category_Name };
                     }
-                    if (itemUP.category_Name === null) {
-                        return { ...item, isActive: action.data.isActive };
-                    }
-                }
-                return item;
-            });
-
+                    return item;
+                });
+            }
             return {
                 ...state,
                 data: updatedData

@@ -6,16 +6,14 @@ const initialState = {
 const SupplierBackend = (state = initialState, action) => {
     switch (action.type) {
         case "APPEND_BACK_END_SUPPLIER":
-            let result = [];
-            action.data.forEach((el, i) => {
-                result.push(el);
-                result[i]["id"] = el.supplier_ID;
-            });
-
+            const result = action.data?.map(el => ({
+                ...el,
+                id: el.supplier_ID
+            }));
             return {
                 ...state,
                 data: result
-            }
+            };
         case "ADD_BACK_END_SUPPLIER":
             let itemAdd = action.data;
             let list = state.data;
@@ -30,18 +28,26 @@ const SupplierBackend = (state = initialState, action) => {
             }
 
         case "UPDATE_BACK_END_SUPPLIER":
-            const updatedData = state.data.map(item => {
-                if (item.supplier_ID === action.data.supplier_ID) {
-                    if (action.data.supplier_Name !== null) {
-                        return { ...item, supplier_Name: action.data.supplier_Name };
-                    }
-                    if (action.data.supplier_Name === null) {
-                        return { ...item, isActive: action.data.isActive };
-                    }
-                }
-                return item;
-            });
+            let updatedData;
+            if (action.data.isActive === false) {
+                updatedData = state.data.filter(item => item.supplier_ID !== action.data.supplier_ID)
+            } else {
+                updatedData = state.data.map(item => {
+                    const sup = action.data;
+                    if (item.supplier_ID === sup.supplier_ID) {
 
+                        return {
+                            ...item, supplier_Name: sup.supplier_Name,
+                            supplier_Address: sup.supplier_Address,
+                            supplier_Phone: sup.supplier_Phone,
+                            supplier_Email: sup.supplier_Email,
+                        };
+
+                    }
+
+                    return item;
+                });
+            }
             return {
                 ...state,
                 data: updatedData,

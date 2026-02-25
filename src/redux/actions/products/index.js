@@ -1,29 +1,14 @@
 import { fetchAPI, fetchAPIwithParams, postAPI, putAPI } from "../../../api";
 import { addData as addRecipe } from "../productRecipe";
-export const getInitialData = () => {
-    return async dispatch => {
-        // await Promise.all([
 
-        // ]).then(
-        //     response => {
-        //         let i = 0;
-        //         let types = ["APPEND_BACK_END_PRODUCT"]
-        //         for (const result of response) {
-        //             if (result.status !== 200) {
-        //                 dispatch({ type: "SHOW_ERROR_API", message: result.message })
-        //             } else {
-        //                 dispatch({ type: types[i], data: result.data })
-        //             }
-        //             i++;
-        //         }
-        //     }
-        // )
-        //     .catch(
-        //         error => {
-        //             dispatch({ type: "SHOW_ERROR_API", message: error.message })
-        //         }
-        //     );
-        await fetchAPI("/api/Product").then(
+
+export const getInitialData = (value) => {
+    return async dispatch => {
+        let url = "/api/Product";
+        if (value)
+            url += "?id=" + value;
+
+        await fetchAPI(url).then(
             response => {
                 if (response.status !== 200) {
                     //dispatch({ type: "SHOW_ERROR_API", message: result.message })
@@ -33,6 +18,47 @@ export const getInitialData = () => {
             }
         )
     }
+}
+
+export const getProductsByCategory = (value) => {
+    return async dispatch => {
+        let url = "/api/Product";
+        if (value)
+            url += "?category=" + value;
+
+        await fetchAPI(url).then(
+            response => {
+                if (response.status !== 200) {
+                    //dispatch({ type: "SHOW_ERROR_API", message: result.message })
+                } else {
+                    dispatch({ type: "APPEND_BACK_END_PRODUCT_BY_CATEGORY", data: response.data })
+                }
+            }
+        )
+    }
+}
+export const searchProductData = (search, page, pageSize) => {
+    return async dispatch => {
+        try {
+            // Tạo URL với các tham số phù hợp
+            let url = `/api/Product/search?page=${page}&pageSize=${pageSize}`;
+
+            if (search) {
+                url += `&search=${encodeURIComponent(search)}`;
+            }
+
+            const response = await fetchAPI(url);
+
+            if (response.status !== 200) {
+                //  console.error("API Error:", response.message);
+            } else {
+                dispatch({ type: "APPEND_BACK_END_PRODUCT", data: response.data });
+                return response.data;
+            }
+        } catch (error) {
+            console.error("Fetch Error:", error);
+        }
+    };
 }
 
 export const addData = (data) => {
@@ -67,3 +93,29 @@ export const updateData = (data) => {
         )
     }
 }
+
+export const getProductChoice = (value) => {
+    return async dispatch => {
+        let url = "/api/Product/productChoices";
+        if (value)
+            url += "?productID=" + value;
+
+        try {
+            const response = await fetchAPI(url);
+            if (response.status !== 200) {
+                // Có thể dispatch lỗi nếu muốn
+                return null;
+            } else {
+                dispatch({ type: "APPEND_BACK_END_PRODUCT_CHOICES", data: response.data });
+                return response.data; // <- TRẢ VỀ DỮ LIỆU ở đây
+            }
+        } catch (err) {
+            console.error("Error fetching product choices:", err);
+            return null;
+        }
+    };
+}
+
+
+
+

@@ -18,6 +18,17 @@ const ProductBackEnd = (state = initialState, action) => {
                 data: result
 
             }
+        case "APPEND_BACK_END_PRODUCT_BY_CATEGORY":
+            let res = [];
+            action.data.forEach((el, i) => {
+                res.push(el);
+                result[i]["id"] = el.product_ID;
+            })
+            return {
+                ...state,
+                productByCategory: result
+
+            }
         case "ADD_BACK_END_PRODUCT":
             let list = state.data;
             let elAdd = action.data;
@@ -56,6 +67,17 @@ const ProductBackEnd = (state = initialState, action) => {
                 ...state,
                 data: updatedData,
             };
+        case "APPEND_BACK_END_PRODUCT_CHOICES":
+            let results = [];
+            action.data.forEach((el, i) => {
+                results.push(el);
+                results[i]["id"] = el.question_ID;
+            })
+            return {
+                ...state,
+                productChoice: results
+
+            }
         default:
             return state
     }

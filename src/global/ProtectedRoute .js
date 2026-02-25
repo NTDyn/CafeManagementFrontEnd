@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children, role }) => {
     return children;
   }
   if (!user.isAuthenticated) {
-    return <Navigate to="/sign-in" />;
+    return <Navigate to="/admin/sign-in" />;
   }
 
   if (role && user.roles && !user.roles.includes(role)) {

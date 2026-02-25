@@ -8,9 +8,6 @@ export const getInitialData = () => {
                 if (response.status !== 200) {
                     //dispatch({ type: "SHOW_ERROR_API", message: result.message })
                 } else {
-
-
-                    console.log(response)
                     dispatch({ type: "APPEND_BACK_END_CUSTOMER", data: response.data })
                 }
             }
@@ -24,8 +21,8 @@ export const addData = (data) => {
             response => {
                 if (response.status !== 200) {
                 } else {
-                    dispatch({ type: "ADD_BACK_END_CUSTOMER", data: data })
-
+                    dispatch({ type: "ADD_BACK_END_CUSTOMER", data: response.data })
+                    return response.data
                 }
 
             }
@@ -35,13 +32,15 @@ export const addData = (data) => {
 
 
 export const updateData = (data) => {
-    console.log(data)
+
     return async dispatch => {
         putAPI("/api/Customer", data).then(
             response => {
+
                 if (response.status !== 200) {
 
                 } else {
+                    console.log(response)
                     dispatch({ type: "UPDATE_BACK_END_CUSTOMER", data: response.data })
 
                 }

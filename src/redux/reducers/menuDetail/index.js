@@ -9,20 +9,17 @@ const MenuDetails = (state = initialState, action) => {
 
         case "ADD_BACK_END_MENU_DETAIL":
             let itemAdd = action.data;
-            let listNew = state.data.push(itemAdd);
             return {
                 ...state,
-                data: listNew
-            }
+                data: [...state.data, itemAdd]
+            };
 
         case "UPDATE_BACK_END_MENU_DETAIL":
-            let itemUP = action.data;
-            let listOld = state.data;
-            let index = listOld.findIndex(x => x.setup_ID === itemUP.setup_ID);
-            listOld[index] = itemUP;
             return {
                 ...state,
-                data: listOld
+                data: state.data.map(item =>
+                    item.setup_ID === action.data.setup_ID ? action.data : item
+                )
             }
         default:
             return state;

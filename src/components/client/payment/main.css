@@ -1,0 +1,173 @@
+/* Main Start */
+.hero-payment {
+    background-image: url(../../../image/client/yourcart/brown-background.jpg);
+    background-size: cover;
+    height: fit-content;
+    width: 100vw;
+}
+
+.sticky-1 {
+    background-color: var(--panel-color);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.35);
+    border-radius: 20px;
+    height: fit-content;
+    width: 487px;
+    margin-left: -3px;
+    padding-bottom: 5%;
+}
+
+.sticky-2 {
+    background-color: var(--panel-color);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    height: fit-content;
+    width: 90%;
+    margin-left: 90px;
+}
+
+.sticky-3 {
+    background-color: var(--panel-color);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    height: fit-content;
+    width: 454px;
+    margin-left: 90px;
+    padding: 5px;
+}
+
+.btn.btn-primary.payment {
+    background-color: #6A4029;
+    border-color: #6A4029;
+    box-shadow: 0px 10px 20px rgba(137, 85, 55, 0.4);
+    border-radius: 20px;
+    padding: 20px 140px;
+    margin-left: 78px;
+    width: 100%;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.btn.btn-primary.payment:hover {
+    background-color: #FFBA33;
+    border-color: #FFBA33;
+    color: #6A4029;
+}
+
+.btn.btn-warning.swipe-admin {
+    margin-top: 2rem;
+    margin-left: -0.8rem;
+    height: 70px;
+    border-radius: 20px;
+    padding-top: 1.2rem;
+    font-size: 20px;
+    width: 90%;
+}
+
+/* mobile */
+.sticky-1-mobile {
+    background-color: var(--panel-color);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.35);
+    border-radius: 20px;
+    min-height: 38.5rem;
+    min-width: 23rem;
+    margin-left: -2.2rem;
+}
+
+.sticky-2-mobile {
+    background-color: var(--panel-color);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    max-height: 15rem;
+    min-width: 23rem;
+    margin-left: -2.2rem;
+}
+
+.sticky-3-mobile {
+    background-color: var(--panel-color);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    min-height: 15.6rem;
+    min-width: 23rem;
+    margin-left: -2.2rem;
+}
+
+.btn.btn-primary.mobile {
+    background-color: #6A4029;
+    border-color: #6A4029;
+    box-shadow: 0px 10px 20px rgba(137, 85, 55, 0.4);
+    border-radius: 20px;
+    padding: 20px 70px;
+    margin-left: 78px;
+    width: 23rem;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.btn.btn-primary.mobile:hover {
+    background-color: #FFBA33;
+    border-color: #FFBA33;
+    color: #6A4029;
+}
+
+
+
+/* Main End */
+
+/* Styling start */
+.s-1-payment {
+    font-family: 'Poppins';
+    font-size: 25px;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.s-2-payment {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--basic-color);
+    text-decoration: none;
+}
+
+.s-3-payment {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--hover-color);
+    padding-top: 5%;
+}
+
+.s-4-payment {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--carousel-color);
+}
+
+.s-5-payment {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--hover-color);
+    padding-left: 45px;
+}
+
+.s-6-payment {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 45px;
+    color: var(--hover-color);
+    padding-left: 43px;
+}
+
+/* Styling end */

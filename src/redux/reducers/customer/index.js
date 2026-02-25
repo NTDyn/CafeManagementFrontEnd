@@ -19,8 +19,8 @@ const CustomerBackEnd = (state = initialState, action) => {
         case "ADD_BACK_END_CUSTOMER":
             let list = state.data;
             let elAdd = action.data;
-            console.group(list)
-            let cusID = list[list.length - 1].customer_Id + 1;
+            console.log(list)
+            let cusID = list[list.length - 1]?.customer_Id + 1;
             elAdd.id = cusID;
             list = [...list, elAdd];
             return {
@@ -30,27 +30,30 @@ const CustomerBackEnd = (state = initialState, action) => {
 
         case "UPDATE_BACK_END_CUSTOMER":
 
-            let itemUP = action.data[0];
+            let itemUP = action.data;
+            console.log(itemUP)
+            let updatedData;
+            if (itemUP.isActive === false) {
+                updatedData = state.data.filter(item => item.customer_Id !== itemUP.customer_Id)
+            } else {
+                updatedData = state.data.map(item => {
+                    if (item.customer_Id === itemUP.customer_Id) {
 
-            const updatedData = state.data.map(item => {
-                if (item.customer_Id === itemUP.customer_Id) {
-                    if (itemUP.customer_Name && itemUP.customer_Phone && itemUP.customer_Address && itemUP.customer_Email && itemUP.isActive) {
-                        console.log(itemUP)
+
                         return {
                             ...item,
                             customer_Name: itemUP.customer_Name,
                             customer_Phone: itemUP.customer_Phone,
                             customer_Address: itemUP.customer_Address,
                             customer_Email: itemUP.customer_Email,
-                            level_ID: itemUP.level_ID,
-                            isActive: itemUP.isActive
+                            level_ID: itemUP.level_ID
                         };
+
+
                     }
-
-                }
-                return item;
-            });
-
+                    return item;
+                });
+            }
             return {
                 ...state,
                 data: updatedData,

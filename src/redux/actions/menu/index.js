@@ -1,4 +1,4 @@
-import { fetchAPI, postAPI, putAPI } from "../../../api";
+import { fetchAPI, postAPI, putAPI, deleteAPI } from "../../../api";
 
 export const getMenu = (_id = -1) => {
   let url = "/api/Menu";
@@ -35,13 +35,37 @@ export const getMenu = (_id = -1) => {
 
 export const addData = (data) => {
   return async dispatch => {
-    postAPI("/api/Menu", data)
+    try {
+      const response = await postAPI("/api/Menu", data);
+
+      if (response.status === 200) {
+        dispatch({ type: "ADD_BACK_END_MENU", data: response.data });
+        return response;
+      } else {
+        console.error("Add menu failed", response.message);
+        return null;
+      }
+
+    } catch (error) {
+      console.error("API call failed", error);
+      return null;
+    }
+  }
+}
+
+
+export const updateData = (data) => {
+  return async dispatch => {
+    putAPI("/api/Menu", data)
       .then(
         response => {
           if (response.status !== 200) {
-            //   dispatch({ type: "SHOW_ERROR_API", message: result.message })
+            console.error("Update failed", response.message);
+            dispatch({ type: "API_FAILURE", message: response.message });
           } else {
-            dispatch({ type: "ADD_BACK_END_MENU", data: data });
+            console.log(response)
+            dispatch({ type: "UPDATE_BACK_END_MENU", data: response.data });
+
           }
         }
       )
@@ -53,18 +77,41 @@ export const addData = (data) => {
   }
 }
 
-export const updateData = (data) => {
+export const deleteData = (_id) => {
   return async dispatch => {
-    putAPI("/api/Menu", data)
+    deleteAPI(`/api/Menu/${_id}`)
       .then(
         response => {
           if (response.status !== 200) {
 
           } else {
             console.log(response.data);
-            dispatch({ type: "UPDATE_BACK_END_MENU", data: response.data });
+            dispatch({ type: "DELETE_BACK_END_MENU", data: response.data });
 
           }
+        }
+      )
+      .catch(
+
+        error => console.error("API call failed", error),
+
+      )
+  }
+}
+
+export const setSelectedMenu = (_id) => {
+  return async dispatch => {
+    postAPI(`/api/Menu/setSelectedMenu?id=${_id}`)
+      .then(
+        response => {
+          if (response.status !== 200) {
+            console.error("Set selected menu failed", response.message);
+            dispatch({ type: "API_FAILURE", message: response.message });
+          } else {
+            dispatch({ type: "SET_SELECTED_MENU", data: response.data });
+
+          }
+          return response
         }
       )
       .catch(

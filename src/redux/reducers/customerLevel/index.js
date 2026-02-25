@@ -53,4 +53,4 @@ const CustomerLevelBackEnd = (state = initialState, action) => {
     }
 }
 
-export default CustomerLevelBackEnd
+export default CustomerLevelBackEnd;

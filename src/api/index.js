@@ -1,5 +1,5 @@
 import axios from "axios"
-//import { createGetToken, createPostToken } from "../codes/function"
+
 import {
     FETCH_DATA_REQUEST,
     FETCH_DATA_SUCCESS,
@@ -66,6 +66,21 @@ export async function putAPI(uri, data) {
     const response = await axios({
         url: urlSite + uri,
         method: 'PUT',
+        headers: {
+            //    'Token': await createPostToken(uri, JSON.stringify(data)),
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        data: JSON.stringify(data)
+    });
+    return await response.data;
+
+}
+
+export async function deleteAPI(uri, data) {
+    const response = await axios({
+        url: urlSite + uri,
+        method: 'DELETE',
         headers: {
             //    'Token': await createPostToken(uri, JSON.stringify(data)),
             'Accept': 'application/json, text/plain',
